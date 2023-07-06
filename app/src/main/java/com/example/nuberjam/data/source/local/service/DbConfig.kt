@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.nuberjam.data.source.local.entity.RecentFormSearch
 import com.example.nuberjam.data.source.local.entity.RecentMusicSearch
 
-@Database(entities = [RecentFormSearch::class, RecentMusicSearch::class], version = 2)
+@Database(entities = [RecentFormSearch::class, RecentMusicSearch::class], version = 1)
 abstract class DbConfig : RoomDatabase() {
     abstract fun dbDao(): DbDao
 
