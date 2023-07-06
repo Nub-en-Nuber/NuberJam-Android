@@ -1,4 +1,7 @@
 package com.example.nuberjam.data.source.local.service
 
-class Database {
+import androidx.room.Dao
+
+@Dao
+interface DbDao {
 }
