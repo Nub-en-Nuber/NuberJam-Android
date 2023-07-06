@@ -1,13 +1,13 @@
 package com.example.nuberjam.data.source.remote.service
 
 import com.example.nuberjam.BuildConfig
+import com.example.nuberjam.utils.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
-    const val BASE_URL = "http://nuberjam.orgfree.com/api/"
     const val TOKEN = BuildConfig.TOKEN
 
     fun getApiService(): ApiService {
@@ -17,7 +17,7 @@ object ApiConfig {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

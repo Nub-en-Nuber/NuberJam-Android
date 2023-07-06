@@ -1,4 +1,5 @@
 package com.example.nuberjam.utils
 
-class Constant {
+object Constant {
+    const val BASE_URL = "http://nuberjam.orgfree.com/api/"
 }
