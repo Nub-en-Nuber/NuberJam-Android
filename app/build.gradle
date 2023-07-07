@@ -17,15 +17,33 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("local.properties").newDataInputStream())
-        buildConfigField "String", "TOKEN", "\"${properties.getProperty("token")}\""
     }
 
     buildTypes {
-        release {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        pre {
+            versionNameSuffix ".pre"
+            applicationIdSuffix ".pre"
             minifyEnabled false
+            shrinkResources false
+            debuggable true
+            buildConfigField "String", "BASE_API_URL", '"http://nuberjam-dev.orgfree.com/api/"'
+            buildConfigField "String", "TOKEN", "${properties.getProperty("PRE_TOKEN")}"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        prod {
+            minifyEnabled true
+            shrinkResources true
+            buildConfigField "String", "BASE_API_URL", '"http://nuberjam.orgfree.com/api/"'
+            buildConfigField "String", "TOKEN", "${properties.getProperty("PROD_TOKEN")}"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
