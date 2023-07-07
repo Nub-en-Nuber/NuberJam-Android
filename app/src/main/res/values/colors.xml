@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- default colors schema -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- my colors schema -->
+    <!-- primary colors -->
+    <color name="primary_darker">#CACACA</color>
+    <color name="primary_main">#FFFFFF</color>
+    <color name="primary_gray">#6A717B</color>
+    <color name="primary_black">#1E1E1E</color>
+
+    <!-- secondary colors -->
+    <color name="secondary_darker">#296fe0</color>
+    <color name="secondary_main">#4C87E6</color>
+    <color name="secondary_light">#709FEB</color>
+    <color name="secondary_lighter">#94B7F0</color>
+
+    <!-- success colors -->
+    <color name="success_darker">#1A8A25</color>
+    <color name="success_main">#3DC134</color>
+    <color name="success_light">#9CEC84</color>
+    <color name="success_lighter">#E5FBD7</color>
+
+    <!-- warning colors -->
+    <color name="warning_darker">#AC6A00</color>
+    <color name="warning_main">#EFA300</color>
+    <color name="warning_light">#FAD464</color>
+    <color name="warning_lighter">#FEF4CB</color>
+
+    <!-- error colors -->
+    <color name="error_darker">#9F1834</color>
+    <color name="error_main">#DD3036</color>
+    <color name="error_light">#F49281</color>
+    <color name="error_lighter">#FDE2D5</color>
+
 </resources>
