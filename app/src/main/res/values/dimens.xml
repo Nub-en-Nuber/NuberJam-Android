@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- for font size -->
+    <dimen name="font_8sp">8sp</dimen>
+    <dimen name="font_10sp">10sp</dimen>
+    <dimen name="font_13sp">13sp</dimen>
+    <dimen name="font_16sp">16sp</dimen>
+    <dimen name="font_20sp">20sp</dimen>
+    <dimen name="font_25sp">25sp</dimen>
+    <dimen name="font_31sp">31sp</dimen>
+
+    <!-- for element space size -->
+    <dimen name="space_4dp">4dp</dimen>
+    <dimen name="space_8dp">8dp</dimen>
+    <dimen name="space_16dp">16dp</dimen>
+    <dimen name="space_24dp">24dp</dimen>
+    <dimen name="space_32dp">32dp</dimen>
+    <dimen name="space_40dp">40dp</dimen>
+    <dimen name="space_48dp">48dp</dimen>
+    <dimen name="space_56dp">56dp</dimen>
+    <dimen name="space_64dp">64dp</dimen>
+</resources>
