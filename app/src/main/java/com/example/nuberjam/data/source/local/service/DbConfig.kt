@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.nuberjam.data.source.local.entity.RecentFormSearch
 import com.example.nuberjam.data.source.local.entity.RecentMusicSearch
+import com.example.nuberjam.utils.Constant
 
 @Database(entities = [RecentFormSearch::class, RecentMusicSearch::class], version = 1)
 abstract class DbConfig : RoomDatabase() {
@@ -18,7 +19,7 @@ abstract class DbConfig : RoomDatabase() {
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
                     context.applicationContext,
-                    DbConfig::class.java, "nuberjam.db"
+                    DbConfig::class.java, Constant.DATABASE_NAME
                 ).allowMainThreadQueries()
                     .build()
             }
