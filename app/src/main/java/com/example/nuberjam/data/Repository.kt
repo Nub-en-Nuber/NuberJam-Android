@@ -1,14 +1,14 @@
 package com.example.nuberjam.data
 
-import android.content.SharedPreferences
 import com.example.nuberjam.data.source.local.service.DbDao
+import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.AppExecutors
 
 class Repository private constructor(
     private val apiService: ApiService,
     private val dbDao: DbDao,
-    private val preferences: SharedPreferences,
+    private val appPreferences: AppPreferences,
     private val appExecutors: AppExecutors
 ) {
 
@@ -19,11 +19,11 @@ class Repository private constructor(
         fun getInstance(
             apiService: ApiService,
             dbDao: DbDao,
-            preferences: SharedPreferences,
+            appPreferences: AppPreferences,
             appExecutors: AppExecutors
         ): Repository =
             instance ?: synchronized(this) {
-                instance ?: Repository(apiService, dbDao, preferences, appExecutors)
+                instance ?: Repository(apiService, dbDao, appPreferences, appExecutors)
             }.also { instance = it }
     }
 }
