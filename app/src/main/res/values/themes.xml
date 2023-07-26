@@ -18,7 +18,7 @@
     </style>
 
     <style name="CenturyGothicTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/century_gothic_bold</item>
+        <item name="android:fontFamily">@font/century_gothic</item>
         <item name="android:textSize">@dimen/font_16sp</item>
         <item name="android:textColor">@color/primary_black</item>
     </style>
