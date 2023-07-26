@@ -24,8 +24,6 @@
     </style>
 
     <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginVertical">@dimen/space_8dp</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/space_8dp</item>
         <item name="boxCornerRadiusBottomStart">@dimen/space_8dp</item>
@@ -37,8 +35,6 @@
     </style>
 
     <style name="CustomTextInputEditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/primary_gray</item>
         <item name="android:textSize">@dimen/font_16sp</item>
     </style>
