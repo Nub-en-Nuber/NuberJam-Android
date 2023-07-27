@@ -38,7 +38,6 @@
         <item name="android:textColor">@color/primary_gray</item>
         <item name="android:textSize">@dimen/font_16sp</item>
     </style>
-<<<<<<< HEAD
 
     <style name="CustomMaterialButton" >
         <item name="android:layout_marginVertical">@dimen/space_8dp</item>
@@ -52,6 +51,4 @@
         <item name="backgroundTint">@color/secondary_main</item>
         <item name="cornerRadius">@dimen/space_8dp</item>
     </style>
-=======
->>>>>>> MP-232
 </resources>
