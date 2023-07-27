@@ -1,14 +1,36 @@
 package com.example.nuberjam.data
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
+import com.example.nuberjam.utils.Constant
+import com.example.nuberjam.utils.Helper
 
 class Repository private constructor(
     private val apiService: ApiService,
     private val dbDao: DbDao,
     private val appPreferences: AppPreferences
 ) {
+
+    fun makeLogin(usernameOrEmail: String, password: String): LiveData<Result<Boolean>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = if (Helper.isValidEmail(usernameOrEmail)) {
+                apiService.makeLoginWithEmail(usernameOrEmail, password)
+            } else {
+                apiService.makeLoginWithUsername(usernameOrEmail, password)
+            }
+            val status = response.status
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
+            else emit(Result.Success(false))
+        } catch (e: Exception) {
+            Log.e("Repository", "makeLogin: ${e.message.toString()} ")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
 
     companion object {
         @Volatile
