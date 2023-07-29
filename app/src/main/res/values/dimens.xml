@@ -10,6 +10,7 @@
     <dimen name="font_31sp">31sp</dimen>
 
     <!-- for element space size -->
+    <dimen name="space_0dp">0dp</dimen>
     <dimen name="space_4dp">4dp</dimen>
     <dimen name="space_8dp">8dp</dimen>
     <dimen name="space_16dp">16dp</dimen>
