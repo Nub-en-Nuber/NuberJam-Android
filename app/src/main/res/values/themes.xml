@@ -56,6 +56,5 @@
         <item name="android:textSize">@dimen/font_25sp</item>
         <item name="android:textColor">@color/secondary_main</item>
         <item name="android:fontFamily">@font/century_gothic_bold</item>
-        <item name="android:layout_marginVertical">@dimen/space_4dp</item>
     </style>
 </resources>
