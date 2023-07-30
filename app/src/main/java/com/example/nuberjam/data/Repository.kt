@@ -27,6 +27,19 @@ class Repository private constructor(
         }
     }
 
+    fun checkEmailExist(email: String): LiveData<Result<Boolean>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readAccountWithEmail(email)
+            val status = response.status
+            if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
+            else emit(Result.Success(false))
+        } catch (e: Exception) {
+            Log.e("Repository", "checkEmailExist: ${e.message.toString()} ")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: Repository? = null
