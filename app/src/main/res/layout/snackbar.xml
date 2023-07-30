@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription"
-            tools:src="@drawable/sample_baseline_error_outline_24" />
+            tools:src="@drawable/ic_error_circle_white" />
 
         <TextView
             android:id="@+id/tv_text_snackbar"

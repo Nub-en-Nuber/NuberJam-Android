@@ -34,8 +34,8 @@ class CustomSnackbar private constructor(
         const val COLOR_SUCCESS = R.color.success_main
         const val COLOR_ERROR = R.color.error_main
 
-        const val DRAWABLE_SUCCESS = R.drawable.sample_baseline_check_circle_outline_24
-        const val DRAWABLE_ERROR = R.drawable.sample_baseline_error_outline_24
+        const val DRAWABLE_SUCCESS = R.drawable.ic_check_circle_white
+        const val DRAWABLE_ERROR = R.drawable.ic_error_circle_white
 
         fun build(
             layoutInflater: LayoutInflater,
