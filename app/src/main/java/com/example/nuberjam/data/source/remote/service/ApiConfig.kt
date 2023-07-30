@@ -1,7 +1,6 @@
 package com.example.nuberjam.data.source.remote.service
 
 import com.example.nuberjam.BuildConfig
-import com.example.nuberjam.utils.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
     const val TOKEN = BuildConfig.TOKEN
+    const val SUCCESS_CODE = 200
 
     fun getApiService(): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
