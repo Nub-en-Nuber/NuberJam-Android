@@ -81,12 +81,18 @@
             android:textSize="@dimen/font_13sp"
             android:textColor="@color/secondary_light"/>
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register_text"
             android:textSize="@dimen/font_13sp"
-            android:textColor="@color/success_light"/>
+            android:textColor="@color/success_light"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textAllCaps="false"
+            android:minWidth="@dimen/space_0dp"
+            android:minHeight="@dimen/space_0dp"
+            android:padding="@dimen/space_0dp"
+            android:fontFamily="@font/century_gothic_bold"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
