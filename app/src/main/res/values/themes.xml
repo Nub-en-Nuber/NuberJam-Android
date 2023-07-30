@@ -51,4 +51,10 @@
         <item name="backgroundTint">@color/secondary_main</item>
         <item name="cornerRadius">@dimen/space_8dp</item>
     </style>
+    
+    <style name="CustomAppBarTitle">
+        <item name="android:textSize">@dimen/font_25sp</item>
+        <item name="android:textColor">@color/secondary_main</item>
+        <item name="android:fontFamily">@font/century_gothic_bold</item>
+    </style>
 </resources>
