@@ -20,4 +20,5 @@
     <dimen name="space_48dp">48dp</dimen>
     <dimen name="space_56dp">56dp</dimen>
     <dimen name="space_64dp">64dp</dimen>
+    <dimen name="space_256dp">256dp</dimen>
 </resources>
