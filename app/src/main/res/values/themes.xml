@@ -24,7 +24,6 @@
     </style>
 
     <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:layout_marginVertical">@dimen/space_8dp</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/space_8dp</item>
         <item name="boxCornerRadiusBottomStart">@dimen/space_8dp</item>
         <item name="boxCornerRadiusTopEnd">@dimen/space_8dp</item>
@@ -40,7 +39,6 @@
     </style>
 
     <style name="CustomMaterialButton" >
-        <item name="android:layout_marginVertical">@dimen/space_8dp</item>
         <item name="android:elevation">@dimen/space_4dp</item>
         <item name="android:fontFamily">@font/century_gothic_bold</item>
         <item name="android:paddingVertical">@dimen/font_16sp</item>
@@ -50,5 +48,11 @@
         <item name="android:textSize">@dimen/font_16sp</item>
         <item name="backgroundTint">@color/secondary_main</item>
         <item name="cornerRadius">@dimen/space_8dp</item>
+    </style>
+    
+    <style name="CustomAppBarTitle">
+        <item name="android:textSize">@dimen/font_25sp</item>
+        <item name="android:textColor">@color/secondary_main</item>
+        <item name="android:fontFamily">@font/century_gothic_bold</item>
     </style>
 </resources>
