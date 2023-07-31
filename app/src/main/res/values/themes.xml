@@ -39,12 +39,7 @@
         <item name="android:singleLine">true</item>
     </style>
 
-<<<<<<< HEAD
     <style name="CustomMaterialButton" >
-=======
-    <style name="CustomMaterialButton">
-        <item name="android:layout_marginVertical">@dimen/space_8dp</item>
->>>>>>> MP-237
         <item name="android:elevation">@dimen/space_4dp</item>
         <item name="android:fontFamily">@font/century_gothic_bold</item>
         <item name="android:paddingVertical">@dimen/font_16sp</item>

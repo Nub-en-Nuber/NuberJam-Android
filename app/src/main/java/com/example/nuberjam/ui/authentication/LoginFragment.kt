@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-<<<<<<< HEAD
 import androidx.navigation.fragment.findNavController
-=======
->>>>>>> MP-237
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
@@ -29,7 +26,6 @@ class LoginFragment : Fragment() {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
-<<<<<<< HEAD
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,38 +52,6 @@ class LoginFragment : Fragment() {
         makeLoginObserve(usernameOrEmail, password)
     }
 
-=======
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModels: AuthViewModel by viewModels {
-            factory
-        }
-        viewModel = viewModels
-
-        binding.btnLogin.setOnClickListener {
-            makeLogin()
-        }
-        binding.btnRegister.setOnClickListener {
-            moveToRegister()
-        }
-    }
-
-    private fun moveToRegister() {
-//        TODO("Not yet implemented")
-    }
-
-    private fun makeLogin() {
-        val usernameOrEmail = binding.etUsernameEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
-
-        makeLoginObserve(usernameOrEmail, password)
-    }
-
->>>>>>> MP-237
     private fun makeLoginObserve(usernameOrEmail: String, password: String) {
         viewModel.makeLogin(usernameOrEmail, password).observe(viewLifecycleOwner) { result ->
             if (result != null) {
@@ -113,16 +77,8 @@ class LoginFragment : Fragment() {
 
     private fun saveSession(usernameOrEmail: String) {
 //        TODO("Not yet implemented")
-<<<<<<< HEAD
         findNavController().navigate(R.id.action_navigation_login_to_mainActivity)
         requireActivity().finish()
-=======
-        val username = "Test"
-        showSnackbar(
-            getString(R.string.login_success_message, username),
-            CustomSnackbar.STATE_SUCCESS
-        )
->>>>>>> MP-237
     }
 
     private fun showSnackbar(
