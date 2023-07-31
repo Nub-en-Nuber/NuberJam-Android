@@ -13,7 +13,6 @@ import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
 
-
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
@@ -46,10 +45,22 @@ class LoginFragment : Fragment() {
     }
 
     private fun makeLogin() {
+        var isError = false
         val usernameOrEmail = binding.etUsernameEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
-        makeLoginObserve(usernameOrEmail, password)
+        if (usernameOrEmail.isEmpty()) {
+            isError = true
+            binding.etUsernameEmail.error = getString(R.string.form_empty_message)
+        }
+        if (password.isEmpty()) {
+            isError = true
+            binding.etPassword.error = getString(R.string.form_empty_message)
+        }
+
+        if (!isError) {
+            makeLoginObserve(usernameOrEmail, password)
+        }
     }
 
     private fun makeLoginObserve(usernameOrEmail: String, password: String) {
