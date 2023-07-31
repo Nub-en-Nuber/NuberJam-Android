@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/material_symbols_home_outline"
+        android:icon="@drawable/ic_navigation_home"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_library"
-        android:icon="@drawable/fluent_library_24_regular"
+        android:icon="@drawable/ic_navigation_library"
         android:title="@string/title_library" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/material_symbols_account_circle_outline"
+        android:icon="@drawable/ic_navigation_profile"
         android:title="@string/title_profile" />
 </menu>
