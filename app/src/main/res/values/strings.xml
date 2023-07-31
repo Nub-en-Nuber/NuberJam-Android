@@ -20,7 +20,7 @@
     <string name="lowercase_req">Include lowercase</string>
     <string name="numbers_req">Include Numbers</string>
     <string name="uppercase_req">Include Uppercase</string>
-
+    <string name="form_empty_message">This field can\'t be empty!</string>
     <string name="login_failed_message">Incorrect username/email or password</string>
     <string name="login_success_message">Welcome, %s!</string>
 </resources>
