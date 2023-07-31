@@ -37,9 +37,10 @@
     <style name="CustomTextInputEditText">
         <item name="android:textColor">@color/primary_gray</item>
         <item name="android:textSize">@dimen/font_16sp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
-    <style name="CustomMaterialButton" >
+    <style name="CustomMaterialButton">
         <item name="android:layout_marginVertical">@dimen/space_8dp</item>
         <item name="android:elevation">@dimen/space_4dp</item>
         <item name="android:fontFamily">@font/century_gothic_bold</item>

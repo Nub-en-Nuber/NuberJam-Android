@@ -8,6 +8,9 @@
     <string name="username_or_email_hint">Username or email</string>
     <string name="password_hint">Password</string>
     <string name="login_text">Login</string>
-    <string name="dont_have_account_text">Don't have account? </string>
+    <string name="dont_have_account_text">Don\'t have account?</string>
     <string name="register_text">register</string>
+
+    <string name="login_failed_message">Incorrect username/email or password</string>
+    <string name="login_success_message">Welcome, %s!</string>
 </resources>

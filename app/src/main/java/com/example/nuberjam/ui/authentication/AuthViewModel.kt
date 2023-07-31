@@ -1,4 +1,9 @@
 package com.example.nuberjam.ui.authentication
 
-class AuthViewModel {
+import androidx.lifecycle.ViewModel
+import com.example.nuberjam.data.Repository
+
+class AuthViewModel(private val repository: Repository) : ViewModel() {
+    fun makeLogin(usernameOrEmail: String, password: String) =
+        repository.makeLogin(usernameOrEmail, password)
 }
