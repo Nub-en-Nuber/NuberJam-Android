@@ -6,17 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.R
-import com.example.nuberjam.databinding.FragmentHomeBinding
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
 
 
-class LoginFragment : Fragment(), View.OnClickListener {
+class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -34,21 +32,17 @@ class LoginFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val viewModels: AuthViewModel by viewModels {
+        val initViewModel: AuthViewModel by viewModels {
             factory
         }
-        viewModel = viewModels
+        viewModel = initViewModel
 
         binding.btnLogin.setOnClickListener {
             makeLogin()
         }
         binding.btnRegister.setOnClickListener {
-            moveToRegister()
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
-    }
-
-    private fun moveToRegister() {
-//        TODO("Not yet implemented")
     }
 
     private fun makeLogin() {
@@ -83,12 +77,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     private fun saveSession(usernameOrEmail: String) {
 //        TODO("Not yet implemented")
-        val username = "Test"
-        showSnackbar(
-            getString(R.string.login_success_message, username),
-            CustomSnackbar.STATE_SUCCESS
-        )
-        findNavController().navigate(R.id.action_navigation_login_tomainActivity)
+        findNavController().navigate(R.id.action_navigation_login_to_mainActivity)
         requireActivity().finish()
     }
 
