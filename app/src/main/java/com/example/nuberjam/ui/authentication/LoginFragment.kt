@@ -22,7 +22,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -69,13 +69,15 @@ class LoginFragment : Fragment() {
                 when (result) {
                     is Result.Loading -> showLoading(true)
                     is Result.Success -> {
-                        showLoading(false)
                         val isLoginSuccess = result.data
                         if (isLoginSuccess) saveSession(usernameOrEmail)
-                        else showSnackbar(
-                            getString(R.string.login_failed_message),
-                            CustomSnackbar.STATE_ERROR
-                        )
+                        else {
+                            showLoading(false)
+                            showSnackbar(
+                                getString(R.string.login_failed_message),
+                                CustomSnackbar.STATE_ERROR
+                            )
+                        }
                     }
                     is Result.Error -> {
                         showLoading(false)
@@ -87,9 +89,31 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveSession(usernameOrEmail: String) {
-//        TODO("Not yet implemented")
-        findNavController().navigate(R.id.action_navigation_login_to_mainActivity)
-        requireActivity().finish()
+        getAccountDataObserve(usernameOrEmail)
+    }
+
+    private fun getAccountDataObserve(usernameOrEmail: String) {
+        viewModel.getAccountData(usernameOrEmail).observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> showLoading(true)
+                    is Result.Success -> {
+                        showLoading(false)
+
+                        val account = result.data
+                        viewModel.saveAccountState(account)
+                        viewModel.saveLoginState(true)
+
+                        findNavController().navigate(R.id.action_navigation_login_to_mainActivity)
+                        requireActivity().finish()
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        showSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                    }
+                }
+            }
+        }
     }
 
     private fun showSnackbar(
