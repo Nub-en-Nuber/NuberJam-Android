@@ -23,15 +23,24 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
+<<<<<<< HEAD
             android:layout_width="@dimen/space_0dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
             app:labelVisibilityMode="unlabeled"
+=======
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground"
+>>>>>>> MP-237
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_navigation_menu" />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> MP-237
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
