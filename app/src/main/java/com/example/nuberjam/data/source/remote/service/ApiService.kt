@@ -31,4 +31,13 @@ interface ApiService {
     suspend fun readAccountWithEmail(
         @Query("accountEmail") accountEmail: String,
     ): DataResponse
+
+    @FormUrlEncoded
+    @POST("account/add.php?token=${ApiConfig.TOKEN}")
+    suspend fun addAccount(
+        @Field("accountName") accountName: String,
+        @Field("accountUsername") accountUsername: String,
+        @Field("accountEmail") accountEmail: String,
+        @Field("accountPassword") accountPassword: String
+    ): DataResponse
 }
