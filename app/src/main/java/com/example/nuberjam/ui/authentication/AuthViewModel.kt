@@ -23,4 +23,6 @@ class AuthViewModel(private val repository: Repository) : ViewModel() {
             repository.saveAccountState(account)
         }
     }
+
+    fun makeRegister(account: Account) = repository.addAccount(account)
 }

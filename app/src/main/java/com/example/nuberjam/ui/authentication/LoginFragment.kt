@@ -30,6 +30,18 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            RegisterFragment.REGISTER_SUCCESS_KEY
+        )
+            ?.observe(viewLifecycleOwner) { isRegisterSuccess ->
+                if (isRegisterSuccess) {
+                    showSnackbar(
+                        getString(R.string.register_success_message),
+                        CustomSnackbar.STATE_SUCCESS
+                    )
+                }
+            }
+
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
         val initViewModel: AuthViewModel by viewModels {
             factory
