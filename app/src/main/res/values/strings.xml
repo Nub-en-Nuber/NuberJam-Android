@@ -25,4 +25,10 @@
     <string name="login_success_message">Welcome, %s!</string>
     <string name="register_failed_message">Register failed</string>
     <string name="register_success_message">Register successfully!</string>
+    <string name="form_username_contain_spaces">The username can\'t contain spaces</string>
+    <string name="form_email_incorrect_format">Incorrect email format</string>
+    <string name="form_password_not_same">The passwords are not same</string>
+    <string name="loading_for_checking">Loading for checking</string>
+    <string name="form_username_used">The username has been used</string>
+    <string name="form_email_used">The email has been used</string>
 </resources>
