@@ -1,4 +1,4 @@
-<resources xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.NuberJam" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -36,6 +36,7 @@
     <style name="CustomTextInputEditText">
         <item name="android:textColor">@color/primary_gray</item>
         <item name="android:textSize">@dimen/font_16sp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="CustomMaterialButton" >

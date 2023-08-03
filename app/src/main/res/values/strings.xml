@@ -10,7 +10,7 @@
     <string name="username_or_email_hint">Username or email</string>
     <string name="password_hint">Password</string>
     <string name="login_text">Login</string>
-    <string name="dont_have_account_text">Don\'t have account? </string>
+    <string name="dont_have_account_text">Don\'t have account?</string>
     <string name="register_text">register</string>
     <string name="name_hint">Name</string>
     <string name="username_hint">Username</string>
@@ -20,4 +20,7 @@
     <string name="lowercase_req">Include lowercase</string>
     <string name="numbers_req">Include Numbers</string>
     <string name="uppercase_req">Include Uppercase</string>
+    <string name="form_empty_message">This field can\'t be empty!</string>
+    <string name="login_failed_message">Incorrect username/email or password</string>
+    <string name="login_success_message">Welcome, %s!</string>
 </resources>
