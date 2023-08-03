@@ -11,16 +11,18 @@
     <string name="password_hint">Password</string>
     <string name="login_text">Login</string>
     <string name="dont_have_account_text">Don\'t have account?</string>
-    <string name="register_text">register</string>
+    <string name="register_text">Register</string>
     <string name="name_hint">Name</string>
     <string name="username_hint">Username</string>
     <string name="email_hint">Email</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="minimal_password_req">Minimal 8 characters</string>
-    <string name="lowercase_req">Include lowercase</string>
-    <string name="numbers_req">Include Numbers</string>
-    <string name="uppercase_req">Include Uppercase</string>
+    <string name="lowercase_req">Contain lower case</string>
+    <string name="numbers_req">Contain numbers</string>
+    <string name="uppercase_req">Contain upper case</string>
     <string name="form_empty_message">This field can\'t be empty!</string>
     <string name="login_failed_message">Incorrect username/email or password</string>
     <string name="login_success_message">Welcome, %s!</string>
+    <string name="register_failed_message">Register failed</string>
+    <string name="register_success_message">Register successfully!</string>
 </resources>
