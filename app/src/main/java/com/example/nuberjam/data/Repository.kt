@@ -84,7 +84,25 @@ class Repository private constructor(
             if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
             else emit(Result.Success(false))
         } catch (e: Exception) {
-            Log.e(TAG, "checkEmailExist: ${e.message.toString()} ")
+            Log.e(TAG, "checkEmailExist: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun addAccount(account: Account): LiveData<Result<Boolean>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.addAccount(
+                account.name,
+                account.username,
+                account.email,
+                account.password
+            )
+            val status = response.status
+            if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
+            else emit(Result.Success(false))
+        } catch (e: Exception) {
+            Log.e(TAG, "addAccount: ${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
         }
     }

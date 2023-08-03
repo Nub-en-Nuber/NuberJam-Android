@@ -7,6 +7,22 @@ import com.example.nuberjam.data.model.Account
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: Repository) : ViewModel() {
+    var formName = ""
+    var formNameValid = false
+
+    var formUsername = ""
+    var formUsernameValid = false
+
+    var formEmail = ""
+    var formEmailValid = false
+
+    var formPassword = ""
+    var formPasswordValid = false
+
+    var formConfirmPassword = ""
+    var formConfirmPasswordValid = false
+
+
     fun makeLogin(usernameOrEmail: String, password: String) =
         repository.makeLogin(usernameOrEmail, password)
 
@@ -23,4 +39,13 @@ class AuthViewModel(private val repository: Repository) : ViewModel() {
             repository.saveAccountState(account)
         }
     }
+
+    fun makeRegister(account: Account) = repository.addAccount(account)
+
+    fun checkUsernameExist(username: String) = repository.checkUsernameExist(username)
+
+    fun checkEmailExist(email: String) = repository.checkEmailExist(email)
+
+    fun checkFormRegisterValid(): Boolean =
+        formNameValid && formUsernameValid && formEmailValid && formPasswordValid && formConfirmPasswordValid
 }
