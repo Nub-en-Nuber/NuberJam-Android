@@ -21,6 +21,7 @@ interface ApiService {
         @Field("accountEmail") accountEmail: String,
         @Field("accountPassword") accountPassword: String
     ): DataResponse
+
     @GET("account/retrieve.php?token=${ApiConfig.TOKEN}")
     suspend fun readAccountWithUsername(
         @Query("accountUsername") accountUsername: String,
