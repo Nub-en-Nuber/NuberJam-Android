@@ -51,4 +51,8 @@
         <item name="backgroundTint">@color/secondary_main</item>
         <item name="cornerRadius">@dimen/space_8dp</item>
     </style>
+
+    <style name="SplashTheme" parent="Theme.NuberJam">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>
