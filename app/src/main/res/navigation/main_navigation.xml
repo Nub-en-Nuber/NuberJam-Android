@@ -19,5 +19,17 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.nuberjam.ui.main.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_authActivity"
+            app:destination="@id/authActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/authActivity"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <activity
+        android:id="@+id/authActivity"
+        android:name="com.example.nuberjam.ui.authentication.AuthActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 </navigation>
