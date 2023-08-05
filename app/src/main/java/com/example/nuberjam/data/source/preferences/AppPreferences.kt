@@ -6,6 +6,8 @@ import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.utils.Constant
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class AppPreferences private constructor(private val dataStore: DataStore<Preferences>) {
     private val LOGIN_KEY = booleanPreferencesKey("has_login")
@@ -26,6 +28,25 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
             preferences[ACCOUNT_NAME_KEY] = account.name
             preferences[ACCOUNT_USERNAME_KEY] = account.username
             preferences[ACCOUNT_EMAIL_KEY] = account.email
+        }
+    }
+
+    suspend fun clearAccountState() {
+        dataStore.edit { preferences ->
+            preferences.remove(ACCOUNT_ID_KEY)
+            preferences.remove(ACCOUNT_NAME_KEY)
+            preferences.remove(ACCOUNT_USERNAME_KEY)
+            preferences.remove(ACCOUNT_EMAIL_KEY)
+        }
+    }
+
+    fun getAccountState(): Flow<Account> {
+        return dataStore.data.map { preferences ->
+            val id = preferences[ACCOUNT_ID_KEY] ?: 0
+            val name = preferences[ACCOUNT_NAME_KEY] ?: "null"
+            val username = preferences[ACCOUNT_USERNAME_KEY] ?: "null"
+            val email = preferences[ACCOUNT_EMAIL_KEY] ?: "null"
+            Account(id, name, username, email, "null", "null")
         }
     }
 

@@ -10,6 +10,7 @@
     <string name="username_or_email_hint">Username or email</string>
     <string name="password_hint">Password</string>
     <string name="login_text">Login</string>
+    <string name="logout_text">Logout</string>
     <string name="dont_have_account_text">Don\'t have account?</string>
     <string name="register_text">Register</string>
     <string name="name_hint">Name</string>
@@ -25,6 +26,7 @@
     <string name="login_success_message">Welcome, %s!</string>
     <string name="register_failed_message">Register failed</string>
     <string name="register_success_message">Register successfully!</string>
+    <string name="logout_success_message">Good bye, %s!</string>
     <string name="form_username_contain_spaces">The username can\'t contain spaces</string>
     <string name="form_email_incorrect_format">Incorrect email format</string>
     <string name="form_password_not_same">The passwords are not same</string>

@@ -2,6 +2,7 @@ package com.example.nuberjam.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.source.local.service.DbDao
@@ -43,12 +44,11 @@ class Repository private constructor(
             } else {
                 apiService.readAccountWithUsername(usernameOrEmail)
             }
-            if (response.data != null) {
+            if (response.data?.account != null) {
                 val accountItem = response.data.account[0]
                 val account = Mapping.accountItemToAccount(accountItem)
                 emit(Result.Success(account))
             }
-            emit(Result.Error(response.message))
         } catch (e: Exception) {
             Log.e(TAG, "getAccountData: ${e.message.toString()} ")
             emit(Result.Error(e.message.toString()))
@@ -61,6 +61,12 @@ class Repository private constructor(
 
     suspend fun saveAccountState(account: Account) {
         appPreferences.saveAccountState(account)
+    }
+
+    fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
+
+    suspend fun clearAccountState() {
+        appPreferences.clearAccountState()
     }
 
     fun checkUsernameExist(username: String): LiveData<Result<Boolean>> = liveData {

@@ -1,5 +1,6 @@
 package com.example.nuberjam.ui.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,18 @@ import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.MainActivity
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AuthViewModel
+
+    companion object {
+        val TAG: String = LoginFragment::class.java.simpleName
+        const val LOGIN_SUCCESS_EXTRA = "login_success_extra"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,17 +37,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
-            RegisterFragment.REGISTER_SUCCESS_KEY
-        )
-            ?.observe(viewLifecycleOwner) { isRegisterSuccess ->
-                if (isRegisterSuccess) {
-                    showSnackbar(
-                        getString(R.string.register_success_message),
-                        CustomSnackbar.STATE_SUCCESS
-                    )
-                }
-            }
+        loadNavigationData()
 
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
         val initViewModel: AuthViewModel by viewModels {
@@ -54,6 +51,20 @@ class LoginFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
+    }
+
+    private fun loadNavigationData() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            RegisterFragment.REGISTER_SUCCESS_KEY
+        )
+            ?.observe(viewLifecycleOwner) { isRegisterSuccess ->
+                if (isRegisterSuccess) {
+                    showSnackbar(
+                        getString(R.string.register_success_message),
+                        CustomSnackbar.STATE_SUCCESS
+                    )
+                }
+            }
     }
 
     private fun makeLogin() {
@@ -116,7 +127,9 @@ class LoginFragment : Fragment() {
                         viewModel.saveAccountState(account)
                         viewModel.saveLoginState(true)
 
-                        findNavController().navigate(R.id.action_navigation_login_to_mainActivity)
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(LOGIN_SUCCESS_EXTRA, account.username)
+                        requireActivity().startActivity(intent)
                         requireActivity().finish()
                     }
                     is Result.Error -> {
