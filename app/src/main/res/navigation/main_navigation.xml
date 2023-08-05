@@ -22,7 +22,10 @@
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_navigation_profile_to_authActivity"
-            app:destination="@id/authActivity" />
+            app:destination="@id/authActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/authActivity"
+            app:popUpToInclusive="true" />
     </fragment>
     <activity
         android:id="@+id/authActivity"

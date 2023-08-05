@@ -2,6 +2,7 @@ package com.example.nuberjam.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.source.local.service.DbDao
@@ -62,6 +63,10 @@ class Repository private constructor(
     suspend fun saveAccountState(account: Account) {
         appPreferences.saveAccountState(account)
     }
+
+    fun getLoginState(): LiveData<Boolean> = appPreferences.getLoginState().asLiveData()
+
+    fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
 
     fun checkUsernameExist(username: String): LiveData<Result<Boolean>> = liveData {
         emit(Result.Loading)
