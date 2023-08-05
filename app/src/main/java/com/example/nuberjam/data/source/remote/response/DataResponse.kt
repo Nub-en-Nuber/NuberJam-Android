@@ -11,107 +11,107 @@ data class DataResponse(
     val data: Data? = null,
 
     @field:SerializedName("message")
-    val message: String? = null,
+    val message: String,
 
     @field:SerializedName("status")
-    val status: Int? = null
+    val status: Int
 ) : Parcelable
 
 @Parcelize
 data class AccountItem(
 
     @field:SerializedName("accountPhoto")
-    val accountPhoto: String? = null,
+    val accountPhoto: String,
 
     @field:SerializedName("accountId")
-    val accountId: Int? = null,
+    val accountId: Int,
 
     @field:SerializedName("accountEmail")
-    val accountEmail: String? = null,
+    val accountEmail: String,
 
     @field:SerializedName("accountName")
-    val accountName: String? = null,
+    val accountName: String,
 
     @field:SerializedName("accountUsername")
-    val accountUsername: String? = null,
+    val accountUsername: String,
 
     @field:SerializedName("accountPassword")
-    val accountPassword: String? = null
+    val accountPassword: String
 ) : Parcelable
 
 @Parcelize
 data class PlaylistItem(
 
     @field:SerializedName("playlistId")
-    val playlistId: Int? = null,
+    val playlistId: Int,
 
     @field:SerializedName("playlistPhoto")
-    val playlistPhoto: String? = null,
+    val playlistPhoto: String,
 
     @field:SerializedName("playlistName")
-    val playlistName: String? = null
+    val playlistName: String
 ) : Parcelable
 
 @Parcelize
 data class Data(
 
     @field:SerializedName("playlist")
-    val playlist: List<PlaylistItem?>? = null,
+    val playlist: List<PlaylistItem>,
 
     @field:SerializedName("album")
-    val album: List<AlbumItem?>? = null,
+    val album: List<AlbumItem>,
 
     @field:SerializedName("account")
-    val account: List<AccountItem?>? = null
+    val account: List<AccountItem>
 ) : Parcelable
 
 @Parcelize
 data class MusicItem(
 
     @field:SerializedName("musicDuration")
-    val musicDuration: Int? = null,
+    val musicDuration: Int,
 
     @field:SerializedName("musicId")
-    val musicId: Int? = null,
+    val musicId: Int,
 
     @field:SerializedName("musicIsFavorite")
-    val musicIsFavorite: Boolean? = null,
+    val musicIsFavorite: Boolean,
 
     @field:SerializedName("playlistDetailId")
     val playlistDetailId: Int? = null,
 
     @field:SerializedName("musicArtist")
-    val musicArtist: List<MusicArtistItem?>? = null,
+    val musicArtist: List<MusicArtistItem>,
 
     @field:SerializedName("musicFile")
-    val musicFile: String? = null,
+    val musicFile: String,
 
     @field:SerializedName("musicName")
-    val musicName: String? = null
+    val musicName: String
 ) : Parcelable
 
 @Parcelize
 data class AlbumItem(
 
     @field:SerializedName("albumName")
-    val albumName: String? = null,
+    val albumName: String,
 
     @field:SerializedName("music")
-    val music: List<MusicItem?>? = null,
+    val music: List<MusicItem>,
 
     @field:SerializedName("albumPhoto")
-    val albumPhoto: String? = null,
+    val albumPhoto: String,
 
     @field:SerializedName("albumId")
-    val albumId: Int? = null
+    val albumId: Int
 ) : Parcelable
 
 @Parcelize
 data class MusicArtistItem(
 
     @field:SerializedName("artistId")
-    val artistId: Int? = null,
+    val artistId: Int,
 
     @field:SerializedName("artistName")
-    val artistName: String? = null
+    val artistName: String
 ) : Parcelable
