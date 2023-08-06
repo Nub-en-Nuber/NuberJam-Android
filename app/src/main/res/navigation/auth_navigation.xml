@@ -23,9 +23,9 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
+
     <fragment
         android:id="@+id/navigation_register"
         android:name="com.example.nuberjam.ui.authentication.RegisterFragment"
@@ -43,5 +43,10 @@
         android:id="@+id/mainActivity"
         android:name="com.example.nuberjam.ui.main.MainActivity"
         android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+        tools:layout="@layout/activity_main" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="Default" />
+    </activity>
 </navigation>
