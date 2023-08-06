@@ -30,11 +30,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadNavigationData() {
         if (intent != null) {
-            val username = intent?.getStringExtra(LoginFragment.LOGIN_SUCCESS_EXTRA)
-            showSnackbar(
-                getString(R.string.login_success_message, username),
-                CustomSnackbar.STATE_SUCCESS
-            )
+            val username = intent.extras?.let { MainActivityArgs.fromBundle(it).username }
+            if (username != null)
+                showSnackbar(
+                    getString(R.string.login_success_message, username),
+                    CustomSnackbar.STATE_SUCCESS
+                )
         }
     }
 

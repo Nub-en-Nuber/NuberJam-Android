@@ -27,11 +27,12 @@ class AuthActivity : AppCompatActivity() {
 
     private fun loadNavigationData() {
         if (intent != null) {
-            val username = intent?.getStringExtra(ProfileFragment.LOGOUT_SUCCESS_EXTRA)
-            showSnackbar(
-                getString(R.string.logout_success_message, username),
-                CustomSnackbar.STATE_SUCCESS
-            )
+            val username = intent.extras?.let { AuthActivityArgs.fromBundle(it).username }
+            if (username != null)
+                showSnackbar(
+                    getString(R.string.logout_success_message, username),
+                    CustomSnackbar.STATE_SUCCESS
+                )
         }
     }
 

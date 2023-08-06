@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.authentication.AuthActivity
@@ -47,10 +48,10 @@ class ProfileFragment : Fragment() {
         viewModel.getAccountState().observe(viewLifecycleOwner) { account ->
             viewModel.saveLoginState(false)
             viewModel.clearAccountState()
-            val intent = Intent(requireActivity(), AuthActivity::class.java)
-            intent.putExtra(LOGOUT_SUCCESS_EXTRA, account.username)
-            requireActivity().startActivity(intent)
-            requireActivity().finish()
+
+            val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
+            toAuthActivity.username = account.username
+            findNavController().navigate(toAuthActivity)
         }
     }
 

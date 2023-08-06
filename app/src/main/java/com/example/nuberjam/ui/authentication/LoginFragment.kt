@@ -12,6 +12,7 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.ViewModelFactory
+import com.example.nuberjam.ui.authentication.LoginFragmentDirections.ActionNavigationLoginToMainActivity
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.MainActivity
 
@@ -127,10 +128,9 @@ class LoginFragment : Fragment() {
                         viewModel.saveAccountState(account)
                         viewModel.saveLoginState(true)
 
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(LOGIN_SUCCESS_EXTRA, account.username)
-                        requireActivity().startActivity(intent)
-                        requireActivity().finish()
+                        val toMainActivity = LoginFragmentDirections.actionNavigationLoginToMainActivity()
+                        toMainActivity.username = account.username
+                        findNavController().navigate(toMainActivity)
                     }
                     is Result.Error -> {
                         showLoading(false)
