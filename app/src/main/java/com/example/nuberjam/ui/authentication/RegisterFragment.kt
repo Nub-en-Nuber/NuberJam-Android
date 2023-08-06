@@ -116,12 +116,11 @@ class RegisterFragment : Fragment() {
     private fun formPasswordProcess(text: String) {
         viewModel.formPassword = text
         if (viewModel.formPassword.isEmpty()) {
-            viewModel.formPasswordValid = false
             binding.etPassword.error = getString(R.string.form_empty_message)
         } else {
-            viewModel.formPasswordValid = checkPasswordRequirements(viewModel.formPassword)
             binding.etPassword.error = null
         }
+        viewModel.formPasswordValid = checkPasswordRequirements(viewModel.formPassword)
     }
 
     private fun setFormEmailListener() {
