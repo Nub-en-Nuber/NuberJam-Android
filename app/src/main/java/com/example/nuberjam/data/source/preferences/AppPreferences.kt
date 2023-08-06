@@ -31,6 +31,15 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    suspend fun clearAccountState() {
+        dataStore.edit { preferences ->
+            preferences.remove(ACCOUNT_ID_KEY)
+            preferences.remove(ACCOUNT_NAME_KEY)
+            preferences.remove(ACCOUNT_USERNAME_KEY)
+            preferences.remove(ACCOUNT_EMAIL_KEY)
+        }
+    }
+
     fun getLoginState(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[LOGIN_KEY] ?: false

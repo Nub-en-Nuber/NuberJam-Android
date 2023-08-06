@@ -10,11 +10,13 @@
         android:name="com.example.nuberjam.ui.main.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/navigation_library"
         android:name="com.example.nuberjam.ui.main.library.LibraryFragment"
         android:label="Library"
         tools:layout="@layout/fragment_library" />
+
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.nuberjam.ui.main.profile.ProfileFragment"
@@ -23,13 +25,24 @@
         <action
             android:id="@+id/action_navigation_profile_to_authActivity"
             app:destination="@id/authActivity"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
             app:launchSingleTop="true"
             app:popUpTo="@id/authActivity"
             app:popUpToInclusive="true" />
     </fragment>
+  
     <activity
         android:id="@+id/authActivity"
         android:name="com.example.nuberjam.ui.authentication.AuthActivity"
         android:label="activity_auth"
-        tools:layout="@layout/activity_auth" />
+        tools:layout="@layout/activity_auth" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue="Default" />
+    </activity>
+
 </navigation>

@@ -44,12 +44,11 @@ class Repository private constructor(
             } else {
                 apiService.readAccountWithUsername(usernameOrEmail)
             }
-            if (response.data != null) {
+            if (response.data?.account != null) {
                 val accountItem = response.data.account[0]
                 val account = Mapping.accountItemToAccount(accountItem)
                 emit(Result.Success(account))
             }
-            emit(Result.Error(response.message))
         } catch (e: Exception) {
             Log.e(TAG, "getAccountData: ${e.message.toString()} ")
             emit(Result.Error(e.message.toString()))
@@ -64,6 +63,10 @@ class Repository private constructor(
         appPreferences.saveAccountState(account)
     }
 
+    suspend fun clearAccountState() {
+        appPreferences.clearAccountState()
+    }
+    
     fun getLoginState(): LiveData<Boolean> = appPreferences.getLoginState().asLiveData()
 
     fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
