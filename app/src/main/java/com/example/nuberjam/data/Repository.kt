@@ -63,11 +63,13 @@ class Repository private constructor(
         appPreferences.saveAccountState(account)
     }
 
-    fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
-
     suspend fun clearAccountState() {
         appPreferences.clearAccountState()
     }
+    
+    fun getLoginState(): LiveData<Boolean> = appPreferences.getLoginState().asLiveData()
+
+    fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
 
     fun checkUsernameExist(username: String): LiveData<Result<Boolean>> = liveData {
         emit(Result.Loading)

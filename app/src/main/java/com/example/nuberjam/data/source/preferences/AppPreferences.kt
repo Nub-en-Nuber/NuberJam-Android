@@ -40,6 +40,12 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    fun getLoginState(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[LOGIN_KEY] ?: false
+        }
+    }
+
     fun getAccountState(): Flow<Account> {
         return dataStore.data.map { preferences ->
             val id = preferences[ACCOUNT_ID_KEY] ?: 0
