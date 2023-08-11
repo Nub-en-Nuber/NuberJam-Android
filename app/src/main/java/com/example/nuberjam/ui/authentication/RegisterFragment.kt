@@ -117,6 +117,20 @@ class RegisterFragment : Fragment() {
         viewModel.formPassword = text
         if (viewModel.formPassword.isEmpty()) {
             binding.etPassword.error = getString(R.string.form_empty_message)
+        } else if (!FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = false
+            binding.etConfirmPassword.error = getString(R.string.form_password_not_same)
+        } else if (FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = true
+            binding.etConfirmPassword.error = null
         } else {
             binding.etPassword.error = null
         }
@@ -162,6 +176,7 @@ class RegisterFragment : Fragment() {
                                 binding.etEmail.error = null
                             }
                         }
+
                         is Result.Error -> {
                             viewModel.formEmailValid = false
                             binding.etEmail.error = result.error
@@ -213,6 +228,7 @@ class RegisterFragment : Fragment() {
                                     binding.etUsername.error = null
                                 }
                             }
+
                             is Result.Error -> {
                                 viewModel.formUsernameValid = false
                                 binding.etUsername.error = result.error
@@ -372,6 +388,7 @@ class RegisterFragment : Fragment() {
                                 CustomSnackbar.STATE_ERROR
                             )
                     }
+
                     is Result.Error -> {
                         showLoading(false)
                         showSnackbar(result.error, CustomSnackbar.STATE_ERROR)
