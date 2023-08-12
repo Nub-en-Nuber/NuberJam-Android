@@ -1,12 +1,17 @@
 package com.example.nuberjam.ui.authentication
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityAuthBinding
+import com.example.nuberjam.ui.SplashViewModel
+import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
-import com.example.nuberjam.ui.main.profile.ProfileFragment
+import com.example.nuberjam.ui.main.MainActivity
 
 class AuthActivity : AppCompatActivity() {
 
@@ -15,8 +20,33 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val factory = ViewModelFactory.getInstance(this)
+        val viewModel: SplashViewModel by viewModels { factory }
+
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                return@setKeepOnScreenCondition viewModel.isLoading
+            }
+        }
+
+        viewModel.getLoginState().observe(this) { hasLogin ->
+            if (hasLogin != null) {
+                viewModel.isLoading = false
+                if (hasLogin){
+                    startActivity(
+                        Intent(
+                            this,
+                            MainActivity::class.java
+                        )
+                    )
+                    finish()
+                }
+            }
+        }
+
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         loadNavigationData()
 

@@ -1,6 +1,5 @@
 package com.example.nuberjam.ui.authentication
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,7 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.ViewModelFactory
-import com.example.nuberjam.ui.authentication.LoginFragmentDirections.ActionNavigationLoginToMainActivity
 import com.example.nuberjam.ui.customview.CustomSnackbar
-import com.example.nuberjam.ui.main.MainActivity
 
 class LoginFragment : Fragment() {
 

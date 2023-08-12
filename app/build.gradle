@@ -98,6 +98,9 @@ ext {
     espressoVersion = "3.5.1"
     rulesVersion = "1.5.0"
     extVersion = "1.1.5"
+
+    // Splash Screen
+    splashScreenVersion = "1.0.0"
 }
 
 dependencies {
@@ -144,4 +147,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test:rules:$rulesVersion"
     androidTestImplementation "androidx.test.ext:junit:$extVersion"
+
+    // Splash Screen
+    implementation("androidx.core:core-splashscreen:$splashScreenVersion")
 }

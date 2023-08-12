@@ -1,6 +1,6 @@
 package com.example.nuberjam.ui
 
-import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nuberjam.data.Repository
@@ -25,7 +25,7 @@ class ViewModelFactory private constructor(private val repository: Repository) :
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(context: FragmentActivity): ViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(Injection.provideRepository(context))
             }.also { instance = it }
