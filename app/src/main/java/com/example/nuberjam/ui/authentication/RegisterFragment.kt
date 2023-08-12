@@ -19,6 +19,7 @@ import com.example.nuberjam.databinding.FragmentRegisterBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import java.util.Timer
 import java.util.TimerTask
@@ -144,7 +145,7 @@ class RegisterFragment : Fragment() {
                             formEmailProcess(s.toString())
                         }
                     }
-                }, 600)
+                }, Constant.FORM_TYPING_DELAY)
             }
         })
     }
@@ -203,7 +204,7 @@ class RegisterFragment : Fragment() {
                             formUsernameProcess(s.toString())
                         }
                     }
-                }, 600)
+                }, Constant.FORM_TYPING_DELAY)
             }
 
         })
