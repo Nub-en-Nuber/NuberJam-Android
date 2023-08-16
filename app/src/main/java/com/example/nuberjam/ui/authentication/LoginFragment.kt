@@ -19,11 +19,6 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: AuthViewModel
 
-    companion object {
-        val TAG: String = LoginFragment::class.java.simpleName
-        const val LOGIN_SUCCESS_EXTRA = "login_success_extra"
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +44,20 @@ class LoginFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
+
+        showSnackbarObserve()
+    }
+
+    private fun showSnackbarObserve() {
+        viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { snackbarState ->
+                val customSnackbar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
+                customSnackbar.setMessage(snackbarState.message)
+                customSnackbar.setState(snackbarState.state)
+                customSnackbar.show()
+            }
+        }
     }
 
     private fun loadNavigationData() {
@@ -57,7 +66,7 @@ class LoginFragment : Fragment() {
         )
             ?.observe(viewLifecycleOwner) { isRegisterSuccess ->
                 if (isRegisterSuccess) {
-                    showSnackbar(
+                    viewModel.setSnackbar(
                         getString(R.string.register_success_message),
                         CustomSnackbar.STATE_SUCCESS
                     )
@@ -94,15 +103,16 @@ class LoginFragment : Fragment() {
                         if (isLoginSuccess) saveSession(usernameOrEmail)
                         else {
                             showLoading(false)
-                            showSnackbar(
+                            viewModel.setSnackbar(
                                 getString(R.string.login_failed_message),
                                 CustomSnackbar.STATE_ERROR
                             )
                         }
                     }
+
                     is Result.Error -> {
                         showLoading(false)
-                        showSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
                     }
                 }
             }
@@ -125,29 +135,19 @@ class LoginFragment : Fragment() {
                         viewModel.saveAccountState(account)
                         viewModel.saveLoginState(true)
 
-                        val toMainActivity = LoginFragmentDirections.actionNavigationLoginToMainActivity()
+                        val toMainActivity =
+                            LoginFragmentDirections.actionNavigationLoginToMainActivity()
                         toMainActivity.username = account.username
                         findNavController().navigate(toMainActivity)
                     }
+
                     is Result.Error -> {
                         showLoading(false)
-                        showSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
                     }
                 }
             }
         }
-    }
-
-    private fun showSnackbar(
-        message: String,
-        state: Int,
-        length: Int = CustomSnackbar.LENGTH_LONG
-    ) {
-        val customSnackbar =
-            CustomSnackbar.build(layoutInflater, binding.root, length)
-        customSnackbar.setMessage(message)
-        customSnackbar.setState(state)
-        customSnackbar.show()
     }
 
     private fun showLoading(isLoading: Boolean) {

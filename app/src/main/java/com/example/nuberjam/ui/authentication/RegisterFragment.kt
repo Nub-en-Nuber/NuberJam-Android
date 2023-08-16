@@ -12,12 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.R
+import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentRegisterBinding
 import com.example.nuberjam.ui.ViewModelFactory
-import com.example.nuberjam.data.Result
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
+import java.util.Timer
+import java.util.TimerTask
 
 
 class RegisterFragment : Fragment() {
@@ -52,6 +55,20 @@ class RegisterFragment : Fragment() {
         setFormState()
         binding.btnRegister.setOnClickListener {
             makeRegister()
+        }
+
+        showSnackbarObserve()
+    }
+
+    private fun showSnackbarObserve() {
+        viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { snackbarState ->
+                val customSnackbar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
+                customSnackbar.setMessage(snackbarState.message)
+                customSnackbar.setState(snackbarState.state)
+                customSnackbar.show()
+            }
         }
     }
 
@@ -115,6 +132,20 @@ class RegisterFragment : Fragment() {
         viewModel.formPassword = text
         if (viewModel.formPassword.isEmpty()) {
             binding.etPassword.error = getString(R.string.form_empty_message)
+        } else if (!FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = false
+            binding.etConfirmPassword.error = getString(R.string.form_password_not_same)
+        } else if (FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = true
+            binding.etConfirmPassword.error = null
         } else {
             binding.etPassword.error = null
         }
@@ -122,16 +153,25 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setFormEmailListener() {
+        var timer: Timer? = null
         binding.etEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                formEmailProcess(s.toString())
+                timer?.cancel()
             }
 
             override fun afterTextChanged(s: Editable?) {
-                formEmailProcess(s.toString())
+                timer = Timer()
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread {
+                            formEmailProcess(s.toString())
+                        }
+                    }
+                }, Constant.FORM_TYPING_DELAY)
             }
         })
     }
@@ -160,29 +200,39 @@ class RegisterFragment : Fragment() {
                                 binding.etEmail.error = null
                             }
                         }
+
                         is Result.Error -> {
                             viewModel.formEmailValid = false
                             binding.etEmail.error = result.error
                         }
                     }
                 }
-
             }
         }
     }
 
     private fun setFormUsernameListener() {
+        var timer: Timer? = null
         binding.etUsername.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                formUsernameProcess(s.toString())
+                timer?.cancel()
             }
 
             override fun afterTextChanged(s: Editable?) {
-                formUsernameProcess(s.toString())
+                timer = Timer()
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread {
+                            formUsernameProcess(s.toString())
+                        }
+                    }
+                }, Constant.FORM_TYPING_DELAY)
             }
+
         })
     }
 
@@ -211,6 +261,7 @@ class RegisterFragment : Fragment() {
                                     binding.etUsername.error = null
                                 }
                             }
+
                             is Result.Error -> {
                                 viewModel.formUsernameValid = false
                                 binding.etUsername.error = result.error
@@ -271,7 +322,10 @@ class RegisterFragment : Fragment() {
             )
             makeRegisterObserve(account)
         } else {
-            showSnackbar(getString(R.string.register_failed_message), CustomSnackbar.STATE_ERROR)
+            viewModel.setSnackbar(
+                getString(R.string.register_failed_message),
+                CustomSnackbar.STATE_ERROR
+            )
         }
     }
 
@@ -365,14 +419,15 @@ class RegisterFragment : Fragment() {
                             )
                             findNavController().popBackStack()
                         } else
-                            showSnackbar(
+                            viewModel.setSnackbar(
                                 getString(R.string.register_failed_message),
                                 CustomSnackbar.STATE_ERROR
                             )
                     }
+
                     is Result.Error -> {
                         showLoading(false)
-                        showSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
                     }
                 }
             }
@@ -385,18 +440,6 @@ class RegisterFragment : Fragment() {
         } else {
             binding.loading.linearLoading.visibility = View.GONE
         }
-    }
-
-    private fun showSnackbar(
-        message: String,
-        state: Int,
-        length: Int = CustomSnackbar.LENGTH_LONG
-    ) {
-        val customSnackbar =
-            CustomSnackbar.build(layoutInflater, binding.root, length)
-        customSnackbar.setMessage(message)
-        customSnackbar.setState(state)
-        customSnackbar.show()
     }
 
     override fun onDestroyView() {
