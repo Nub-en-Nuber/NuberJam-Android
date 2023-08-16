@@ -132,6 +132,20 @@ class RegisterFragment : Fragment() {
         viewModel.formPassword = text
         if (viewModel.formPassword.isEmpty()) {
             binding.etPassword.error = getString(R.string.form_empty_message)
+        } else if (!FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = false
+            binding.etConfirmPassword.error = getString(R.string.form_password_not_same)
+        } else if (FormValidation.isPasswordSame(
+                viewModel.formPassword,
+                viewModel.formConfirmPassword
+            )
+        ) {
+            viewModel.formConfirmPasswordValid = true
+            binding.etConfirmPassword.error = null
         } else {
             binding.etPassword.error = null
         }
