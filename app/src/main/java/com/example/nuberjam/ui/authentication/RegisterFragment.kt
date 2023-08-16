@@ -15,19 +15,19 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentRegisterBinding
-import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import java.util.Timer
 import java.util.TimerTask
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     companion object {
         const val REGISTER_SUCCESS_KEY = "register_success_key"
@@ -45,12 +45,6 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbar()
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val initViewModel: AuthViewModel by viewModels {
-            factory
-        }
-        viewModel = initViewModel
 
         setFormState()
         binding.btnRegister.setOnClickListener {
