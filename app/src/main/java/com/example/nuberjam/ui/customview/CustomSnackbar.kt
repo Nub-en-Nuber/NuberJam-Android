@@ -102,4 +102,10 @@ class CustomSnackbar private constructor(
             )
         )
     }
+
+    data class SnackbarState(
+        val message: String,
+        val state: Int,
+        val length: Int
+    )
 }
