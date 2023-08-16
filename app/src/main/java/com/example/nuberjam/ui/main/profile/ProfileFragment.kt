@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.databinding.FragmentProfileBinding
-import com.example.nuberjam.ui.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModels()
 
     companion object {
         const val LOGOUT_SUCCESS_EXTRA = "logout_success_extra"
@@ -30,12 +31,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val initViewModel: ProfileViewModel by viewModels {
-            factory
-        }
-        viewModel = initViewModel
 
         binding.btnLogout.setOnClickListener {
             logoutProcess()

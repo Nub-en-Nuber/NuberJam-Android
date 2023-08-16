@@ -7,25 +7,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityAuthBinding
-import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthBinding
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-        val initViewModel: AuthViewModel by viewModels {
-            factory
-        }
-        viewModel = initViewModel
 
         loadNavigationData()
 

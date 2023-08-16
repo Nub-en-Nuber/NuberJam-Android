@@ -8,9 +8,14 @@ import com.example.nuberjam.data.Repository
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
     var formName = ""
     var formNameValid = false
 

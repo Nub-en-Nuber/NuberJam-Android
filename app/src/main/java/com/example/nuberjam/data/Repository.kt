@@ -7,13 +7,13 @@ import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
-import com.example.nuberjam.data.source.remote.service.ApiConfig
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
+import javax.inject.Inject
 
-class Repository private constructor(
+class Repository @Inject constructor(
     private val apiService: ApiService,
     private val dbDao: DbDao,
     private val appPreferences: AppPreferences
@@ -76,7 +76,7 @@ class Repository private constructor(
         try {
             val response = apiService.readAccountWithUsername(username)
             val status = response.status
-            if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "checkUsernameExist: ${e.message.toString()} ")
@@ -89,7 +89,7 @@ class Repository private constructor(
         try {
             val response = apiService.readAccountWithEmail(email)
             val status = response.status
-            if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "checkEmailExist: ${e.message.toString()}")
@@ -107,7 +107,7 @@ class Repository private constructor(
                 account.password
             )
             val status = response.status
-            if (status == ApiConfig.SUCCESS_CODE) emit(Result.Success(true))
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "addAccount: ${e.message.toString()}")
@@ -118,16 +118,5 @@ class Repository private constructor(
     companion object {
         val TAG: String = Repository::class.java.simpleName
 
-        @Volatile
-        private var instance: Repository? = null
-
-        fun getInstance(
-            apiService: ApiService,
-            dbDao: DbDao,
-            appPreferences: AppPreferences,
-        ): Repository =
-            instance ?: synchronized(this) {
-                instance ?: Repository(apiService, dbDao, appPreferences)
-            }.also { instance = it }
     }
 }
