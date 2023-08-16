@@ -17,7 +17,10 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentRegisterBinding
 import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
+import java.util.Timer
+import java.util.TimerTask
 
 
 class RegisterFragment : Fragment() {
@@ -136,16 +139,25 @@ class RegisterFragment : Fragment() {
     }
 
     private fun setFormEmailListener() {
+        var timer: Timer? = null
         binding.etEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                formEmailProcess(s.toString())
+                timer?.cancel()
             }
 
             override fun afterTextChanged(s: Editable?) {
-                formEmailProcess(s.toString())
+                timer = Timer()
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread {
+                            formEmailProcess(s.toString())
+                        }
+                    }
+                }, Constant.FORM_TYPING_DELAY)
             }
         })
     }
@@ -181,23 +193,32 @@ class RegisterFragment : Fragment() {
                         }
                     }
                 }
-
             }
         }
     }
 
     private fun setFormUsernameListener() {
+        var timer: Timer? = null
         binding.etUsername.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                formUsernameProcess(s.toString())
+                timer?.cancel()
             }
 
             override fun afterTextChanged(s: Editable?) {
-                formUsernameProcess(s.toString())
+                timer = Timer()
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread {
+                            formUsernameProcess(s.toString())
+                        }
+                    }
+                }, Constant.FORM_TYPING_DELAY)
             }
+
         })
     }
 
