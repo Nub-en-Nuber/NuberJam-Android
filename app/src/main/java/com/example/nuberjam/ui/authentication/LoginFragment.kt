@@ -10,14 +10,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
-import com.example.nuberjam.ui.ViewModelFactory
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,12 +32,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadNavigationData()
-
-        val factory: ViewModelFactory = ViewModelFactory.getInstance(requireActivity())
-        val initViewModel: AuthViewModel by viewModels {
-            factory
-        }
-        viewModel = initViewModel
 
         binding.btnLogin.setOnClickListener {
             makeLogin()
