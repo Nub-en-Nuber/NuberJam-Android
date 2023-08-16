@@ -1,6 +1,5 @@
 package com.example.nuberjam.ui.main.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import com.example.nuberjam.ui.ViewModelFactory
-import com.example.nuberjam.ui.authentication.AuthActivity
 
 class ProfileFragment : Fragment() {
 
