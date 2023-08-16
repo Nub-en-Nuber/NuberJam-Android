@@ -1,15 +1,14 @@
 package com.example.nuberjam.data.source.preferences
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.nuberjam.data.model.Account
-import com.example.nuberjam.utils.Constant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class AppPreferences private constructor(private val dataStore: DataStore<Preferences>) {
+class AppPreferences @Inject constructor(
+    private val dataStore: DataStore<Preferences>) {
     private val LOGIN_KEY = booleanPreferencesKey("has_login")
     private val ACCOUNT_ID_KEY = intPreferencesKey("account_id")
     private val ACCOUNT_NAME_KEY = stringPreferencesKey("account_name")
@@ -53,21 +52,6 @@ class AppPreferences private constructor(private val dataStore: DataStore<Prefer
             val username = preferences[ACCOUNT_USERNAME_KEY] ?: "null"
             val email = preferences[ACCOUNT_EMAIL_KEY] ?: "null"
             Account(id, name, username, email, "null", "null")
-        }
-    }
-
-    companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constant.DATASTORE_NAME)
-
-        @Volatile
-        private var INSTANCE: AppPreferences? = null
-
-        fun getInstance(context: Context): AppPreferences {
-            return INSTANCE ?: synchronized(this) {
-                val instance = AppPreferences(context.dataStore)
-                INSTANCE = instance
-                instance
-            }
         }
     }
 }

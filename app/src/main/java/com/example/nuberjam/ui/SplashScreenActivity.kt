@@ -8,13 +8,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.nuberjam.R
 import com.example.nuberjam.ui.authentication.AuthActivity
 import com.example.nuberjam.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val factory = ViewModelFactory.getInstance(this)
-        val viewModel: SplashViewModel by viewModels { factory }
+        val viewModel: SplashViewModel by viewModels()
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {

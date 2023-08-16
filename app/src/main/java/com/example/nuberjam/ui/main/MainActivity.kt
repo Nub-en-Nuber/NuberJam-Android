@@ -9,7 +9,9 @@ import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityMainBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

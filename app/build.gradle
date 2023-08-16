@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs"
 }
@@ -101,6 +102,9 @@ ext {
 
     // Splash Screen
     splashScreenVersion = "1.0.0"
+
+    // Hilt Injection Support
+    hiltVersion = "2.44"
 }
 
 dependencies {
@@ -150,4 +154,8 @@ dependencies {
 
     // Splash Screen
     implementation("androidx.core:core-splashscreen:$splashScreenVersion")
+
+    // Hilt Injection Support
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 }
