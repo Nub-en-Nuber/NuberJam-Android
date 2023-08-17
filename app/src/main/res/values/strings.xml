@@ -33,4 +33,5 @@
     <string name="loading_for_checking">Loading for checking</string>
     <string name="form_username_used">The username has been used</string>
     <string name="form_email_used">The email has been used</string>
+    <string name="search_text">Search</string>
 </resources>
