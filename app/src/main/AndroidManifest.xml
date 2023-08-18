@@ -43,7 +43,7 @@
             android:name=".ui.authentication.AuthActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.NuberJam"/>
+            android:theme="@style/Theme.NuberJam" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
