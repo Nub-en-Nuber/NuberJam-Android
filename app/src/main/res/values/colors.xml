@@ -35,4 +35,6 @@
     <color name="error_light">#F49281</color>
     <color name="error_lighter">#FDE2D5</color>
 
+    <color name="shimmer_color">#dddddd</color>
+
 </resources>

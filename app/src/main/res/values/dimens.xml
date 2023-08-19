@@ -23,4 +23,5 @@
     <dimen name="space_128dp">128dp</dimen>
     <dimen name="space_132dp">132dp</dimen>
     <dimen name="space_256dp">256dp</dimen>
+    <dimen name="space_30">30dp</dimen>
 </resources>
