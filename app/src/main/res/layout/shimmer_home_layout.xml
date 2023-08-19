@@ -12,8 +12,7 @@
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_album"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_32dp">
+            android:layout_height="wrap_content">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
