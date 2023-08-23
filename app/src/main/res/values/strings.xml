@@ -34,4 +34,7 @@
     <string name="form_username_used">The username has been used</string>
     <string name="form_email_used">The email has been used</string>
     <string name="search_text">Search</string>
+    <string name="song_title">Song Title</string>
+    <string name="singer">Singer</string>
+    <string name="duration">5:30</string>
 </resources>
