@@ -34,8 +34,7 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
@@ -93,10 +92,8 @@ class RegisterFragment : Fragment() {
         viewModel.formConfirmPassword = text
         if (viewModel.formConfirmPassword.isEmpty()) {
             viewModel.formConfirmPasswordValid = false
-            binding.etConfirmPassword.error = getString(R.string.form_empty_message)
         } else if (!FormValidation.isPasswordSame(
-                viewModel.formPassword,
-                viewModel.formConfirmPassword
+                viewModel.formPassword, viewModel.formConfirmPassword
             )
         ) {
             viewModel.formConfirmPasswordValid = false
@@ -125,17 +122,15 @@ class RegisterFragment : Fragment() {
     private fun formPasswordProcess(text: String) {
         viewModel.formPassword = text
         if (viewModel.formPassword.isEmpty()) {
-            binding.etPassword.error = getString(R.string.form_empty_message)
+            viewModel.formPasswordValid = false
         } else if (!FormValidation.isPasswordSame(
-                viewModel.formPassword,
-                viewModel.formConfirmPassword
+                viewModel.formPassword, viewModel.formConfirmPassword
             )
         ) {
             viewModel.formConfirmPasswordValid = false
             binding.etConfirmPassword.error = getString(R.string.form_password_not_same)
         } else if (FormValidation.isPasswordSame(
-                viewModel.formPassword,
-                viewModel.formConfirmPassword
+                viewModel.formPassword, viewModel.formConfirmPassword
             )
         ) {
             viewModel.formConfirmPasswordValid = true
@@ -174,7 +169,6 @@ class RegisterFragment : Fragment() {
         viewModel.formEmail = text
         if (viewModel.formEmail.isEmpty()) {
             viewModel.formEmailValid = false
-            binding.etEmail.error = getString(R.string.form_empty_message)
         } else if (!FormValidation.isEmailValid(viewModel.formEmail)) {
             viewModel.formEmailValid = false
             binding.etEmail.error = getString(R.string.form_email_incorrect_format)
@@ -187,8 +181,7 @@ class RegisterFragment : Fragment() {
                             val isEmailExist = result.data
                             if (isEmailExist) {
                                 viewModel.formEmailValid = false
-                                binding.etEmail.error =
-                                    getString(R.string.form_email_used)
+                                binding.etEmail.error = getString(R.string.form_email_used)
                             } else {
                                 viewModel.formEmailValid = true
                                 binding.etEmail.error = null
@@ -234,7 +227,6 @@ class RegisterFragment : Fragment() {
         viewModel.formUsername = text
         if (viewModel.formUsername.isEmpty()) {
             viewModel.formUsernameValid = false
-            binding.etUsername.error = getString(R.string.form_empty_message)
         } else if (!FormValidation.isUsernameValid(viewModel.formUsername)) {
             viewModel.formUsernameValid = false
             binding.etUsername.error = getString(R.string.form_username_contain_spaces)
@@ -278,26 +270,31 @@ class RegisterFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 formNameProcess(s.toString())
             }
-
         })
     }
 
     private fun formNameProcess(text: String) {
         viewModel.formName = text
-        if (viewModel.formName.isEmpty()) {
-            viewModel.formNameValid = false
-            binding.etName.error = getString(R.string.form_empty_message)
-        } else {
-            viewModel.formNameValid = true
-            binding.etName.error = null
-        }
+        viewModel.formNameValid = viewModel.formName.isNotEmpty()
+    }
+
+    private fun formEmptyError() {
+        binding.etName.error =
+            if (viewModel.formName.isEmpty()) getString(R.string.form_empty_message) else null
+        if (viewModel.formUsername.isEmpty()) binding.etUsername.error =
+            getString(R.string.form_empty_message)
+        if (viewModel.formEmail.isEmpty()) binding.etEmail.error =
+            getString(R.string.form_empty_message)
+        if (viewModel.formPassword.isEmpty()) binding.etPassword.error =
+            getString(R.string.form_empty_message)
+        if (viewModel.formConfirmPassword.isEmpty()) binding.etConfirmPassword.error =
+            getString(R.string.form_empty_message)
     }
 
     private fun setToolbar() {
         val toolbar: Toolbar = binding.registerAppbar.toolbar
         toolbar.navigationIcon = ContextCompat.getDrawable(
-            requireContext(),
-            R.drawable.ic_back_gray
+            requireContext(), R.drawable.ic_back_gray
         )
         toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -305,6 +302,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun makeRegister() {
+        formEmptyError()
         if (viewModel.checkFormRegisterValid()) {
             val account = Account(
                 name = viewModel.formName,
@@ -317,8 +315,7 @@ class RegisterFragment : Fragment() {
             makeRegisterObserve(account)
         } else {
             viewModel.setSnackbar(
-                getString(R.string.register_failed_message),
-                CustomSnackbar.STATE_ERROR
+                getString(R.string.register_failed_message), CustomSnackbar.STATE_ERROR
             )
         }
     }
@@ -330,16 +327,14 @@ class RegisterFragment : Fragment() {
         if (passwordRequirements[FormValidation.KEY_MINIMAL_CHARACTER] == true) {
             binding.passwordReq.ivMinPassword.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_checklist_green
+                    requireContext(), R.drawable.ic_checklist_green
                 )
             )
         } else {
             isPasswordValid = false
             binding.passwordReq.ivMinPassword.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_clause_red
+                    requireContext(), R.drawable.ic_clause_red
                 )
             )
         }
@@ -347,16 +342,14 @@ class RegisterFragment : Fragment() {
         if (passwordRequirements[FormValidation.KEY_CONTAIN_NUMBER] == true) {
             binding.passwordReq.ivNumbers.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_checklist_green
+                    requireContext(), R.drawable.ic_checklist_green
                 )
             )
         } else {
             isPasswordValid = false
             binding.passwordReq.ivNumbers.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_clause_red
+                    requireContext(), R.drawable.ic_clause_red
                 )
             )
         }
@@ -364,16 +357,14 @@ class RegisterFragment : Fragment() {
         if (passwordRequirements[FormValidation.KEY_CONTAIN_UPPER] == true) {
             binding.passwordReq.ivUppercase.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_checklist_green
+                    requireContext(), R.drawable.ic_checklist_green
                 )
             )
         } else {
             isPasswordValid = false
             binding.passwordReq.ivUppercase.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_clause_red
+                    requireContext(), R.drawable.ic_clause_red
                 )
             )
         }
@@ -381,16 +372,14 @@ class RegisterFragment : Fragment() {
         if (passwordRequirements[FormValidation.KEY_CONTAIN_LOWER] == true) {
             binding.passwordReq.ivLowercase.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_checklist_green
+                    requireContext(), R.drawable.ic_checklist_green
                 )
             )
         } else {
             isPasswordValid = false
             binding.passwordReq.ivLowercase.setImageDrawable(
                 ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_clause_red
+                    requireContext(), R.drawable.ic_clause_red
                 )
             )
         }
@@ -412,11 +401,9 @@ class RegisterFragment : Fragment() {
                                 REGISTER_SUCCESS_KEY, isRegisterSuccess
                             )
                             findNavController().popBackStack()
-                        } else
-                            viewModel.setSnackbar(
-                                getString(R.string.register_failed_message),
-                                CustomSnackbar.STATE_ERROR
-                            )
+                        } else viewModel.setSnackbar(
+                            getString(R.string.register_failed_message), CustomSnackbar.STATE_ERROR
+                        )
                     }
 
                     is Result.Error -> {
