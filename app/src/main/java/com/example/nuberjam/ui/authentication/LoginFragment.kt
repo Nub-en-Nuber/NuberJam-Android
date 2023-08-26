@@ -134,6 +134,7 @@ class LoginFragment : Fragment() {
                             LoginFragmentDirections.actionNavigationLoginToMainActivity()
                         toMainActivity.username = account.username
                         findNavController().navigate(toMainActivity)
+                        requireActivity().finish()
                     }
 
                     is Result.Error -> {

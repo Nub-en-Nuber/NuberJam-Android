@@ -45,6 +45,7 @@ class ProfileFragment : Fragment() {
             val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
             toAuthActivity.username = account.username
             findNavController().navigate(toAuthActivity)
+            requireActivity().finish()
         }
     }
 
