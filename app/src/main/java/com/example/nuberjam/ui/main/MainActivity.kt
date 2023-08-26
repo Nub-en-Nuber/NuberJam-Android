@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityMainBinding
+import com.example.nuberjam.ui.authentication.AuthActivity
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,9 +17,18 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private var doSnackbar = true
+
+    companion object {
+        private const val STATE_SNACKBAR = "state_snackbar"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            doSnackbar = savedInstanceState.getBoolean(STATE_SNACKBAR, true);
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,10 +45,15 @@ class MainActivity : AppCompatActivity() {
         showSnackbarObserve()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(STATE_SNACKBAR, false)
+    }
+
     private fun loadNavigationData() {
         if (intent != null) {
             val username = intent.extras?.let { MainActivityArgs.fromBundle(it).username }
-            if (username != null) viewModel.setSnackbar(
+            if (username != null && doSnackbar) viewModel.setSnackbar(
                 getString(R.string.login_success_message, username), CustomSnackbar.STATE_SUCCESS
             )
         }
