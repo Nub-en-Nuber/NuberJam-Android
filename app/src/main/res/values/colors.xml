@@ -36,5 +36,6 @@
     <color name="error_lighter">#FDE2D5</color>
 
     <color name="shimmer_color">#dddddd</color>
+    <color name="overlay_color">#40000000</color>
 
 </resources>
