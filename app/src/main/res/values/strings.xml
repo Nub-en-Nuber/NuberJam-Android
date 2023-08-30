@@ -37,4 +37,6 @@
     <string name="song_title">Song Title</string>
     <string name="singer">Singer</string>
     <string name="duration">5:30</string>
+    <string name="album">Album</string>
+    <string name="album_title_dummy">Reputation</string>
 </resources>
