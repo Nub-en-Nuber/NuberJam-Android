@@ -28,4 +28,5 @@
     <dimen name="space_148dp">148dp</dimen>
     <dimen name="space_256dp">256dp</dimen>
     <dimen name="space_196dp">196dp</dimen>
+    <dimen name="space_164dp">164dp</dimen>
 </resources>
