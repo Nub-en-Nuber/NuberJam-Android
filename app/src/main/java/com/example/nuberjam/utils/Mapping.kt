@@ -23,7 +23,7 @@ object Mapping {
         id = data.albumId,
         name = data.albumName,
         photo = data.albumPhoto,
-        music = if (data.music.isEmpty()) null else musicItemToMusic(data.music)
+        music = musicItemToMusic(data.music)
     )
 
     fun musicItemToMusic(data: List<MusicItem>): List<Music> {
@@ -50,12 +50,7 @@ object Mapping {
 
     fun albumItemToAlbum(data: List<AlbumItem>): List<Album> {
         return data.map { albumItem ->
-            Album(
-                id = albumItem.albumId,
-                name = albumItem.albumName,
-                photo = albumItem.albumPhoto,
-                music = musicItemToMusic(albumItem.music)
-            )
+            albumItemToAlbum(albumItem)
         }
     }
 }
