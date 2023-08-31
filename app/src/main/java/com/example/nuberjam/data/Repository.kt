@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
+import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
+import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
@@ -66,7 +68,7 @@ class Repository @Inject constructor(
     suspend fun clearAccountState() {
         appPreferences.clearAccountState()
     }
-    
+
     fun getLoginState(): LiveData<Boolean> = appPreferences.getLoginState().asLiveData()
 
     fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
@@ -101,10 +103,7 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val response = apiService.addAccount(
-                account.name,
-                account.username,
-                account.email,
-                account.password
+                account.name, account.username, account.email, account.password
             )
             val status = response.status
             if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
@@ -115,8 +114,19 @@ class Repository @Inject constructor(
         }
     }
 
+    fun readAllMusic(accountId: Int): LiveData<Result<List<Music>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readAllMusic(accountId.toString())
+            val listMusic = Mapping.dataResponseToMusics(response)
+            emit(Result.Success(listMusic))
+        } catch (e: Exception) {
+            Log.e(TAG, "readAllMusic: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     companion object {
         val TAG: String = Repository::class.java.simpleName
-
     }
 }
