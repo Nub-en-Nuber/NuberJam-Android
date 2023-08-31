@@ -52,7 +52,18 @@ object Mapping {
         }
     }
 
-    fun dataResponseToMusics(data: DataResponse): List<Music> {
+    fun albumItemsToAlbums(data: List<AlbumItem>): List<Album> {
+        return data.map { albumItem ->
+            Album(
+                id = albumItem.albumId,
+                name = albumItem.albumName,
+                photo = albumItem.albumPhoto,
+                music = musicItemToMusic(albumItem.music, albumItem.albumPhoto)
+            )
+        }
+    }
+
+    fun dataResponseToMusic(data: DataResponse): List<Music> {
         val listMusic = ArrayList<Music>()
 
         val listAlbumItem: List<AlbumItem> = data.data?.album ?: ArrayList()

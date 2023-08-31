@@ -46,4 +46,7 @@ interface ApiService {
     suspend fun readAllMusic(
         @Query("accountId") accountId: String,
     ): DataResponse
+
+    @GET("album/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllAlbum(): DataResponse
 }
