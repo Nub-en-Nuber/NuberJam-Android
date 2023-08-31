@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
+import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
@@ -66,7 +67,7 @@ class Repository @Inject constructor(
     suspend fun clearAccountState() {
         appPreferences.clearAccountState()
     }
-    
+
     fun getLoginState(): LiveData<Boolean> = appPreferences.getLoginState().asLiveData()
 
     fun getAccountState(): LiveData<Account> = appPreferences.getAccountState().asLiveData()
@@ -101,10 +102,7 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val response = apiService.addAccount(
-                account.name,
-                account.username,
-                account.email,
-                account.password
+                account.name, account.username, account.email, account.password
             )
             val status = response.status
             if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
@@ -115,8 +113,20 @@ class Repository @Inject constructor(
         }
     }
 
+    fun readAllAlbum(): LiveData<Result<List<Album>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readAllAlbum()
+            val listAlbum =
+                response.data?.let { Mapping.albumItemToAlbum(it.album) } as List<Album>
+            emit(Result.Success(listAlbum))
+        } catch (e: Exception) {
+            Log.e(TAG, "readAllAlbum: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
     companion object {
         val TAG: String = Repository::class.java.simpleName
-
     }
 }

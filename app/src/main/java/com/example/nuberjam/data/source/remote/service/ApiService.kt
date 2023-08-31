@@ -41,4 +41,7 @@ interface ApiService {
         @Field("accountEmail") accountEmail: String,
         @Field("accountPassword") accountPassword: String
     ): DataResponse
+
+    @GET("album/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllAlbum(): DataResponse
 }
