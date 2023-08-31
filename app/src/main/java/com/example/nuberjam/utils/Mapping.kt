@@ -52,7 +52,7 @@ object Mapping {
         }
     }
 
-    fun albumItemsToAlbums(data: List<AlbumItem>): List<Album> {
+    fun albumItemToAlbum(data: List<AlbumItem>): List<Album> {
         return data.map { albumItem ->
             Album(
                 id = albumItem.albumId,
