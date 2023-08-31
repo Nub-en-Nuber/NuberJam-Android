@@ -24,20 +24,12 @@ object Mapping {
         id = data.albumId,
         name = data.albumName,
         photo = data.albumPhoto,
-        music = if (data.music.isEmpty()) null else musicItemsToMusics(data.music)
+        music = musicItemToMusic(data.music)
     )
 
-    fun musicItemsToMusics(data: List<MusicItem>): List<Music> {
+    fun musicItemToMusic(data: List<MusicItem>): List<Music> {
         return data.map { musicData ->
-            Music(
-                playlistId = musicData.playlistDetailId,
-                id = musicData.musicId,
-                name = musicData.musicName,
-                duration = musicData.musicDuration.toInt(),
-                file = musicData.musicFile,
-                artist = artistItemsToArtists(musicData.musicArtist),
-                isFavorite = musicData.musicIsFavorite
-            )
+            musicItemToMusic(musicData)
         }
     }
 
@@ -47,11 +39,11 @@ object Mapping {
         name = data.musicName,
         duration = data.musicDuration.toInt(),
         file = data.musicFile,
-        artist = artistItemsToArtists(data.musicArtist),
+        artist = artistItemToArtist(data.musicArtist),
         isFavorite = data.musicIsFavorite
     )
 
-    fun artistItemsToArtists(data: List<MusicArtistItem>): List<Artist> {
+    fun artistItemToArtist(data: List<MusicArtistItem>): List<Artist> {
         return data.map { artistData ->
             Artist(
                 id = artistData.artistId, name = artistData.artistName
