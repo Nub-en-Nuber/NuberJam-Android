@@ -11,17 +11,22 @@
 
     <!-- for element space size -->
     <dimen name="space_0dp">0dp</dimen>
+    <dimen name="space_2dp">2dp</dimen>
     <dimen name="space_4dp">4dp</dimen>
     <dimen name="space_8dp">8dp</dimen>
     <dimen name="space_16dp">16dp</dimen>
     <dimen name="space_24dp">24dp</dimen>
+    <dimen name="space_30dp">30dp</dimen>
     <dimen name="space_32dp">32dp</dimen>
     <dimen name="space_40dp">40dp</dimen>
     <dimen name="space_48dp">48dp</dimen>
     <dimen name="space_56dp">56dp</dimen>
     <dimen name="space_64dp">64dp</dimen>
+    <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
     <dimen name="space_132dp">132dp</dimen>
+    <dimen name="space_148dp">148dp</dimen>
     <dimen name="space_256dp">256dp</dimen>
-    <dimen name="space_30">30dp</dimen>
+    <dimen name="space_196dp">196dp</dimen>
+    <dimen name="space_164dp">164dp</dimen>
 </resources>

@@ -4,9 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Album(
-    val id : Int?,
-    val name : String?,
-    val photo : String?,
-    val music : List<Music>?
+data class Artist (
+    val id : Int,
+    val name : String
 ) : Parcelable
