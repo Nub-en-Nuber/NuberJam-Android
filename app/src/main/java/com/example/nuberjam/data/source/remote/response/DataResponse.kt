@@ -69,7 +69,7 @@ data class Data(
 data class MusicItem(
 
     @field:SerializedName("musicDuration")
-    val musicDuration: Int,
+    val musicDuration: String,
 
     @field:SerializedName("musicId")
     val musicId: Int,
