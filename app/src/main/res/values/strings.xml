@@ -39,4 +39,5 @@
     <string name="duration">5:30</string>
     <string name="album">Album</string>
     <string name="album_title_dummy">Reputation</string>
+    <string name="data_not_available">Data not available</string>
 </resources>
