@@ -32,7 +32,7 @@ object Mapping {
                 playlistId = musicData.playlistDetailId,
                 id = musicData.musicId,
                 name = musicData.musicName,
-                duration = musicData.musicDuration,
+                duration = musicData.musicDuration.toInt(),
                 file = musicData.musicFile,
                 artist = artistItemToArtist(musicData.musicArtist),
                 isFavorite = musicData.musicIsFavorite
