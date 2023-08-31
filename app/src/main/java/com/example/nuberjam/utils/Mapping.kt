@@ -54,12 +54,7 @@ object Mapping {
 
     fun albumItemToAlbum(data: List<AlbumItem>): List<Album> {
         return data.map { albumItem ->
-            Album(
-                id = albumItem.albumId,
-                name = albumItem.albumName,
-                photo = albumItem.albumPhoto,
-                music = musicItemToMusic(albumItem.music, albumItem.albumPhoto)
-            )
+            albumItemToAlbum(albumItem)
         }
     }
 
