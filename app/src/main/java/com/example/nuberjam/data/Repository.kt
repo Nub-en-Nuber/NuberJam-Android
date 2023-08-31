@@ -118,7 +118,7 @@ class Repository @Inject constructor(
         try {
             val response = apiService.readAllAlbum()
             val listAlbum =
-                response.data?.let { Mapping.albumItemsToAlbums(it.album) } as List<Album>
+                response.data?.let { Mapping.albumItemToAlbum(it.album) } as List<Album>
             emit(Result.Success(listAlbum))
         } catch (e: Exception) {
             Log.e(TAG, "readAllAlbum: ${e.message.toString()}")
