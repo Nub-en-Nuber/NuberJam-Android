@@ -24,4 +24,6 @@ class HomeViewModel @Inject constructor(
     fun getAccountState() = repository.getAccountState()
 
     fun readAllMusic(accountId: Int) = repository.readAllMusic(accountId)
+
+    fun readAllAlbum() = repository.readAllAlbum()
 }

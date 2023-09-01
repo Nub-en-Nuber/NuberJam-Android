@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.nuberjam.databinding.FragmentHomeBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.nuberjam.data.Result
+import com.example.nuberjam.ui.main.adapter.AlbumAdapter
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -24,6 +26,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var musicAdapter: MusicAdapter
+
+    private lateinit var albumAdapter: AlbumAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,6 +51,35 @@ class HomeFragment : Fragment() {
                 readAllMusicObserve(account.id)
             }
         }
+        readAllAlbumObserve()
+    }
+
+    private fun readAllAlbumObserve(){
+        viewModel.readAllAlbum().observe(viewLifecycleOwner) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+
+                    is Result.Success -> {
+                        showLoading(false)
+                        val data = result.data
+                        if (data.isNotEmpty()) {
+                            Log.d("TAG", "readAllMusicObserve: $data")
+                            albumAdapter.submitList(data.shuffled())
+                        } else {
+                            showNoData()
+                        }
+                    }
+
+                    is Result.Error -> {
+                        showLoading(false)
+                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                    }
+                }
+            }
+        }
     }
 
     private fun readAllMusicObserve(accountId: Int) {
@@ -61,7 +94,7 @@ class HomeFragment : Fragment() {
                         showLoading(false)
                         val data = result.data
                         if (data.isNotEmpty()) {
-                            Log.d("TAG", "readAllMusicObserve: $data")
+                            Log.d("TAG", "readAllAlbumObserve: $data")
                             musicAdapter.submitList(data.shuffled())
                         } else {
                             showNoData()
@@ -78,6 +111,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
+        albumAdapter = AlbumAdapter()
+        binding.rvMusicAlbum.apply {
+            layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
+            adapter = albumAdapter
+        }
         musicAdapter = MusicAdapter(object : MusicAdapter.MusicAdapterCallback {
             override fun onItemClick(musicId: Int) {
                 navigateToDetailMusic(musicId)
@@ -85,7 +123,6 @@ class HomeFragment : Fragment() {
         })
         binding.rvMusicList.apply {
             layoutManager = LinearLayoutManager(activity)
-            setHasFixedSize(true)
             adapter = musicAdapter
         }
     }
