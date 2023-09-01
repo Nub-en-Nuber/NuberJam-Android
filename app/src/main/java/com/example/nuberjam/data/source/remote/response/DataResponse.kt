@@ -109,9 +109,9 @@ data class AlbumItem(
 @Parcelize
 data class MusicArtistItem(
 
-    @field:SerializedName("artistId")
+    @field:SerializedName("accountId")
     val artistId: Int,
 
-    @field:SerializedName("artistName")
+    @field:SerializedName("accountName")
     val artistName: String
 ) : Parcelable
