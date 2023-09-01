@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
                         val data = result.data
                         if (data.isNotEmpty()) {
                             Log.d("TAG", "readAllMusicObserve: $data")
-                            musicAdapter.submitList(data)
+                            musicAdapter.submitList(data.shuffled())
                         } else {
                             showNoData()
                         }
@@ -131,11 +131,11 @@ class HomeFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.rvMusicAlbum.visibility = View.GONE
-            binding.rvMusicAlbum.visibility = View.GONE
+            binding.rvMusicList.visibility = View.GONE
             binding.shimmerLoading.shimmerLayout.visibility = View.VISIBLE
         } else {
             binding.rvMusicAlbum.visibility = View.VISIBLE
-            binding.rvMusicAlbum.visibility = View.VISIBLE
+            binding.rvMusicList.visibility = View.VISIBLE
             binding.shimmerLoading.shimmerLayout.visibility = View.GONE
         }
         binding.tvDataNotAvailable.visibility = View.GONE
