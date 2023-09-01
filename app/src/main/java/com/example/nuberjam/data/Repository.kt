@@ -5,14 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
-<<<<<<< HEAD
-import com.example.nuberjam.data.model.Music
-=======
->>>>>>> P-MP-288
 import com.example.nuberjam.data.model.Album
+import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
-import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
@@ -118,7 +114,6 @@ class Repository @Inject constructor(
         }
     }
 
-<<<<<<< HEAD
     fun readAllMusic(accountId: Int): LiveData<Result<List<Music>>> = liveData {
         emit(Result.Loading)
         try {
@@ -131,8 +126,6 @@ class Repository @Inject constructor(
         }
     }
 
-=======
->>>>>>> P-MP-288
     fun readAllAlbum(): LiveData<Result<List<Album>>> = liveData {
         emit(Result.Loading)
         try {

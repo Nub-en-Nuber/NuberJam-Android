@@ -42,14 +42,11 @@ interface ApiService {
         @Field("accountPassword") accountPassword: String
     ): DataResponse
 
-<<<<<<< HEAD
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllMusic(
         @Query("accountId") accountId: String,
     ): DataResponse
 
-=======
->>>>>>> P-MP-288
     @GET("album/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllAlbum(): DataResponse
 }

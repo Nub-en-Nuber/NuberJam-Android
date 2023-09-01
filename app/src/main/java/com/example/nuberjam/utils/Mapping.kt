@@ -24,23 +24,15 @@ object Mapping {
         id = data.albumId,
         name = data.albumName,
         photo = data.albumPhoto,
-<<<<<<< HEAD
         music = musicItemToMusic(data.music, data.albumPhoto)
     )
 
     fun musicItemToMusic(data: List<MusicItem>, albumPhoto: String): List<Music> {
-=======
-        music = musicItemToMusic(data.music)
-    )
-
-    fun musicItemToMusic(data: List<MusicItem>): List<Music> {
->>>>>>> P-MP-288
         return data.map { musicData ->
             musicItemToMusic(musicData, albumPhoto)
         }
     }
 
-<<<<<<< HEAD
     fun musicItemToMusic(data: MusicItem, albumPhoto: String): Music = Music(
         playlistId = data.playlistDetailId,
         id = data.musicId,
@@ -52,8 +44,6 @@ object Mapping {
         photo = albumPhoto
     )
 
-=======
->>>>>>> P-MP-288
     fun artistItemToArtist(data: List<MusicArtistItem>): List<Artist> {
         return data.map { artistData ->
             Artist(
@@ -67,7 +57,6 @@ object Mapping {
             albumItemToAlbum(albumItem)
         }
     }
-<<<<<<< HEAD
 
     fun dataResponseToMusic(data: DataResponse): List<Music> {
         val listMusic = ArrayList<Music>()
@@ -82,6 +71,4 @@ object Mapping {
 
         return listMusic
     }
-=======
->>>>>>> P-MP-288
 }
