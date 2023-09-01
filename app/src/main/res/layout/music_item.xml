@@ -17,10 +17,12 @@
         tools:src="@tools:sample/avatars" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imb_love"
         app:layout_constraintStart_toEndOf="@+id/imv_album"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,7 +31,9 @@
             style="@style/CenturyGothicTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/century_gothic_bold"
+            android:maxLines="1"
             android:text="@string/song_title"
             android:textColor="@color/primary_black"
             android:textSize="@dimen/font_16sp"
