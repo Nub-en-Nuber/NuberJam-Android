@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
+import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
-import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
@@ -118,10 +118,23 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val response = apiService.readAllMusic(accountId.toString())
-            val listMusic = Mapping.dataResponseToMusics(response)
+            val listMusic = Mapping.dataResponseToMusic(response)
             emit(Result.Success(listMusic))
         } catch (e: Exception) {
             Log.e(TAG, "readAllMusic: ${e.message.toString()}")
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun readAllAlbum(): LiveData<Result<List<Album>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readAllAlbum()
+            val listAlbum =
+                response.data?.let { Mapping.albumItemToAlbum(it.album) } as List<Album>
+            emit(Result.Success(listAlbum))
+        } catch (e: Exception) {
+            Log.e(TAG, "readAllAlbum: ${e.message.toString()}")
             emit(Result.Error(e.message.toString()))
         }
     }
