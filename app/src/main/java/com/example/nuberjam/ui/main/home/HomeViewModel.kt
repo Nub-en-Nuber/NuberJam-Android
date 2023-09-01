@@ -21,4 +21,7 @@ class HomeViewModel @Inject constructor(
         _snackbarState.value = Event(CustomSnackbar.SnackbarState(message, state, length))
     }
 
+    fun getAccountState() = repository.getAccountState()
+
+    fun readAllMusic(accountId: Int) = repository.readAllMusic(accountId)
 }
