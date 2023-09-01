@@ -11,5 +11,6 @@ data class Music(
     val duration: Int?,
     val file : String?,
     val artist: List<Artist>?,
-    val isFavorite: Boolean?
+    val isFavorite: Boolean?,
+    val photo: String?
 ): Parcelable
