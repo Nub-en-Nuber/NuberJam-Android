@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="@dimen/space_8dp"
-    android:layout_marginEnd="@dimen/space_30dp">
+    android:layout_marginEnd="@dimen/space_16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
