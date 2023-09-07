@@ -13,6 +13,7 @@ import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
+import com.example.nuberjam.utils.NoConnectivityException
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -34,7 +35,8 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "makeLogin: ${e.message.toString()} ")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -53,7 +55,8 @@ class Repository @Inject constructor(
             }
         } catch (e: Exception) {
             Log.e(TAG, "getAccountData: ${e.message.toString()} ")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -82,7 +85,8 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "checkUsernameExist: ${e.message.toString()} ")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -95,7 +99,8 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "checkEmailExist: ${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -110,7 +115,8 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "addAccount: ${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -122,7 +128,8 @@ class Repository @Inject constructor(
             emit(Result.Success(listMusic))
         } catch (e: Exception) {
             Log.e(TAG, "readAllMusic: ${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 
@@ -130,12 +137,12 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val response = apiService.readAllAlbum()
-            val listAlbum =
-                response.data?.let { Mapping.albumItemToAlbum(it.album) } as List<Album>
+            val listAlbum = response.data?.let { Mapping.albumItemToAlbum(it.album) } as List<Album>
             emit(Result.Success(listAlbum))
         } catch (e: Exception) {
             Log.e(TAG, "readAllAlbum: ${e.message.toString()}")
-            emit(Result.Error(e.message.toString()))
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
     }
 

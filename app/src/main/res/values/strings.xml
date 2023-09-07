@@ -40,4 +40,8 @@
     <string name="album">Album</string>
     <string name="album_title_dummy">Reputation</string>
     <string name="data_not_available">Data not available</string>
+
+    <!-- Snackbar Message -->
+    <string name="api_general_error_message">Something went wrong</string>
+    <string name="api_internet_error_message">No internet connection</string>
 </resources>

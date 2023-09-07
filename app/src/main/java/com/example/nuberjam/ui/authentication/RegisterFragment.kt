@@ -18,6 +18,7 @@ import com.example.nuberjam.databinding.FragmentRegisterBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
+import com.example.nuberjam.utils.Helper
 import java.util.Timer
 import java.util.TimerTask
 import dagger.hilt.android.AndroidEntryPoint
@@ -190,7 +191,8 @@ class RegisterFragment : Fragment() {
 
                         is Result.Error -> {
                             viewModel.formEmailValid = false
-                            binding.etEmail.error = result.error
+                            binding.etEmail.error =
+                                Helper.getApiErrorMessage(requireActivity(), result.errorCode)
                         }
                     }
                 }
@@ -250,7 +252,8 @@ class RegisterFragment : Fragment() {
 
                             is Result.Error -> {
                                 viewModel.formUsernameValid = false
-                                binding.etUsername.error = result.error
+                                binding.etUsername.error =
+                                    Helper.getApiErrorMessage(requireActivity(), result.errorCode)
                             }
                         }
                     }
@@ -408,7 +411,10 @@ class RegisterFragment : Fragment() {
 
                     is Result.Error -> {
                         showLoading(false)
-                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
