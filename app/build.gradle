@@ -106,6 +106,9 @@ ext {
 
     // Hilt Injection Support
     hiltVersion = "2.44"
+
+    // LottieFiles
+    lottieVersion = "3.4.0"
 }
 
 dependencies {
@@ -163,4 +166,7 @@ dependencies {
 
     // Loading Shimmer
     implementation "com.facebook.shimmer:shimmer:0.1.0@aar"
+
+    // LottieFiles
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

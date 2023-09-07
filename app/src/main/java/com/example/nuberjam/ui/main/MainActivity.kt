@@ -7,7 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityMainBinding
-import com.example.nuberjam.ui.authentication.AuthActivity
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint

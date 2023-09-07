@@ -13,6 +13,7 @@ import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
+import com.example.nuberjam.utils.NetworkConnectionInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,14 +48,24 @@ class MyModule {
         }
     }
 
+    @Singleton
+    @Provides
+    fun provideNetworkConnectionInterceptor(
+        context: Context
+    ): NetworkConnectionInterceptor {
+        return NetworkConnectionInterceptor(context)
+    }
+
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: Interceptor
+        loggingInterceptor: Interceptor,
+        networkConnectionInterceptor: NetworkConnectionInterceptor
     ): OkHttpClient {
         val okHttpBuilder = OkHttpClient.Builder()
         okHttpBuilder.apply {
             addInterceptor(loggingInterceptor)
+            addInterceptor(networkConnectionInterceptor)
         }
         return okHttpBuilder.build()
     }

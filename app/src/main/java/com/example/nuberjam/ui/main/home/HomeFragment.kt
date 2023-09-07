@@ -16,6 +16,7 @@ import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
+import com.example.nuberjam.utils.Helper
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -54,7 +55,7 @@ class HomeFragment : Fragment() {
         readAllAlbumObserve()
     }
 
-    private fun readAllAlbumObserve(){
+    private fun readAllAlbumObserve() {
         viewModel.readAllAlbum().observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
@@ -66,7 +67,6 @@ class HomeFragment : Fragment() {
                         showLoading(false)
                         val data = result.data
                         if (data.isNotEmpty()) {
-                            Log.d("TAG", "readAllMusicObserve: $data")
                             albumAdapter.submitList(data.shuffled())
                         } else {
                             showNoData()
@@ -75,7 +75,10 @@ class HomeFragment : Fragment() {
 
                     is Result.Error -> {
                         showLoading(false)
-                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
@@ -94,7 +97,6 @@ class HomeFragment : Fragment() {
                         showLoading(false)
                         val data = result.data
                         if (data.isNotEmpty()) {
-                            Log.d("TAG", "readAllAlbumObserve: $data")
                             musicAdapter.submitList(data.shuffled())
                         } else {
                             showNoData()
@@ -103,7 +105,10 @@ class HomeFragment : Fragment() {
 
                     is Result.Error -> {
                         showLoading(false)
-                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
@@ -147,7 +152,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showNoData() {
-        binding.tvDataNotAvailable.visibility = View.VISIBLE
+        binding.ltDataNotAvailable.visibility = View.VISIBLE
         binding.rvMusicAlbum.visibility = View.GONE
         binding.rvMusicAlbum.visibility = View.GONE
         binding.shimmerLoading.shimmerLayout.visibility = View.GONE
@@ -175,6 +180,6 @@ class HomeFragment : Fragment() {
             binding.rvMusicList.visibility = View.VISIBLE
             binding.shimmerLoading.shimmerLayout.visibility = View.GONE
         }
-        binding.tvDataNotAvailable.visibility = View.GONE
+        binding.ltDataNotAvailable.visibility = View.GONE
     }
 }
