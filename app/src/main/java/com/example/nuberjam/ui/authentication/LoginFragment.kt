@@ -11,6 +11,7 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLoginBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -107,7 +108,10 @@ class LoginFragment : Fragment() {
 
                     is Result.Error -> {
                         showLoading(false)
-                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
@@ -139,7 +143,10 @@ class LoginFragment : Fragment() {
 
                     is Result.Error -> {
                         showLoading(false)
-                        viewModel.setSnackbar(result.error, CustomSnackbar.STATE_ERROR)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
