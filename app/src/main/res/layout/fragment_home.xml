@@ -20,18 +20,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_data_not_available"
+            
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lt_data_not_available"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/space_164dp"
                 android:gravity="center"
-                android:text="@string/data_not_available"
                 android:visibility="gone"
+                app:lottie_rawRes="@raw/no_data_animation"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar" />
+                app:layout_constraintTop_toBottomOf="@+id/appbar"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_music_album"
