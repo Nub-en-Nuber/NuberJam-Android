@@ -147,7 +147,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showNoData() {
-        binding.tvDataNotAvailable.visibility = View.VISIBLE
+        binding.ltDataNotAvailable.visibility = View.VISIBLE
         binding.rvMusicAlbum.visibility = View.GONE
         binding.rvMusicAlbum.visibility = View.GONE
         binding.shimmerLoading.shimmerLayout.visibility = View.GONE
@@ -175,6 +175,6 @@ class HomeFragment : Fragment() {
             binding.rvMusicList.visibility = View.VISIBLE
             binding.shimmerLoading.shimmerLayout.visibility = View.GONE
         }
-        binding.tvDataNotAvailable.visibility = View.GONE
+        binding.ltDataNotAvailable.visibility = View.GONE
     }
 }
