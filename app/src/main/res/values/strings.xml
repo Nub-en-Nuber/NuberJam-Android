@@ -44,4 +44,5 @@
     <!-- Snackbar Message -->
     <string name="api_general_error_message">Something went wrong</string>
     <string name="api_internet_error_message">No internet connection</string>
+    <string name="now_playing_title">Now Playing</string>
 </resources>
