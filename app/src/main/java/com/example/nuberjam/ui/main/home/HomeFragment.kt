@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nuberjam.databinding.FragmentHomeBinding
@@ -16,6 +17,7 @@ import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
+import com.example.nuberjam.ui.main.profile.ProfileFragmentDirections
 import com.example.nuberjam.utils.Helper
 
 @AndroidEntryPoint
@@ -133,7 +135,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun navigateToDetailMusic(musicId: Int) {
-//        TODO: navigate to detail music page with arg
+        val toMusicFragment = HomeFragmentDirections.actionNavigationHomeToMusicFragment()
+        toMusicFragment.musicId = musicId
+        findNavController().navigate(toMusicFragment)
     }
 
     override fun onResume() {

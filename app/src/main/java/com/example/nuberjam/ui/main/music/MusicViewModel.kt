@@ -9,5 +9,9 @@ import javax.inject.Inject
 class MusicViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
+    var musicId = 0
 
+    fun getAccountState() = repository.getAccountState()
+
+    fun readDetailMusic(accountId: Int) = repository.readDetailMusic(accountId, musicId)
 }

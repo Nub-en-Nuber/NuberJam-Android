@@ -9,6 +9,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
+
+    // Account API Endpoint Collection
     @FormUrlEncoded
     @POST("account/login.php?token=${Constant.TOKEN}")
     suspend fun makeLoginWithUsername(
@@ -42,11 +44,21 @@ interface ApiService {
         @Field("accountPassword") accountPassword: String
     ): DataResponse
 
+
+    // Album API Endpoint Collection
+    @GET("album/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllAlbum(): DataResponse
+
+
+    // Music API Endpoint Collection
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllMusic(
         @Query("accountId") accountId: String,
     ): DataResponse
 
-    @GET("album/retrieve.php?token=${Constant.TOKEN}")
-    suspend fun readAllAlbum(): DataResponse
+    @GET("music/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readDetailMusic(
+        @Query("accountId") accountId: String,
+        @Query("musicId") musicId: String
+    ): DataResponse
 }
