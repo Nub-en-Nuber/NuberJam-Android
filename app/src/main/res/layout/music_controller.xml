@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/singer"
         android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_song_title" />
 
@@ -52,18 +53,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_4dp"
-        android:text="@string/duration"
+        android:textSize="@dimen/font_10sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/seek_bar"
+        tools:text="@string/duration" />
 
     <ImageButton
         android:id="@+id/btn_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_64dp"
+        android:layout_marginBottom="@dimen/space_24dp"
         android:background="@drawable/custom_play_button"
         android:elevation="@dimen/space_4dp"
         android:src="@drawable/ic_play_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_duration" />
