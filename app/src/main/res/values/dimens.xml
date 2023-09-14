@@ -29,4 +29,10 @@
     <dimen name="space_256dp">256dp</dimen>
     <dimen name="space_196dp">196dp</dimen>
     <dimen name="space_164dp">164dp</dimen>
+    <dimen name="space_200dp">200dp</dimen>
+    <dimen name="space_80dp">80dp</dimen>
+    <dimen name="space_12dp">12dp</dimen>
+    <dimen name="space_10dp">10dp</dimen>
+    <dimen name="space_20dp">20dp</dimen>
+    <dimen name="space_100dp">100dp</dimen>
 </resources>
