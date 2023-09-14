@@ -11,6 +11,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentMusicBinding
+import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.utils.Helper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +43,7 @@ class MusicFragment : Fragment() {
 
         showNavBar(false)
         setArgs()
+        showSnackbarObserve()
         setData()
     }
 
@@ -59,6 +62,18 @@ class MusicFragment : Fragment() {
         viewModel.musicId = args.musicId
     }
 
+    private fun showSnackbarObserve() {
+        viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { snackbarState ->
+                val customSnackbar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
+                customSnackbar.setMessage(snackbarState.message)
+                customSnackbar.setState(snackbarState.state)
+                customSnackbar.show()
+            }
+        }
+    }
+
     private fun setData() {
         viewModel.getAccountState().observe(viewLifecycleOwner) { account ->
             if (account != null) {
@@ -72,26 +87,35 @@ class MusicFragment : Fragment() {
             if (result != null) {
                 when (result) {
                     is Result.Loading -> {
-//                        showLoading(true)
+                        showLoading(true)
                     }
 
                     is Result.Success -> {
-//                        showLoading(false)
+                        showLoading(false)
                         val musicData = result.data
 //                        setView(musicData)
-                        Log.d("TAG", "readDetailMusicObserve: $musicData")
                     }
 
                     is Result.Error -> {
-//                        showLoading(false)
-//                        viewModel.setSnackbar(
-//                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
-//                            CustomSnackbar.STATE_ERROR
-//                        )
+                        showLoading(false)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
                     }
                 }
             }
 
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.content.visibility = View.GONE
+            binding.incShimmerLoading.shimmerMusic.visibility = View.VISIBLE
+        } else {
+            binding.content.visibility = View.VISIBLE
+            binding.incShimmerLoading.shimmerMusic.visibility = View.GONE
         }
     }
 }
