@@ -24,16 +24,16 @@ object Mapping {
         id = data.albumId,
         name = data.albumName,
         photo = data.albumPhoto,
-        music = musicItemToMusic(data.music, data.albumPhoto)
+        music = musicItemToMusic(data.music, data)
     )
 
-    fun musicItemToMusic(data: List<MusicItem>, albumPhoto: String): List<Music> {
+    fun musicItemToMusic(data: List<MusicItem>, album: AlbumItem): List<Music> {
         return data.map { musicData ->
-            musicItemToMusic(musicData, albumPhoto)
+            musicItemToMusic(musicData, album)
         }
     }
 
-    fun musicItemToMusic(data: MusicItem, albumPhoto: String): Music = Music(
+    fun musicItemToMusic(data: MusicItem, album: AlbumItem): Music = Music(
         playlistId = data.playlistDetailId,
         id = data.musicId,
         name = data.musicName,
@@ -41,7 +41,9 @@ object Mapping {
         file = data.musicFile,
         artist = artistItemToArtist(data.musicArtist),
         isFavorite = data.musicIsFavorite,
-        photo = albumPhoto
+        albumId = album.albumId,
+        albumPhoto = album.albumPhoto,
+        albumName = album.albumName
     )
 
     fun artistItemToArtist(data: List<MusicArtistItem>): List<Artist> {
@@ -65,7 +67,7 @@ object Mapping {
         for (albumItem in listAlbumItem) {
             val listMusicItem = albumItem.music
             for (musicItem in listMusicItem) {
-                listMusic.add(musicItemToMusic(musicItem, albumItem.albumPhoto))
+                listMusic.add(musicItemToMusic(musicItem, albumItem))
             }
         }
 

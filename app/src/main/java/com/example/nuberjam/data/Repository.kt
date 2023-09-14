@@ -146,6 +146,19 @@ class Repository @Inject constructor(
         }
     }
 
+    fun readDetailMusic(accountId: Int, musicId: Int): LiveData<Result<Music>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readDetailMusic(accountId.toString(), musicId.toString())
+            val musicData = Mapping.dataResponseToMusic(response)[0]
+            emit(Result.Success(musicData))
+        } catch (e: Exception) {
+            Log.e(TAG, "readDetailMusic: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
     companion object {
         val TAG: String = Repository::class.java.simpleName
     }
