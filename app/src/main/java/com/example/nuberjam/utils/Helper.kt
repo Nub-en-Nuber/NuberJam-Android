@@ -1,6 +1,9 @@
 package com.example.nuberjam.utils
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Parcelable
 import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Artist
 
@@ -28,4 +31,17 @@ object Helper {
             else -> context.getString(R.string.api_general_error_message)
         }
     }
+
+    fun isAndroidOOrHigher(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+    }
+
+    fun isAndroidTiramisuOrHigher(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+    }
+}
+
+inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+    Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }

@@ -1,5 +1,6 @@
 package com.example.nuberjam.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.ActivityMainBinding
+import com.example.nuberjam.service.MediaService
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState != null) {
-            doSnackbar = savedInstanceState.getBoolean(STATE_SNACKBAR, true);
+            doSnackbar = savedInstanceState.getBoolean(STATE_SNACKBAR, true)
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,6 +49,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(STATE_SNACKBAR, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, MediaService::class.java))
     }
 
     private fun loadNavigationData() {

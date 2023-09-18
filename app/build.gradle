@@ -109,6 +109,9 @@ ext {
 
     // LottieFiles
     lottieVersion = "3.4.0"
+
+    // Media Session Notification Support
+    mediaVersion = "1.6.0"
 }
 
 dependencies {
@@ -169,4 +172,7 @@ dependencies {
 
     // LottieFiles
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    // Media Session Notification Support
+    implementation "androidx.media:media:$mediaVersion"
 }
