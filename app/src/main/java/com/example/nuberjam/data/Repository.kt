@@ -159,6 +159,12 @@ class Repository @Inject constructor(
         }
     }
 
+    suspend fun saveCurrentMusic(musicId: Int) {
+        appPreferences.saveCurrentMusic(musicId)
+    }
+
+    fun getCurrentMusic(): LiveData<Int?> = appPreferences.getCurrentMusic().asLiveData()
+
     companion object {
         val TAG: String = Repository::class.java.simpleName
     }

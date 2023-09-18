@@ -1,19 +1,25 @@
 package com.example.nuberjam.data.source.preferences
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.nuberjam.data.model.Account
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AppPreferences @Inject constructor(
-    private val dataStore: DataStore<Preferences>) {
+    private val dataStore: DataStore<Preferences>
+) {
     private val LOGIN_KEY = booleanPreferencesKey("has_login")
     private val ACCOUNT_ID_KEY = intPreferencesKey("account_id")
     private val ACCOUNT_NAME_KEY = stringPreferencesKey("account_name")
     private val ACCOUNT_USERNAME_KEY = stringPreferencesKey("account_username")
     private val ACCOUNT_EMAIL_KEY = stringPreferencesKey("account_email")
+    private val MUSIC_ID_KEY = intPreferencesKey("music_id")
 
     suspend fun saveLoginState(state: Boolean) {
         dataStore.edit { preferences ->
@@ -52,6 +58,18 @@ class AppPreferences @Inject constructor(
             val username = preferences[ACCOUNT_USERNAME_KEY] ?: "null"
             val email = preferences[ACCOUNT_EMAIL_KEY] ?: "null"
             Account(id, name, username, email, "null", "null")
+        }
+    }
+
+    suspend fun saveCurrentMusic(musicId: Int) {
+        dataStore.edit { preferences ->
+            preferences[MUSIC_ID_KEY] = musicId
+        }
+    }
+
+    fun getCurrentMusic(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[MUSIC_ID_KEY]
         }
     }
 }
