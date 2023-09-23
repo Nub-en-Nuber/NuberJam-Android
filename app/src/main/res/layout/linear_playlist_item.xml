@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="@dimen/space_16dp"
+    app:cardElevation="@dimen/space_16dp"
     app:cardCornerRadius="@dimen/space_8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,8 @@
             app:cardCornerRadius="@dimen/space_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardElevation="@dimen/space_0dp">
 
             <ImageView
                 android:id="@+id/iv_playlist_image"
