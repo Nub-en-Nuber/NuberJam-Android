@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/inc_appbar"
+            android:id="@+id/now_playing_appbar"
             layout="@layout/detail_appbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inc_appbar"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_appbar"
             tools:visibility="visible">
 
             <LinearLayout
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inc_appbar"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_appbar"
             tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
