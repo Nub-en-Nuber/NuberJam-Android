@@ -7,6 +7,7 @@ import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
+import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
@@ -164,6 +165,19 @@ class Repository @Inject constructor(
     }
 
     fun getCurrentMusic(): LiveData<Int?> = appPreferences.getCurrentMusic().asLiveData()
+
+    fun readAllPlaylist(accountId: Int): LiveData<Result<List<Playlist>>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.readAllPlaylist(accountId.toString())
+            val listPlaylist = response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } as List<Playlist>
+            emit(Result.Success(listPlaylist))
+        } catch (e: Exception) {
+            Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
 
     companion object {
         val TAG: String = Repository::class.java.simpleName
