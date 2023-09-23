@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toolbar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -68,6 +69,16 @@ class MusicFragment : Fragment() {
         return binding.root
     }
 
+    private fun setToolbar() {
+        val toolbar: Toolbar = binding.nowPlayingAppbar.toolbar
+        toolbar.navigationIcon = ContextCompat.getDrawable(
+            requireContext(), R.drawable.ic_back_gray
+        )
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         binding.incShimmerLoading.shimmerMusic.startShimmerAnimation()
@@ -85,6 +96,7 @@ class MusicFragment : Fragment() {
             requestPermissionLauncher.launch(permission)
         }
 
+        setToolbar()
         showNavBar(false)
         setArgs()
         showSnackbarObserve()
