@@ -41,6 +41,8 @@
     <string name="album_title_dummy">Reputation</string>
     <string name="data_not_available">Data not available</string>
     <string name="now_playing_title">Now Playing</string>
+    <string name="classic_song">Classic Song</string>
+    <string name="playlist">Playlist</string>
 
     <!-- Snackbar Message -->
     <string name="api_general_error_message">Something went wrong</string>
