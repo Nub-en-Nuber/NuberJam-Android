@@ -25,5 +25,17 @@ class LibraryFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        setData()
+    }
+
+    private fun setData() {
+        viewModel.getAccountState().observe(viewLifecycleOwner) { account ->
+            if (account != null) {
+                // TODO: MP-370
+            }
+        }
+    }
 }

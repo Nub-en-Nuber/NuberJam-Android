@@ -10,4 +10,6 @@ class LibraryViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
+    fun getAccountState() = repository.getAccountState()
+
 }
