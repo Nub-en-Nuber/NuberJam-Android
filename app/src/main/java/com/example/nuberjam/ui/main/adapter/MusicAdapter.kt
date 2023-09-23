@@ -30,7 +30,7 @@ class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(musicItem: Music) {
             binding.apply {
-                Glide.with(itemView.context).load(musicItem.photo).into(imvAlbum)
+                Glide.with(itemView.context).load(musicItem.albumPhoto).into(imvAlbum)
                 tvTitle.text = musicItem.name
                 tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
                 tvDuration.text = musicItem.duration?.let { displayDuration(it) }
