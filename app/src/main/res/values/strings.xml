@@ -47,4 +47,5 @@
     <!-- Snackbar Message -->
     <string name="api_general_error_message">Something went wrong</string>
     <string name="api_internet_error_message">No internet connection</string>
+    <string name="library_type">Library Type</string>
 </resources>
