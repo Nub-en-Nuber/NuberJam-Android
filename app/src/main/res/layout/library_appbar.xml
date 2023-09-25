@@ -36,7 +36,7 @@
             android:src="@drawable/ic_plus_gray_24" />
 
         <ImageButton
-            android:id="@+id/btn_grid"
+            android:id="@+id/btn_view_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
