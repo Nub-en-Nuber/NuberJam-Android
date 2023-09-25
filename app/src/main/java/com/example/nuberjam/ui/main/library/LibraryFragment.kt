@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,11 @@ class LibraryFragment : Fragment() {
 
     private fun setFavoriteItem() {
         binding.apply {
+            favoriteItem.tvPlaylistName.text = getString(R.string.liked_song)
             favoriteItem.tvPlaylistType.text = getString(R.string.favorite)
+            Glide.with(requireActivity()).load(R.drawable.favorite_pic)
+                .into(favoriteItem.ivPlaylistImage)
+
             favoriteItem.cvLibraryItem.setOnClickListener {
                 // TODO: Navigate to Favorite Screen
             }
