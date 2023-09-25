@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.nuberjam.R
 import com.example.nuberjam.databinding.FragmentLibraryBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +32,7 @@ class LibraryFragment : Fragment() {
 
         setToolbar()
         setData()
+        setFavoriteItem()
     }
 
     private fun setToolbar() {
@@ -50,5 +52,15 @@ class LibraryFragment : Fragment() {
                 // TODO: MP-370
             }
         }
+    }
+
+    private fun setFavoriteItem() {
+        binding.apply {
+            favoriteItem.tvPlaylistType.text = getString(R.string.favorite)
+            favoriteItem.cvLibraryItem.setOnClickListener {
+                // TODO: Navigate to Favorite Screen
+            }
+        }
+
     }
 }

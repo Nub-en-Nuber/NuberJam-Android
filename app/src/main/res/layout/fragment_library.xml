@@ -21,6 +21,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <include
+                android:id="@+id/favorite_item"
+                layout="@layout/linear_playlist_item"
+                android:layout_width="@dimen/space_0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/space_24dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_music_list"
                 android:layout_width="match_parent"
@@ -29,7 +40,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar"
+                app:layout_constraintTop_toBottomOf="@+id/favorite_item"
                 tools:itemCount="10"
                 tools:listitem="@layout/linear_playlist_item"
                 tools:visibility="visible" />

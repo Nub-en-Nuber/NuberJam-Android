@@ -43,6 +43,7 @@
     <string name="now_playing_title">Now Playing</string>
     <string name="classic_song">Classic Song</string>
     <string name="playlist">Playlist</string>
+    <string name="favorite">Favorite</string>
 
     <!-- Snackbar Message -->
     <string name="api_general_error_message">Something went wrong</string>
