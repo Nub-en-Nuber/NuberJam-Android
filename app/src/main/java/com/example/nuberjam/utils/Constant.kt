@@ -11,4 +11,7 @@ object Constant {
 
     const val API_GENERAL_ERROR_CODE = 410
     const val API_INTERNET_ERROR_CODE = 411
+
+    const val LIBRARY_LINEAR_TYPE = "linear"
+    const val LIBRARY_GRID_TYPE = "grid"
 }

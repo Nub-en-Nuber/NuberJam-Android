@@ -61,4 +61,10 @@ interface ApiService {
         @Query("accountId") accountId: String,
         @Query("musicId") musicId: String
     ): DataResponse
+
+    // Playlist API Endpoint Collection
+    @GET("playlist/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllPlaylist(
+        @Query("accountId") accountId: String,
+    ): DataResponse
 }

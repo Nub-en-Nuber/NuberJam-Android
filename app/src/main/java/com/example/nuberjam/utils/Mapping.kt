@@ -4,11 +4,13 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Artist
 import com.example.nuberjam.data.model.Music
+import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.remote.response.AccountItem
 import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.data.source.remote.response.MusicArtistItem
 import com.example.nuberjam.data.source.remote.response.MusicItem
+import com.example.nuberjam.data.source.remote.response.PlaylistItem
 
 object Mapping {
     fun accountItemToAccount(data: AccountItem): Account = Account(
@@ -72,5 +74,15 @@ object Mapping {
         }
 
         return listMusic
+    }
+
+    fun playlistItemToPlaylist(data: List<PlaylistItem>): List<Playlist> {
+        return data.map { playlistItem ->
+            Playlist(
+                id = playlistItem.playlistId,
+                name = playlistItem.playlistName,
+                photo = playlistItem.playlistPhoto
+            )
+        }
     }
 }
