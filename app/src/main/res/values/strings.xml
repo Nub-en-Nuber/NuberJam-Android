@@ -50,4 +50,8 @@
     <string name="api_general_error_message">Something went wrong</string>
     <string name="api_internet_error_message">No internet connection</string>
     <string name="library_type">Library Type</string>
+    <string name="dialog_title">Dialog Title</string>
+    <string name="dialog_hint">Dialog hint</string>
+    <string name="text_count">23/28</string>
+    <string name="dialog_button">dialog</string>
 </resources>
