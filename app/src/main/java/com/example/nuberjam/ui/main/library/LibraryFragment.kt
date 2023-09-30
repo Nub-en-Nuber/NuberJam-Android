@@ -10,16 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
-import com.example.nuberjam.ui.main.adapter.AlbumAdapter
 import com.example.nuberjam.ui.main.adapter.GridPlaylistAdapter
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
-import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +32,9 @@ class LibraryFragment : Fragment() {
     private var linearAdapter: LinearPlaylistAdapter = LinearPlaylistAdapter()
     private var gridAdapter: GridPlaylistAdapter = GridPlaylistAdapter()
 
-    var libraryViewType = Constant.LIBRARY_LINEAR_TYPE
+    lateinit var onAddPlaylistDialogListener: AddPlaylistDialogFragment.OnAddPlaylistDialogListener
+
+    private var libraryViewType = Constant.LIBRARY_LINEAR_TYPE
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -52,6 +51,7 @@ class LibraryFragment : Fragment() {
         setFavoriteItem()
         changeLibraryTypeLayout()
         setData()
+        refreshFragment()
     }
 
     private fun setToolbar() {
@@ -71,6 +71,14 @@ class LibraryFragment : Fragment() {
 
             changeLibraryTypeLayout()
         }
+
+        plusButton.setOnClickListener {
+            val addPlaylistDialogFragment = AddPlaylistDialogFragment()
+            val fragmentManager = childFragmentManager
+            addPlaylistDialogFragment.show(
+                fragmentManager, AddPlaylistDialogFragment::class.java.simpleName
+            )
+        }
     }
 
     private fun setData() {
@@ -79,6 +87,15 @@ class LibraryFragment : Fragment() {
                 readAllPlaylistObserve(account.id)
             }
         }
+    }
+
+    private fun refreshFragment() {
+        onAddPlaylistDialogListener =
+            object : AddPlaylistDialogFragment.OnAddPlaylistDialogListener {
+                override fun refreshParent() {
+                    setData()
+                }
+            }
     }
 
     private fun changeLibraryTypeLayout() {
