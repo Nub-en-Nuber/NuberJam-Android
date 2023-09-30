@@ -6,30 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.home.HomeFragment">
 
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/home_appbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <include
-                android:id="@+id/appbar"
-                layout="@layout/home_appbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lt_data_not_available"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/no_data_animation" />
@@ -45,7 +46,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="10"
                 tools:listitem="@layout/album_item"
                 tools:visibility="visible" />
@@ -72,7 +73,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
