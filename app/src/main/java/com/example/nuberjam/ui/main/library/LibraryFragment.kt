@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.nuberjam.R
 import com.example.nuberjam.databinding.FragmentLibraryBinding
+import com.example.nuberjam.ui.customview.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,5 +68,35 @@ class LibraryFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun showNoData() {
+        binding.favoriteItem.cvLibraryItem.visibility = View.VISIBLE
+        binding.rvMusicList.visibility = View.GONE
+        binding.shimmerLoading.shimmerLibrary.visibility = View.GONE
+    }
+
+    private fun showSnackbarObserve() {
+        viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { snackbarState ->
+                val customSnackbar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
+                customSnackbar.setMessage(snackbarState.message)
+                customSnackbar.setState(snackbarState.state)
+                customSnackbar.show()
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.favoriteItem.cvLibraryItem.visibility = View.GONE
+            binding.rvMusicList.visibility = View.GONE
+            binding.shimmerLoading.shimmerLibrary.visibility = View.VISIBLE
+        } else {
+            binding.favoriteItem.cvLibraryItem.visibility = View.VISIBLE
+            binding.rvMusicList.visibility = View.VISIBLE
+            binding.shimmerLoading.shimmerLibrary.visibility = View.GONE
+        }
     }
 }
