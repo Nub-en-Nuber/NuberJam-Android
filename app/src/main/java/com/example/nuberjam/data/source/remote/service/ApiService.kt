@@ -4,8 +4,8 @@ import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.utils.Constant
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface ApiService {
@@ -66,5 +66,12 @@ interface ApiService {
     @GET("playlist/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllPlaylist(
         @Query("accountId") accountId: String,
+    ): DataResponse
+
+    @FormUrlEncoded
+    @POST("playlist/add.php?token=${Constant.TOKEN}")
+    suspend fun addPlaylist(
+        @Field("playlistName") playlistName: String,
+        @Field("accountId") accountId: String
     ): DataResponse
 }
