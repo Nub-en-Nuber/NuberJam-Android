@@ -237,16 +237,15 @@ class MusicFragment : Fragment() {
             String.format("%02d", sec % 60)
         )
         binding.incMusicController.btnPlay.setOnClickListener {
-            if (!boundServiceStatus || !isMediaReady) {
-                showMediaLoading(true)
-                initMediaService(music)
-            }
             if (isMediaReady) {
                 mediaService.playOrPauseMedia()
             }
         }
         if (isServiceRunning(MediaService::class.java.name) && viewModel.isMusicIdSameCurrentPlaying()) {
             resumeMediaView()
+        } else if (!boundServiceStatus || !isMediaReady) {
+            showMediaLoading(true)
+            initMediaService(music)
         }
     }
 
