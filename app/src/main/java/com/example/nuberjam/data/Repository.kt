@@ -170,10 +170,25 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val response = apiService.readAllPlaylist(accountId.toString())
-            val listPlaylist = response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } as List<Playlist>
+            val listPlaylist =
+                response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } as List<Playlist>
             emit(Result.Success(listPlaylist))
         } catch (e: Exception) {
             Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun addPlaylist(playlistName: String, accountId: Int): LiveData<Result<Boolean>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.addPlaylist(playlistName, accountId.toString())
+            val status = response.status
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
+            else emit(Result.Success(false))
+        } catch (e: Exception) {
+            Log.e(TAG, "addPlaylist: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
