@@ -26,4 +26,8 @@ object FormValidation {
             KEY_CONTAIN_UPPER to password.contains("[A-Z]".toRegex())
         )
     }
+
+    fun isPlaylistNameValid(text: String): Boolean {
+        return text.length <= 28
+    }
 }
