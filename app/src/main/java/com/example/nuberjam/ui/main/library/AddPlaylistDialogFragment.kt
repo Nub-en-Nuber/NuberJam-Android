@@ -7,11 +7,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.nuberjam.R
@@ -39,7 +42,6 @@ class AddPlaylistDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initLayout()
         playlistNameCounter()
     }
@@ -49,10 +51,16 @@ class AddPlaylistDialogFragment : DialogFragment() {
             tvTitle.text = getString(R.string.add_new_playlist)
             tilDialog.hint = getString(R.string.playlist_name)
             btnDialog.text = getString(R.string.save)
-            binding.tvCounter.text = getString(R.string.playlist_name_counter, "0")
+
+            tilDialog.isCounterEnabled = true
+
+            etDialog.filters = arrayOf(InputFilter.LengthFilter(28))
+
+            val param = btnDialog.layoutParams as ViewGroup.MarginLayoutParams
+            param.setMargins(0,4,0,0)
+            btnDialog.layoutParams = param
 
             tvConfirmation.visibility = View.GONE
-            tvCounter.visibility = View.VISIBLE
         }
     }
 
@@ -74,28 +82,10 @@ class AddPlaylistDialogFragment : DialogFragment() {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                var isError = false
-
                 val playlistName = s.toString().trim()
 
-                binding.tvCounter.text =
-                    getString(R.string.playlist_name_counter, playlistName.length.toString())
-
-                if (playlistName.isEmpty()) {
-                    isError = true
-                    binding.etDialog.error = getString(R.string.form_empty_message)
-                } else if (!FormValidation.isPlaylistNameValid(playlistName)) {
-                    isError = true
-                    binding.etDialog.error = getString(R.string.playlist_name_max_word)
-                    binding.tvCounter.setTextColor(resources.getColor(R.color.error_main))
-                } else {
-                    isError = false
-                    binding.tvCounter.setTextColor(resources.getColor(R.color.primary_gray))
-                }
-
-
                 binding.btnDialog.setOnClickListener {
-                    if (!isError) {
+                    if (playlistName.isNotEmpty()) {
                         getAccountId(playlistName)
                     }
                 }

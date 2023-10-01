@@ -132,7 +132,7 @@ class LibraryFragment : Fragment() {
 
                     is Result.Success -> {
                         showLoading(false)
-                        val data = result.data
+                        val data = result.data.reversed()
                         if (data.isNotEmpty()) {
                             linearAdapter.submitList(data)
                             gridAdapter.submitList(data)
