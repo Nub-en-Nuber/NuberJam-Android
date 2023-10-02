@@ -41,7 +41,7 @@ class MusicFragment : Fragment() {
     private val viewModel: MusicViewModel by viewModels()
 
     private lateinit var mediaService: MediaService
-    private val seekbarProgressCycle = 200
+    private val seekbarProgressCycle = 500
     private var boundServiceStatus = false
     private var isMediaReady = false
     private var runnable: Runnable? = null
@@ -229,13 +229,8 @@ class MusicFragment : Fragment() {
         binding.incMusicController.tvSongTitle.text = music.name
         binding.incMusicController.tvArtist.text =
             Helper.concatenateArtist(music.artist ?: ArrayList())
-        val sec = music.duration!!
-        val min = sec / 60
-        binding.incMusicController.tvDuration.text = getString(
-            R.string.music_duration,
-            String.format("%02d", min),
-            String.format("%02d", sec % 60)
-        )
+        binding.incMusicController.tvDuration.text = Helper.displayDuration(music.duration ?: 0)
+        binding.incMusicController.tvCurrentDuration.text = Helper.displayDuration(0)
         binding.incMusicController.btnPlay.setOnClickListener {
             if (isMediaReady) {
                 mediaService.playOrPauseMedia()
@@ -316,8 +311,10 @@ class MusicFragment : Fragment() {
 
     private fun startProgressionSeekBar() {
         runnable = Runnable {
-            binding.incMusicController.seekBar.progress =
-                (mediaService.mediaPlayer?.currentPosition ?: 0) / seekbarProgressCycle
+            val currentDuration = mediaService.mediaPlayer?.currentPosition ?: 0
+            binding.incMusicController.seekBar.progress = currentDuration / seekbarProgressCycle
+            binding.incMusicController.tvCurrentDuration.text =
+                Helper.displayDuration(currentDuration / 1000)
             if (runnable != null) handler.postDelayed(
                 runnable!!, (seekbarProgressCycle / 2).toLong()
             )

@@ -36,7 +36,6 @@
     <string name="search_text">Search</string>
     <string name="song_title">Song Title</string>
     <string name="singer">Singer</string>
-    <string name="music_duration">%1$s:%2$s</string>
     <string name="album">Album</string>
     <string name="album_title_dummy">Reputation</string>
     <string name="data_not_available">Data not available</string>
