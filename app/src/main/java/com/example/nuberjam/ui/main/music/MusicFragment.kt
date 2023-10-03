@@ -90,15 +90,14 @@ class MusicFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (Helper.isAndroidTiramisuOrHigher()) {
             val permission = android.Manifest.permission.POST_NOTIFICATIONS
             requestPermissionLauncher.launch(permission)
         }
 
+        setArgs()
         setToolbar()
         showNavBar(false)
-        setArgs()
         showSnackbarObserve()
         setData()
     }
@@ -107,6 +106,7 @@ class MusicFragment : Fragment() {
         super.onStop()
         if (runnable != null) handler.removeCallbacks(runnable!!)
         binding.incMusicController.seekBar.progress = 0
+        binding.incMusicController.tvCurrentDuration.text = Helper.displayDuration(0)
     }
 
     override fun onDestroyView() {
@@ -168,8 +168,10 @@ class MusicFragment : Fragment() {
     }
 
     private fun setArgs() {
-        val args: MusicFragmentArgs by navArgs()
-        viewModel.musicId = args.musicId
+        if (viewModel.musicId == null) {
+            val args: MusicFragmentArgs by navArgs()
+            viewModel.musicId = args.musicId
+        }
     }
 
     private fun showSnackbarObserve() {
@@ -192,8 +194,8 @@ class MusicFragment : Fragment() {
             if (account != null) {
                 if (viewModel.accountId == null) {
                     viewModel.accountId = account.id
-                    readDetailMusicObserve()
                 }
+                readDetailMusicObserve()
             }
         }
     }
