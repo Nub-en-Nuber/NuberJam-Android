@@ -3,6 +3,7 @@ package com.example.nuberjam.ui.main.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,10 @@ class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
                 tvTitle.text = musicItem.name
                 tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
                 tvDuration.text = musicItem.duration?.let { displayDuration(it) }
+
+                imvAlbum.setOnClickListener {
+                    Toast.makeText(itemView.context, "Ini Album ${musicItem.albumName}",Toast.LENGTH_SHORT).show()
+                }
             }
             itemView.setOnClickListener {
                 musicAdapterCallback.onItemClick(musicItem.id ?: 0)

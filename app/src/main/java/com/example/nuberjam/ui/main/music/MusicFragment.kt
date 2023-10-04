@@ -41,7 +41,7 @@ class MusicFragment : Fragment() {
     private val viewModel: MusicViewModel by viewModels()
 
     private lateinit var mediaService: MediaService
-    private val seekbarProgressCycle = 200
+    private val seekbarProgressCycle = 500
     private var boundServiceStatus = false
     private var isMediaReady = false
     private var runnable: Runnable? = null
@@ -90,15 +90,14 @@ class MusicFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (Helper.isAndroidTiramisuOrHigher()) {
             val permission = android.Manifest.permission.POST_NOTIFICATIONS
             requestPermissionLauncher.launch(permission)
         }
 
+        setArgs()
         setToolbar()
         showNavBar(false)
-        setArgs()
         showSnackbarObserve()
         setData()
     }
@@ -107,6 +106,7 @@ class MusicFragment : Fragment() {
         super.onStop()
         if (runnable != null) handler.removeCallbacks(runnable!!)
         binding.incMusicController.seekBar.progress = 0
+        binding.incMusicController.tvCurrentDuration.text = Helper.displayDuration(0)
     }
 
     override fun onDestroyView() {
@@ -168,8 +168,10 @@ class MusicFragment : Fragment() {
     }
 
     private fun setArgs() {
-        val args: MusicFragmentArgs by navArgs()
-        viewModel.musicId = args.musicId
+        if (viewModel.musicId == null) {
+            val args: MusicFragmentArgs by navArgs()
+            viewModel.musicId = args.musicId
+        }
     }
 
     private fun showSnackbarObserve() {
@@ -192,8 +194,8 @@ class MusicFragment : Fragment() {
             if (account != null) {
                 if (viewModel.accountId == null) {
                     viewModel.accountId = account.id
-                    readDetailMusicObserve()
                 }
+                readDetailMusicObserve()
             }
         }
     }
@@ -229,24 +231,18 @@ class MusicFragment : Fragment() {
         binding.incMusicController.tvSongTitle.text = music.name
         binding.incMusicController.tvArtist.text =
             Helper.concatenateArtist(music.artist ?: ArrayList())
-        val sec = music.duration!!
-        val min = sec / 60
-        binding.incMusicController.tvDuration.text = getString(
-            R.string.music_duration,
-            String.format("%02d", min),
-            String.format("%02d", sec % 60)
-        )
+        binding.incMusicController.tvDuration.text = Helper.displayDuration(music.duration ?: 0)
+        binding.incMusicController.tvCurrentDuration.text = Helper.displayDuration(0)
         binding.incMusicController.btnPlay.setOnClickListener {
-            if (!boundServiceStatus || !isMediaReady) {
-                showMediaLoading(true)
-                initMediaService(music)
-            }
             if (isMediaReady) {
                 mediaService.playOrPauseMedia()
             }
         }
         if (isServiceRunning(MediaService::class.java.name) && viewModel.isMusicIdSameCurrentPlaying()) {
             resumeMediaView()
+        } else if (!boundServiceStatus || !isMediaReady) {
+            showMediaLoading(true)
+            initMediaService(music)
         }
     }
 
@@ -317,8 +313,10 @@ class MusicFragment : Fragment() {
 
     private fun startProgressionSeekBar() {
         runnable = Runnable {
-            binding.incMusicController.seekBar.progress =
-                (mediaService.mediaPlayer?.currentPosition ?: 0) / seekbarProgressCycle
+            val currentDuration = mediaService.mediaPlayer?.currentPosition ?: 0
+            binding.incMusicController.seekBar.progress = currentDuration / seekbarProgressCycle
+            binding.incMusicController.tvCurrentDuration.text =
+                Helper.displayDuration(currentDuration / 1000)
             if (runnable != null) handler.postDelayed(
                 runnable!!, (seekbarProgressCycle / 2).toLong()
             )

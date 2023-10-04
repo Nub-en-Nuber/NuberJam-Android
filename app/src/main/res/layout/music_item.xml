@@ -54,11 +54,11 @@
             android:id="@+id/tv_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/music_duration"
             android:textColor="@color/primary_black"
             android:textSize="@dimen/font_10sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_singer" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_singer"
+            tools:text="04:30" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
