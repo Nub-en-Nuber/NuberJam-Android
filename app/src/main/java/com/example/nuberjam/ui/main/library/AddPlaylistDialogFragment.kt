@@ -66,7 +66,9 @@ class AddPlaylistDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        retainInstance = true
 
         return dialog
     }
@@ -136,6 +138,8 @@ class AddPlaylistDialogFragment : DialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        if (dialog != null && retainInstance)
+            dialog!!.setOnDismissListener(null);
     }
 
     interface OnAddPlaylistDialogListener {
