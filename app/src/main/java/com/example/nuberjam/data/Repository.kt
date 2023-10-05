@@ -171,7 +171,7 @@ class Repository @Inject constructor(
         try {
             val response = apiService.readAllPlaylist(accountId.toString())
             val listPlaylist =
-                response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } as List<Playlist>
+                response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } ?: ArrayList()
             emit(Result.Success(listPlaylist))
         } catch (e: Exception) {
             Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
