@@ -60,4 +60,15 @@
     <string name="dialog_button">dialog</string>
     <string name="confirmation_text">confirmation text</string>
     <string name="text_counter">12/28</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="username">Username</string>
+    <string name="your_username">yourUsername</string>
+    <string name="your_name">Your Name</string>
+    <string name="email">Email</string>
+    <string name="your_email">youremail@mail.com</string>
+    <string name="change_password">Change Password</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="about">About</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="more">More</string>
 </resources>

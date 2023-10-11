@@ -4,26 +4,319 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/space_24dp"
     tools:context=".ui.main.profile.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/tv_profile_title"
+        style="@style/CustomAppBarTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:text="@string/title_profile"
+        android:textSize="@dimen/font_25sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imv_profile"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="@dimen/space_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_profile_title"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/profile_name"
+        android:textSize="@dimen/font_20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imv_profile" />
+
+    <ImageView
+        android:id="@+id/imv_verified"
+        android:layout_width="@dimen/space_24dp"
+        android:layout_height="@dimen/space_24dp"
+        android:layout_marginLeft="@dimen/space_4dp"
+        android:src="@drawable/ic_verified_blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_name" />
+
+    <!--    PROFILE SECTION ====================================================== -->
+
+    <ImageView
+        android:id="@+id/imv_profile_logo"
+        android:layout_width="@dimen/space_20dp"
+        android:layout_height="@dimen/space_20dp"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:src="@drawable/ic_profile_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_profile_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_4dp"
+        android:text="@string/title_profile"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imv_profile_logo"
+        app:layout_constraintStart_toEndOf="@+id/imv_profile_logo"
+        app:layout_constraintTop_toTopOf="@+id/imv_profile_logo" />
+
+    <View
+        android:id="@+id/v_line_profile"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imv_profile_logo" />
+
+    <!--    USERNAME   -->
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/username"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_line_profile" />
+
+    <TextView
+        android:id="@+id/tv_your_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="96dp"
+        android:maxLength="15"
+        android:text="@string/your_username"
+        android:textSize="@dimen/font_13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_username"
+        app:layout_constraintStart_toEndOf="@+id/tv_username"
+        app:layout_constraintTop_toTopOf="@+id/tv_username" />
+
+    <ImageButton
+        android:id="@+id/imb_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_forward_gray_16"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_your_username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_your_username" />
+
+    <!--    NAME   -->
+    <TextView
+        android:id="@+id/tv_name_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/name_hint"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+
+    <TextView
+        android:id="@+id/tv_your_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="15"
+        android:text="@string/your_name"
+        android:textSize="@dimen/font_13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name_option"
+        app:layout_constraintStart_toStartOf="@+id/tv_your_username"
+        app:layout_constraintTop_toTopOf="@+id/tv_name_option" />
+
+    <ImageButton
+        android:id="@+id/imb_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_forward_gray_16"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_your_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_your_name" />
+
+    <!--    EMAIL   -->
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/email"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_option" />
+
+    <TextView
+        android:id="@+id/tv_your_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="15"
+        android:text="@string/your_email"
+        android:textSize="@dimen/font_13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_email"
+        app:layout_constraintStart_toStartOf="@+id/tv_your_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_email" />
+
+    <ImageButton
+        android:id="@+id/imb_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_forward_gray_16"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_your_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_your_email" />
+
+    <!--  CHANGE PASSWORD  -->
+
+    <TextView
+        android:id="@+id/tv_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/change_password"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+    <ImageButton
+        android:id="@+id/imb_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_forward_gray_16"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_change_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_change_password" />
+
+    <!--    MORE SECTION ====================================================== -->
+    <ImageView
+        android:id="@+id/imv_more_logo"
+        android:layout_width="@dimen/space_20dp"
+        android:layout_height="@dimen/space_20dp"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:src="@drawable/ic_more_circle_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_change_password" />
+
+    <TextView
+        android:id="@+id/tv_more_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_4dp"
+        android:text="@string/more"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imv_more_logo"
+        app:layout_constraintStart_toEndOf="@+id/imv_more_logo"
+        app:layout_constraintTop_toTopOf="@+id/imv_more_logo" />
+
+    <View
+        android:id="@+id/v_line_more"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imv_more_logo" />
+
+    <!--  TERMS & CONDITIONS  -->
+    <TextView
+        android:id="@+id/tv_tnc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/terms_conditions"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_line_more" />
+
+    <ImageButton
+        android:id="@+id/imb_tnc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_forward_gray_16"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tnc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_tnc" />
+
+    <!--  ABOUT  -->
+
+    <TextView
+        android:id="@+id/tv_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/about"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tnc" />
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="15"
+        android:text="Version 1.0.0"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_about"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_about" />
+
+    <!--  DELETE ACCOUNT  -->
+    <TextView
+        android:id="@+id/tv_delete_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/century_gothic_bold"
+        android:text="@string/delete_account"
+        android:textColor="@color/primary_darker"
+        android:textSize="@dimen/font_16sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_about" />
 
     <Button
         android:id="@+id/btn_logout"
         style="@style/CustomMaterialButton"
         android:layout_width="148dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_32dp"
         android:backgroundTint="@color/error_main"
         android:text="@string/logout_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_delete_account" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
