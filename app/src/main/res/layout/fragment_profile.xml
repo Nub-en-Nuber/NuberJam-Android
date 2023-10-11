@@ -227,7 +227,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_4dp"
-        android:text="@string/title_profile"
+        android:text="@string/more"
         android:textSize="@dimen/font_16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imv_more_logo"
         app:layout_constraintStart_toEndOf="@+id/imv_more_logo"
