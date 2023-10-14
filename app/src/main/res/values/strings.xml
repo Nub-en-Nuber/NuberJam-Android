@@ -71,4 +71,5 @@
     <string name="about">About</string>
     <string name="delete_account">Delete Account</string>
     <string name="more">More</string>
+    <string name="app_version">Version 1.0.0</string>
 </resources>

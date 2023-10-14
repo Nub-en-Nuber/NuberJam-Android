@@ -52,7 +52,13 @@ class Repository @Inject constructor(
             if (response.data?.account != null) {
                 val accountItem = response.data.account[0]
                 val account = Mapping.accountItemToAccount(accountItem)
-                emit(Result.Success(account))
+
+                var isArtist = false
+                val response = apiService.checkAccountArtist(account.id.toString())
+                if (response.status == Constant.API_SUCCESS_CODE) {
+                    isArtist = true
+                }
+                emit(Result.Success(account.copy(isArtist = isArtist)))
             }
         } catch (e: Exception) {
             Log.e(TAG, "getAccountData: ${e.message.toString()} ")

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,9 +19,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ProfileViewModel by viewModels()
 
-    companion object {
-        const val LOGOUT_SUCCESS_EXTRA = "logout_success_extra"
-    }
+    private lateinit var account: Account
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,21 +32,33 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnLogout.setOnClickListener {
-            logoutProcess()
+        viewModel.getAccountState().observe(viewLifecycleOwner) {
+            account = it
+
+            setupView()
         }
     }
 
-    private fun logoutProcess() {
-        viewModel.getAccountState().observe(viewLifecycleOwner) { account ->
-            viewModel.saveLoginState(false)
-            viewModel.clearAccountState()
-
-            val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
-            toAuthActivity.username = account.username
-            findNavController().navigate(toAuthActivity)
-            requireActivity().finish()
+    private fun setupView() {
+        binding.btnLogout.setOnClickListener {
+            logoutProcess()
         }
+        checkAccountArtist()
+    }
+
+    private fun checkAccountArtist() {
+        binding.imvVerified.isVisible = account.isArtist
+        binding.tvDeleteAccount.isVisible = !account.isArtist
+    }
+
+    private fun logoutProcess() {
+        viewModel.saveLoginState(false)
+        viewModel.clearAccountState()
+
+        val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
+        toAuthActivity.username = account.username
+        findNavController().navigate(toAuthActivity)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {
