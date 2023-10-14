@@ -14,7 +14,6 @@ import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.NetworkConnectionInterceptor
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
