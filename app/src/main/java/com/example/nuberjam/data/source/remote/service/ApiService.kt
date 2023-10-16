@@ -44,6 +44,12 @@ interface ApiService {
         @Field("accountPassword") accountPassword: String
     ): DataResponse
 
+    @FormUrlEncoded
+    @POST("music/artist/check.php?token=${Constant.TOKEN}")
+    suspend fun checkAccountArtist(
+        @Field("accountId") accountId: String,
+    ): DataResponse
+
 
     // Album API Endpoint Collection
     @GET("album/retrieve.php?token=${Constant.TOKEN}")
@@ -61,6 +67,7 @@ interface ApiService {
         @Query("accountId") accountId: String,
         @Query("musicId") musicId: String
     ): DataResponse
+
 
     // Playlist API Endpoint Collection
     @GET("playlist/retrieve.php?token=${Constant.TOKEN}")

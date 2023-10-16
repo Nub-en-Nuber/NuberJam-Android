@@ -75,7 +75,8 @@ class MyModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_API_URL)
-        .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build()
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient).build()
 
     @Provides
     @Singleton

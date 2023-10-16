@@ -10,5 +10,6 @@ data class Account(
     val username: String,
     val email: String,
     val password: String,
-    val photo: String
+    val photo: String,
+    val isArtist: Boolean = false
 ) : Parcelable
