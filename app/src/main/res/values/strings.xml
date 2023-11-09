@@ -60,4 +60,8 @@
     <string name="dialog_button">dialog</string>
     <string name="confirmation_text">confirmation text</string>
     <string name="text_counter">12/28</string>
+    <string name="edit_profile_photo">Edit Profile Photo</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="open_gallery">Open Gallery</string>
+    <string name="cancel">Cancel</string>
 </resources>
