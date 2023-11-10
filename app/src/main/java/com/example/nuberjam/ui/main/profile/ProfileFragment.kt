@@ -42,6 +42,9 @@ class ProfileFragment : Fragment() {
 
         setupAction()
         showSnackBarObserve()
+        binding.btnEditPhoto.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
+        }
     }
 
     private fun setupAction() {
