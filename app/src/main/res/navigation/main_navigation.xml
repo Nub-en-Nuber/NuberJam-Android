@@ -9,14 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.example.nuberjam.ui.main.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_musicFragment"
             app:destination="@id/musicFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -29,38 +29,50 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.nuberjam.ui.main.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_authActivity"
             app:destination="@id/authActivity"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"
-            app:launchSingleTop="true"
             app:popUpTo="@id/authActivity"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_profile_to_editPhotoFragment"
+            app:destination="@id/editPhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
-  
+
     <activity
         android:id="@+id/authActivity"
         android:name="com.example.nuberjam.ui.authentication.AuthActivity"
         android:label="activity_auth"
-        tools:layout="@layout/activity_auth" >
+        tools:layout="@layout/activity_auth">
         <argument
             android:name="username"
-            app:argType="string"
-            android:defaultValue="null" />
+            android:defaultValue="null"
+            app:argType="string" />
     </activity>
     <fragment
         android:id="@+id/musicFragment"
         android:name="com.example.nuberjam.ui.main.music.MusicFragment"
         android:label="fragment_music"
-        tools:layout="@layout/fragment_music" >
+        tools:layout="@layout/fragment_music">
         <argument
             android:name="musicId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/editPhotoFragment"
+        android:name="com.example.nuberjam.ui.main.profile.editphoto.EditPhotoFragment"
+        android:label="fragment_edit_photo"
+        tools:layout="@layout/fragment_edit_photo" />
 
 </navigation>

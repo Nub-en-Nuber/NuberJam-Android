@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.nuberjam.R
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +35,9 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener {
             logoutProcess()
+        }
+        binding.btnEditPhoto.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
         }
     }
 

@@ -15,6 +15,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/btn_edit_photo"
+        style="@style/CustomMaterialButton"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/secondary_main"
+        android:text="Edit Photo"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/btn_logout"
         style="@style/CustomMaterialButton"
         android:layout_width="148dp"
