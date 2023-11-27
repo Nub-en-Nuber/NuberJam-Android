@@ -104,11 +104,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
         android:maxLength="15"
-        tools:text="@string/your_username"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_username"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
-        app:layout_constraintTop_toTopOf="@+id/tv_username" />
+        app:layout_constraintTop_toTopOf="@+id/tv_username"
+        tools:text="@string/your_username" />
 
     <ImageButton
         android:id="@+id/imb_username"
@@ -138,11 +138,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLength="15"
-        tools:text="@string/your_name"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_name_option"
         app:layout_constraintStart_toStartOf="@+id/tv_your_username"
-        app:layout_constraintTop_toTopOf="@+id/tv_name_option" />
+        app:layout_constraintTop_toTopOf="@+id/tv_name_option"
+        tools:text="@string/your_name" />
 
     <ImageButton
         android:id="@+id/imb_name"
@@ -169,14 +169,15 @@
 
     <TextView
         android:id="@+id/tv_your_email"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
-        android:maxLength="15"
-        tools:text="@string/your_email"
+        android:layout_marginEnd="@dimen/space_8dp"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_email"
+        app:layout_constraintEnd_toStartOf="@+id/imb_email"
         app:layout_constraintStart_toStartOf="@+id/tv_your_name"
-        app:layout_constraintTop_toTopOf="@+id/tv_email" />
+        app:layout_constraintTop_toTopOf="@+id/tv_email"
+        tools:text="@string/your_email" />
 
     <ImageButton
         android:id="@+id/imb_email"

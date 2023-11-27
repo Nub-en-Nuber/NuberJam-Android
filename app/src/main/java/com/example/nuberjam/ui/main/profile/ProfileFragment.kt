@@ -97,7 +97,7 @@ class ProfileFragment : Fragment() {
             tvName.text = account.name
             tvYourUsername.text = account.username
             tvYourName.text = account.name
-            tvEmail.text = account.email
+            tvYourEmail.text = account.email
         }
     }
 
