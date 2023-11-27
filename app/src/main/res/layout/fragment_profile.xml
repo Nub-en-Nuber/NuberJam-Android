@@ -171,13 +171,15 @@
         android:id="@+id/tv_your_email"
         android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/space_32dp"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_email"
         app:layout_constraintEnd_toStartOf="@+id/imb_email"
         app:layout_constraintStart_toStartOf="@+id/tv_your_name"
         app:layout_constraintTop_toTopOf="@+id/tv_email"
-        tools:text="@string/your_email" />
+        tools:text="@string/your_email"
+        android:maxLines="1"
+        android:ellipsize="end"/>
 
     <ImageButton
         android:id="@+id/imb_email"
@@ -202,6 +204,18 @@
         android:textSize="@dimen/font_16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+    <TextView
+        android:id="@+id/tv_your_password"
+        android:layout_width="@dimen/space_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/space_8dp"
+        android:textSize="@dimen/font_13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_change_password"
+        app:layout_constraintEnd_toStartOf="@+id/imb_change_password"
+        app:layout_constraintStart_toStartOf="@+id/tv_your_email"
+        app:layout_constraintTop_toTopOf="@+id/tv_change_password"
+        android:text="@string/password_placeholder" />
 
     <ImageButton
         android:id="@+id/imb_change_password"

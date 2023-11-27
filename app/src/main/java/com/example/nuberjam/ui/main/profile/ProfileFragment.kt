@@ -93,7 +93,7 @@ class ProfileFragment : Fragment() {
 
     private fun setUserProfile() {
         with(binding) {
-            Glide.with(requireActivity()).load(account.photo).into(imvProfile)
+            Glide.with(requireActivity()).load(account.photo).error(R.drawable.ic_profile_placeholder).into(imvProfile)
             tvName.text = account.name
             tvYourUsername.text = account.username
             tvYourName.text = account.name
