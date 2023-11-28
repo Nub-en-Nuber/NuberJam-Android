@@ -22,7 +22,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ProfileViewModel by viewModels()
 
-    private lateinit var account: Account
+    private var account = Account()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +37,6 @@ class ProfileFragment : Fragment() {
 
         viewModel.getAccountState().observe(viewLifecycleOwner) {
             account = it
-
             setupView()
         }
 
