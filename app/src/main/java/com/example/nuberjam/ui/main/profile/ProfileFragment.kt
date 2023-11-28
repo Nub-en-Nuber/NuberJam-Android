@@ -8,8 +8,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
+import com.example.nuberjam.ui.customview.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +22,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ProfileViewModel by viewModels()
 
-    private lateinit var account: Account
+    private var account = Account()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,21 +37,67 @@ class ProfileFragment : Fragment() {
 
         viewModel.getAccountState().observe(viewLifecycleOwner) {
             account = it
-
             setupView()
+        }
+
+        setupAction()
+        showSnackBarObserve()
+    }
+
+    private fun setupAction() {
+        with(binding) {
+            btnLogout.setOnClickListener {
+                logoutProcess()
+            }
+
+            imbUsername.setOnClickListener {
+                // TODO: MP-415
+            }
+
+            imbName.setOnClickListener {
+                // TODO: MP-416
+            }
+
+            imbEmail.setOnClickListener {
+                // TODO: MP-417
+            }
+
+            imbChangePassword.setOnClickListener {
+                // TODO: MP-418
+            }
+
+            imbTnc.setOnClickListener {
+                // TODO: MP-426
+            }
+
+            tvDeleteAccount.setOnClickListener {
+                // TODO: MP-419
+            }
+
+//            viewModel.setSnackbar(
+//                "", CustomSnackbar.STATE_SUCCESS
+//            )
         }
     }
 
     private fun setupView() {
-        binding.btnLogout.setOnClickListener {
-            logoutProcess()
-        }
         checkAccountArtist()
+        setUserProfile()
     }
 
     private fun checkAccountArtist() {
         binding.imvVerified.isVisible = account.isArtist
         binding.tvDeleteAccount.isVisible = !account.isArtist
+    }
+
+    private fun setUserProfile() {
+        with(binding) {
+            Glide.with(requireActivity()).load(account.photo).error(R.drawable.ic_profile_placeholder).into(imvProfile)
+            tvName.text = account.name
+            tvYourUsername.text = account.username
+            tvYourName.text = account.name
+            tvYourEmail.text = account.email
+        }
     }
 
     private fun logoutProcess() {
@@ -59,6 +108,18 @@ class ProfileFragment : Fragment() {
         toAuthActivity.username = account.username
         findNavController().navigate(toAuthActivity)
         requireActivity().finish()
+    }
+
+    private fun showSnackBarObserve() {
+        viewModel.snackbarState.observe(requireActivity()) { event ->
+            event.getContentIfNotHandled()?.let { snackBarState ->
+                val customSnackBar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackBarState.length)
+                customSnackBar.setMessage(snackBarState.message)
+                customSnackBar.setState(snackBarState.state)
+                customSnackBar.show()
+            }
+        }
     }
 
     override fun onDestroyView() {
