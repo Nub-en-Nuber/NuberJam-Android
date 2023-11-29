@@ -74,6 +74,10 @@ class ProfileFragment : Fragment() {
                 // TODO: MP-419
             }
 
+            imvProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
+            }
+
 //            viewModel.setSnackbar(
 //                "", CustomSnackbar.STATE_SUCCESS
 //            )
