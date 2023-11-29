@@ -13,6 +13,7 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment() {
             }
 
             imbName.setOnClickListener {
-                // TODO: MP-416
+                openEditNameDialog()
             }
 
             imbEmail.setOnClickListener {
@@ -84,6 +85,12 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun openEditNameDialog() {
+        val name = binding.tvName.text.toString()
+        val editNameDialogFragment = EditNameDialogFragment.getInstance(name)
+        editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
+    }
+
     private fun setupView() {
         checkAccountArtist()
         setUserProfile()
@@ -96,7 +103,8 @@ class ProfileFragment : Fragment() {
 
     private fun setUserProfile() {
         with(binding) {
-            Glide.with(requireActivity()).load(account.photo).error(R.drawable.ic_profile_placeholder).into(imvProfile)
+            Glide.with(requireActivity()).load(account.photo)
+                .error(R.drawable.ic_profile_placeholder).into(imvProfile)
             tvName.text = account.name
             tvYourUsername.text = account.username
             tvYourName.text = account.name

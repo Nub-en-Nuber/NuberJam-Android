@@ -4,17 +4,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
+import com.example.nuberjam.data.source.remote.request.AccountRequest
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
 import com.example.nuberjam.utils.NoConnectivityException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -195,6 +200,30 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "addPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun updateAccount(request: AccountRequest): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val account = appPreferences.getAccountState().first()
+            val response = apiService.updateAccount(
+                account.id.toString(),
+                request.name,
+                request.username,
+                request.email,
+                request.password,
+                request.photo,
+            )
+            if (response.status == 200) {
+                emit(Result.Success(true))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "updateAccount: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }

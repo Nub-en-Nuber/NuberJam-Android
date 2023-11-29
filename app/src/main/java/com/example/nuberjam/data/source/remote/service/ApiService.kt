@@ -2,10 +2,15 @@ package com.example.nuberjam.data.source.remote.service
 
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.utils.Constant
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface ApiService {
@@ -48,6 +53,17 @@ interface ApiService {
     @POST("music/artist/check.php?token=${Constant.TOKEN}")
     suspend fun checkAccountArtist(
         @Field("accountId") accountId: String,
+    ): DataResponse
+
+    @Multipart
+    @POST("account/edit.php?token=${Constant.TOKEN}")
+    suspend fun updateAccount(
+        @Query("accountId") accountId: String,
+        @Part("accountName") accountName: RequestBody? = null,
+        @Part("accountUsername") accountUsername: RequestBody? = null,
+        @Part("accountEmail") accountEmail: RequestBody? = null,
+        @Part("accountPassword") accountPassword: RequestBody? = null,
+        @Part accountPhoto: MultipartBody.Part? = null,
     ): DataResponse
 
 
