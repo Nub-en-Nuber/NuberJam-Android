@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
@@ -59,8 +58,8 @@ class Repository @Inject constructor(
                 val account = Mapping.accountItemToAccount(accountItem)
 
                 var isArtist = false
-                val response = apiService.checkAccountArtist(account.id.toString())
-                if (response.status == Constant.API_SUCCESS_CODE) {
+                val artistResponse = apiService.checkAccountArtist(account.id.toString())
+                if (artistResponse.status == Constant.API_SUCCESS_CODE) {
                     isArtist = true
                 }
                 emit(Result.Success(account.copy(isArtist = isArtist)))
@@ -217,7 +216,7 @@ class Repository @Inject constructor(
                 request.password,
                 request.photo,
             )
-            if (response.status == 200) {
+            if (response.status == Constant.API_SUCCESS_CODE) {
                 emit(Result.Success(true))
             } else {
                 throw Exception()

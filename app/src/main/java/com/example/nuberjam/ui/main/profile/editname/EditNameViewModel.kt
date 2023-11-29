@@ -1,5 +1,6 @@
 package com.example.nuberjam.ui.main.profile.editname
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditNameViewModel @Inject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    var name = savedStateHandle.get<String>(EditNameDialogFragment.ARG_NAME_KEY) ?: ""
+
     private val _editNameState = MutableStateFlow<Result<Boolean>?>(null)
     val editNameState = _editNameState.asStateFlow()
 
@@ -29,7 +34,7 @@ class EditNameViewModel @Inject constructor(
         }
     }
 
-    fun saveAccountState(name: String) {
+    fun saveAccountState() {
         runBlocking {
             val account = repository.getAccountState().asFlow().first()
             repository.saveAccountState(account.copy(name = name))

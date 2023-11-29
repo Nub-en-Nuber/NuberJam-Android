@@ -23,8 +23,6 @@ import com.example.nuberjam.databinding.SingleFormDialogBinding
 import com.example.nuberjam.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 
 @AndroidEntryPoint
 class EditNameDialogFragment : DialogFragment() {
@@ -34,13 +32,13 @@ class EditNameDialogFragment : DialogFragment() {
 
     private val viewModel: EditNameViewModel by viewModels()
 
-    private lateinit var name: String
+//    private lateinit var name: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-        name = arguments?.getString(ARG_NAME_KEY) ?: ""
+//        name = arguments?.getString(ARG_NAME_KEY) ?: ""
         return dialog
     }
 
@@ -65,10 +63,11 @@ class EditNameDialogFragment : DialogFragment() {
         initLayout()
         observeEditNameState()
         binding.etDialog.addTextChangedListener {
-            name = it.toString()
+            viewModel.name = it.toString()
         }
         binding.btnDialog.setOnClickListener {
-            viewModel.updateAccount(AccountRequest(name = name.toRequestBody("text/plain".toMediaType())))
+            val request = AccountRequest.createFromRaw(name = viewModel.name)
+            viewModel.updateAccount(request)
         }
     }
 
@@ -80,7 +79,7 @@ class EditNameDialogFragment : DialogFragment() {
                         showLoading(result is Result.Loading)
                         when (result) {
                             is Result.Success -> {
-                                viewModel.saveAccountState(name)
+                                viewModel.saveAccountState()
                                 dismiss()
                             }
 
@@ -112,7 +111,7 @@ class EditNameDialogFragment : DialogFragment() {
         binding.apply {
             tvTitle.text = getString(R.string.title_edit_name)
             tilDialog.hint = getString(R.string.name_hint)
-            etDialog.setText(name)
+            etDialog.setText(viewModel.name)
             btnDialog.text = getString(R.string.edit)
             tvConfirmation.visibility = View.GONE
         }
@@ -120,7 +119,7 @@ class EditNameDialogFragment : DialogFragment() {
 
     companion object {
         const val TAG = "EditNameDialogFragment"
-        private const val ARG_NAME_KEY = "arg_name"
+        const val ARG_NAME_KEY = "arg_name"
 
         fun getInstance(name: String): EditNameDialogFragment = EditNameDialogFragment().apply {
             arguments = Bundle().apply {
