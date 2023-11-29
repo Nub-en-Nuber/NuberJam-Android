@@ -5,10 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Account(
-    val id: Int,
-    val name: String,
-    val username: String,
-    val email: String,
-    val password: String,
-    val photo: String
+    val id: Int = 0,
+    val name: String = "",
+    val username: String = "",
+    val email: String = "",
+    val password: String = "",
+    val photo: String = "",
+    val isArtist: Boolean = false
 ) : Parcelable
