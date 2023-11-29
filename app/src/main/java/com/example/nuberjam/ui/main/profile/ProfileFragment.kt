@@ -42,9 +42,6 @@ class ProfileFragment : Fragment() {
 
         setupAction()
         showSnackBarObserve()
-        binding.btnEditPhoto.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
-        }
     }
 
     private fun setupAction() {
@@ -75,6 +72,10 @@ class ProfileFragment : Fragment() {
 
             tvDeleteAccount.setOnClickListener {
                 // TODO: MP-419
+            }
+
+            imvProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
             }
 
 //            viewModel.setSnackbar(
