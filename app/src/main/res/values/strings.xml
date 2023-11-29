@@ -2,7 +2,7 @@
     <string name="app_name">NuberJam</string>
     <string name="title_home">Home</string>
     <string name="title_library">Library</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Your Profile</string>
     <string name="title_register">Register</string>
     <string name="title_login">Login</string>
 
@@ -63,4 +63,17 @@
     <string name="password">Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="username">Username</string>
+    <string name="your_username">yourUsername</string>
+    <string name="your_name">Your Name</string>
+    <string name="email">Email</string>
+    <string name="your_email">youremail@mail.com</string>
+    <string name="change_password">Change Password</string>
+    <string name="terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="about">About</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="more">More</string>
+    <string name="app_version">Version 1.0.0</string>
+    <string name="password_placeholder">********</string>
 </resources>
