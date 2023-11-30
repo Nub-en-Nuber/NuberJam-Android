@@ -10,15 +10,16 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
-import com.example.nuberjam.data.source.remote.request.AccountRequest
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
 import com.example.nuberjam.utils.NoConnectivityException
+import com.example.nuberjam.utils.extension.toAccountRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import java.io.File
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -204,12 +205,13 @@ class Repository @Inject constructor(
         }
     }
 
-    fun updateAccount(request: AccountRequest): Flow<Result<Boolean>> = flow {
+    fun updateAccount(account: Account, photoFile: File? = null): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
-            val account = appPreferences.getAccountState().first()
+            val accountId = appPreferences.getAccountState().first().id
+            val request = account.toAccountRequest(photoFile)
             val response = apiService.updateAccount(
-                account.id.toString(),
+                accountId.toString(),
                 request.name,
                 request.username,
                 request.email,
@@ -217,6 +219,7 @@ class Repository @Inject constructor(
                 request.photo,
             )
             if (response.status == Constant.API_SUCCESS_CODE) {
+                updateAccountState(account, photoFile)
                 emit(Result.Success(true))
             } else {
                 throw Exception()
@@ -226,6 +229,27 @@ class Repository @Inject constructor(
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
+    }
+
+    private suspend fun updateAccountState(account: Account, photoFile: File?) {
+        val accountState = appPreferences.getAccountState().first()
+
+        val photo = if (photoFile != null) {
+            val accountResponse = apiService.readAccountWithEmail(accountState.email)
+            accountResponse.data?.account?.get(0)?.accountPhoto ?: ""
+        } else {
+            ""
+        }
+
+        val updateAccount = accountState.copy(
+            name = account.name.ifEmpty { accountState.name },
+            username = account.username.ifEmpty { accountState.username },
+            email = account.email.ifEmpty { accountState.email },
+            password = account.password.ifEmpty { accountState.password },
+            photo = photo.ifEmpty { accountState.photo }
+        )
+
+        appPreferences.saveAccountState(updateAccount)
     }
 
     companion object {

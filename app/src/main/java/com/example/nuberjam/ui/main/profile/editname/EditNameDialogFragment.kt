@@ -18,8 +18,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
-import com.example.nuberjam.data.source.remote.request.AccountRequest
+import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.SingleFormDialogBinding
+import com.example.nuberjam.ui.main.profile.UpdateAccountViewModel
 import com.example.nuberjam.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,15 +31,11 @@ class EditNameDialogFragment : DialogFragment() {
     private var _binding: SingleFormDialogBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: EditNameViewModel by viewModels()
-
-//    private lateinit var name: String
+    private val viewModel: UpdateAccountViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-//        name = arguments?.getString(ARG_NAME_KEY) ?: ""
         return dialog
     }
 
@@ -66,23 +63,18 @@ class EditNameDialogFragment : DialogFragment() {
             viewModel.name = it.toString()
         }
         binding.btnDialog.setOnClickListener {
-            val request = AccountRequest.createFromRaw(name = viewModel.name)
-            viewModel.updateAccount(request)
+            viewModel.updateAccount(Account(name = viewModel.name))
         }
     }
 
     private fun observeEditNameState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.editNameState.collect { result ->
+                viewModel.updateAccountState.collect { result ->
                     if (result != null) {
                         showLoading(result is Result.Loading)
                         when (result) {
-                            is Result.Success -> {
-                                viewModel.saveAccountState()
-                                dismiss()
-                            }
-
+                            is Result.Success -> dismiss()
                             is Result.Error -> showError(result.errorCode)
                             else -> {}
                         }
