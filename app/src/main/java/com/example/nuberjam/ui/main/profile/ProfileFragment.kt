@@ -14,6 +14,7 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
+import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,7 +65,11 @@ class ProfileFragment : Fragment() {
             }
 
             imbChangePassword.setOnClickListener {
-                // TODO: MP-418
+                val editPasswordDialogFragment = EditPasswordDialogFragment()
+                editPasswordDialogFragment.show(
+                    childFragmentManager,
+                    EditPasswordDialogFragment.TAG
+                )
             }
 
             imbTnc.setOnClickListener {

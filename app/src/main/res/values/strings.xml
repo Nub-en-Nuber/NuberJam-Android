@@ -81,5 +81,6 @@
     <string name="open_gallery">Open Gallery</string>
     <string name="cancel">Cancel</string>
     <string name="title_edit_name">Edit Name</string>
+    <string name="title_change_password">Change Password</string>
     <string name="edit">Edit</string>
 </resources>
