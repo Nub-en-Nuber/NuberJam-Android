@@ -1,6 +1,5 @@
 package com.example.nuberjam.ui.main.profile.tnc
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,24 +9,19 @@ import android.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.nuberjam.R
-import com.example.nuberjam.databinding.FragmentRegisterBinding
 import com.example.nuberjam.databinding.FragmentTncBinding
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class TncFragment : Fragment() {
 
     private var _binding: FragmentTncBinding? = null
     private val binding get() = _binding!!
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-    _binding = FragmentTncBinding.inflate(inflater, container, false)
+    this._binding = FragmentTncBinding.inflate(inflater, container, false)
         return binding.root
     }
 
