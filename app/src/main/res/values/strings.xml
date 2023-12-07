@@ -80,4 +80,17 @@
     <string name="take_photo">Take Photo</string>
     <string name="open_gallery">Open Gallery</string>
     <string name="cancel">Cancel</string>
+    <string name="introduction">Introduction</string>
+    <string name="u2022_acceptance_of_general_terms">• Acceptance of General Terms</string>
+    <string name="u2022_privacy_policy">• Privacy Policy</string>
+    <string name="_1_what_kind_of_personal_information_do_we_use">1.What Kind of Personal Information Do We Use?</string>
+    <string name="_2_what_we_do_with_your_personal_data">2. What We Do With Your Personal Data</string>
+    <string name="_3_security_of_your_personal_information">3. Security of Your Personal Information</string>
+    <string name="u2022_copyright_and_intellectual_property">• Copyright and Intellectual Property</string>
+    <string name="u2022_products_and_services">• Products and Services</string>
+    <string name="u2022_takedowns_under_the_digital_millennium_copyright_act_dmca">• Takedowns under the Digital Millennium Copyright Act (DMCA)</string>
+    <string name="u2022_limitation_of_liability">• Limitation of Liability</string>
+    <string name="u2022_contact_information">• Contact Information</string>
+    <string name="u2022_updates_and_notifications">• Updates and Notifications</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
 </resources>

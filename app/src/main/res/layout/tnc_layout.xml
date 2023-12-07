@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/introduction"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_introduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_acceptance_of_general_terms"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_acceptance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_privacy_policy"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/_1_what_kind_of_personal_information_do_we_use"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_personal_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/_2_what_we_do_with_your_personal_data"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_personal_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/_3_security_of_your_personal_information"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_security_personal_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_copyright_and_intellectual_property"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_copyright_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_products_and_services"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_product_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_takedowns_under_the_digital_millennium_copyright_act_dmca"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_takedown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_limitation_of_liability"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_limitation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_contact_information"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_contact_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/century_gothic_bold"
+            android:text="@string/u2022_updates_and_notifications"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_20sp" />
+
+        <TextView
+            android:id="@+id/tv_update_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_24dp"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/primary_gray"
+            android:textSize="@dimen/font_16sp" />
+    </LinearLayout>
+
+</ScrollView>
