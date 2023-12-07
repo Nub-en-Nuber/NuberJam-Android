@@ -11,6 +11,6 @@ fun Account.toAccountRequest(photoFile: File?) =
         name = name.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
         username = username.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
         email = email.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
-        password = name.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
+        password = password.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
         photo = photoFile?.toMultipartBody("photo")
     )
