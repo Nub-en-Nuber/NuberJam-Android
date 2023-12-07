@@ -52,16 +52,8 @@ class ProfileFragment : Fragment() {
                 logoutProcess()
             }
 
-            imbUsername.setOnClickListener {
-                // TODO: MP-415
-            }
-
             imbName.setOnClickListener {
                 openEditNameDialog()
-            }
-
-            imbEmail.setOnClickListener {
-                // TODO: MP-417
             }
 
             imbChangePassword.setOnClickListener {
