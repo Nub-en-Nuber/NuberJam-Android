@@ -79,11 +79,11 @@ class EditPasswordDialogFragment : DialogFragment() {
                     when (result) {
                         is Result.Success -> {
                             if (result.data) {
-                                binding.layoutInputPassword.error = null
+                                binding.etPassword.error = null
                                 viewModel.updateAccount(Account(password = newPassword))
                             } else {
-                                binding.layoutInputPassword.error =
-                                    "Current password is incorrect"
+                                binding.etPassword.error =
+                                    getString(R.string.current_password_is_incorrect)
                             }
                         }
 
