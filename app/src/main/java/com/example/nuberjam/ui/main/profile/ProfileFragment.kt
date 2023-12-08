@@ -67,7 +67,7 @@ class ProfileFragment : Fragment() {
             }
 
             imbTnc.setOnClickListener {
-                // TODO: MP-426
+                findNavController().navigate(R.id.action_navigation_profile_to_tncFragment)
             }
 
             tvDeleteAccount.setOnClickListener {
