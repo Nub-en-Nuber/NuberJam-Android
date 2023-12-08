@@ -66,11 +66,14 @@ interface ApiService {
         @Part accountPhoto: MultipartBody.Part? = null,
     ): DataResponse
 
+    @POST("account/delete.php?token=${Constant.TOKEN}")
+    suspend fun deleteAccount(
+        @Query("accountId") accountId: String,
+    ): DataResponse
 
     // Album API Endpoint Collection
     @GET("album/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllAlbum(): DataResponse
-
 
     // Music API Endpoint Collection
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
@@ -80,8 +83,7 @@ interface ApiService {
 
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readDetailMusic(
-        @Query("accountId") accountId: String,
-        @Query("musicId") musicId: String
+        @Query("accountId") accountId: String, @Query("musicId") musicId: String
     ): DataResponse
 
 
@@ -94,7 +96,6 @@ interface ApiService {
     @FormUrlEncoded
     @POST("playlist/add.php?token=${Constant.TOKEN}")
     suspend fun addPlaylist(
-        @Field("playlistName") playlistName: String,
-        @Field("accountId") accountId: String
+        @Field("playlistName") playlistName: String, @Field("accountId") accountId: String
     ): DataResponse
 }

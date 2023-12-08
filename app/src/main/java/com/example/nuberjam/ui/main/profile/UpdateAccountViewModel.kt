@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +30,9 @@ class UpdateAccountViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<Result<Boolean>?>(null)
     val loginState = _loginState.asStateFlow()
 
+    private val _deleteAccountState = MutableStateFlow<Result<Boolean>?>(null)
+    val deleteAccountState = _deleteAccountState.asStateFlow()
+
     fun updateAccount(account: Account) {
         viewModelScope.launch {
             repository.updateAccount(account).collect { result ->
@@ -42,6 +46,14 @@ class UpdateAccountViewModel @Inject constructor(
             val account = repository.getAccountState().asFlow().first()
             repository.makeLogin(account.username, password).asFlow().collect { result ->
                 _loginState.value = result
+            }
+        }
+    }
+
+    fun deleteAccount() {
+        viewModelScope.launch {
+            repository.deleteAccount().collect{ result ->
+                _deleteAccountState.value = result
             }
         }
     }
