@@ -231,6 +231,27 @@ class Repository @Inject constructor(
         }
     }
 
+    fun deleteAccount(): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response = apiService.deleteAccount(
+                accountId.toString(),
+            )
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                emit(Result.Success(true))
+                saveLoginState(false)
+                clearAccountState()
+            } else {
+                emit(Result.Success(false))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "deleteAccount: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
     private suspend fun updateAccountState(account: Account, photoFile: File?) {
         val accountState = appPreferences.getAccountState().first()
 
@@ -241,13 +262,11 @@ class Repository @Inject constructor(
             ""
         }
 
-        val updateAccount = accountState.copy(
-            name = account.name.ifEmpty { accountState.name },
+        val updateAccount = accountState.copy(name = account.name.ifEmpty { accountState.name },
             username = account.username.ifEmpty { accountState.username },
             email = account.email.ifEmpty { accountState.email },
             password = account.password.ifEmpty { accountState.password },
-            photo = photo.ifEmpty { accountState.photo }
-        )
+            photo = photo.ifEmpty { accountState.photo })
 
         appPreferences.saveAccountState(updateAccount)
     }
