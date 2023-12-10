@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shimmer_favorite_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/space_24dp"
+            android:paddingTop="@dimen/space_24dp"
+            android:paddingBottom="@dimen/space_64dp">
+
+            <View
+                android:id="@+id/v_favorite_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_164dp"
+                android:background="@color/shimmer_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_liked"
+                android:layout_width="@dimen/space_164dp"
+                android:layout_height="@dimen/space_24dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:background="@color/shimmer_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_favorite_image" />
+
+            <View
+                android:id="@+id/vfavorite"
+                android:layout_width="@dimen/space_128dp"
+                android:layout_height="@dimen/space_20dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:background="@color/shimmer_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_liked" />
+
+            <LinearLayout
+                android:id="@+id/ll_music_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/vfavorite"
+                tools:layout_editor_absoluteX="24dp">
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+
+                <include layout="@layout/shimmer_music_item" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</ScrollView>
