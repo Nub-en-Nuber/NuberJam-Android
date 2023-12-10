@@ -1,6 +1,7 @@
 package com.example.nuberjam.ui.main.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,7 +76,9 @@ class ProfileFragment : Fragment() {
             }
 
             imvProfile.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
+                val toPhotoFragment = ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
+                toPhotoFragment.currentPhoto = account.photo
+                findNavController().navigate(toPhotoFragment)
             }
 
 //            viewModel.setSnackbar(
@@ -86,7 +89,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupView() {
         checkAccountArtist()
-        setUserProfile()
+        setUserProfile() // #Anjar12
     }
 
     private fun checkAccountArtist() {
