@@ -15,6 +15,9 @@ import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
 import com.example.nuberjam.utils.NoConnectivityException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -195,6 +198,20 @@ class Repository @Inject constructor(
             else emit(Result.Success(false))
         } catch (e: Exception) {
             Log.e(TAG, "addPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun readAllFavorite(): Flow<Result<List<Music>>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response = apiService.readAllFavorite(accountId.toString())
+            val listFavorite = Mapping.dataResponseToMusic(response)
+            emit(Result.Success(listFavorite))
+        } catch (e: Exception) {
+            Log.e(TAG, "readAllFavorite: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
