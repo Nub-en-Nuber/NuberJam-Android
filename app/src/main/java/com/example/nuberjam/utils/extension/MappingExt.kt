@@ -9,8 +9,6 @@ import java.io.File
 fun Account.toAccountRequest(photoFile: File?) =
     AccountRequest(
         name = name.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
-        username = username.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
-        email = email.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
         password = password.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
-        photo = photoFile?.toMultipartBody("photo")
+        photo = photoFile?.toMultipartBody("accountPhoto")
     )

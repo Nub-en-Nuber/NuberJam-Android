@@ -60,8 +60,6 @@ interface ApiService {
     suspend fun updateAccount(
         @Query("accountId") accountId: String,
         @Part("accountName") accountName: RequestBody? = null,
-        @Part("accountUsername") accountUsername: RequestBody? = null,
-        @Part("accountEmail") accountEmail: RequestBody? = null,
         @Part("accountPassword") accountPassword: RequestBody? = null,
         @Part accountPhoto: MultipartBody.Part? = null,
     ): DataResponse
