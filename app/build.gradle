@@ -112,6 +112,8 @@ ext {
 
     // Media Session Notification Support
     mediaVersion = "1.6.0"
+
+    kennyVersion = "2.2.0"
 }
 
 dependencies {
@@ -175,4 +177,6 @@ dependencies {
 
     // Media Session Notification Support
     implementation "androidx.media:media:$mediaVersion"
+
+    implementation "com.github.Kennyc1012:MultiStateView:$kennyVersion"
 }
