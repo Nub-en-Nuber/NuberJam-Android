@@ -81,4 +81,11 @@ interface ApiService {
         @Field("playlistName") playlistName: String,
         @Field("accountId") accountId: String
     ): DataResponse
+
+
+    // Favorite API Endpoint Collection
+    @GET("favorite/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllFavorite(
+        @Query("accountId") accountId: String,
+    ): DataResponse
 }
