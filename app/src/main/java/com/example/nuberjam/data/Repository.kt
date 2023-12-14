@@ -213,8 +213,6 @@ class Repository @Inject constructor(
             val response = apiService.updateAccount(
                 accountId.toString(),
                 request.name,
-                request.username,
-                request.email,
                 request.password,
                 request.photo,
             )
