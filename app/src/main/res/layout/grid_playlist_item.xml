@@ -47,4 +47,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_library_title"
         tools:text="@string/library_type" />
+
+    <ImageButton
+        android:id="@+id/imb_kebab"
+        android:layout_width="@dimen/space_24dp"
+        android:layout_height="@dimen/space_24dp"
+        android:background="#00FFFFFF"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_playlist_item"
+        app:srcCompat="@drawable/ic_more_gray" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.library.detail.DetailLibraryFragment">
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/detail_library_appbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/msv_playlist_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:msv_errorView="@layout/default_error_state"
+        app:msv_loadingView="@layout/shimmer_favorite_layout">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/imv_cover"
+                    layout="@layout/grid_playlist_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/space_24dp"
+                    android:layout_marginTop="@dimen/space_16dp" />
+
+                <com.kennyc.view.MultiStateView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_music_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_32dp"
+                        android:visibility="gone"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/music_kebab_item"
+                        tools:visibility="visible" />
+                </com.kennyc.view.MultiStateView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.kennyc.view.MultiStateView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
