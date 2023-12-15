@@ -139,7 +139,16 @@ class RegisterFragment : Fragment() {
         } else {
             binding.etPassword.error = null
         }
-        viewModel.formPasswordValid = checkPasswordRequirements(viewModel.formPassword)
+        with(binding.passwordReq) {
+            viewModel.formPasswordValid = FormValidation.checkPasswordRequirements(
+                requireActivity(),
+                viewModel.formPassword,
+                ivMinPassword,
+                ivNumbers,
+                ivUppercase,
+                ivLowercase,
+            )
+        }
     }
 
     private fun setFormEmailListener() {
@@ -321,73 +330,6 @@ class RegisterFragment : Fragment() {
                 getString(R.string.register_failed_message), CustomSnackbar.STATE_ERROR
             )
         }
-    }
-
-    private fun checkPasswordRequirements(password: String): Boolean {
-        var isPasswordValid = true
-
-        val passwordRequirements = FormValidation.isPasswordValid(password)
-        if (passwordRequirements[FormValidation.KEY_MINIMAL_CHARACTER] == true) {
-            binding.passwordReq.ivMinPassword.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_checklist_green
-                )
-            )
-        } else {
-            isPasswordValid = false
-            binding.passwordReq.ivMinPassword.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_clause_red
-                )
-            )
-        }
-
-        if (passwordRequirements[FormValidation.KEY_CONTAIN_NUMBER] == true) {
-            binding.passwordReq.ivNumbers.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_checklist_green
-                )
-            )
-        } else {
-            isPasswordValid = false
-            binding.passwordReq.ivNumbers.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_clause_red
-                )
-            )
-        }
-
-        if (passwordRequirements[FormValidation.KEY_CONTAIN_UPPER] == true) {
-            binding.passwordReq.ivUppercase.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_checklist_green
-                )
-            )
-        } else {
-            isPasswordValid = false
-            binding.passwordReq.ivUppercase.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_clause_red
-                )
-            )
-        }
-
-        if (passwordRequirements[FormValidation.KEY_CONTAIN_LOWER] == true) {
-            binding.passwordReq.ivLowercase.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_checklist_green
-                )
-            )
-        } else {
-            isPasswordValid = false
-            binding.passwordReq.ivLowercase.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_clause_red
-                )
-            )
-        }
-
-        return isPasswordValid
     }
 
     private fun makeRegisterObserve(account: Account) {

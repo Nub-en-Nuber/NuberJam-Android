@@ -15,6 +15,11 @@ import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
 import com.example.nuberjam.utils.NoConnectivityException
+import com.example.nuberjam.utils.extension.toAccountRequest
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import java.io.File
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -54,8 +59,8 @@ class Repository @Inject constructor(
                 val account = Mapping.accountItemToAccount(accountItem)
 
                 var isArtist = false
-                val response = apiService.checkAccountArtist(account.id.toString())
-                if (response.status == Constant.API_SUCCESS_CODE) {
+                val artistResponse = apiService.checkAccountArtist(account.id.toString())
+                if (artistResponse.status == Constant.API_SUCCESS_CODE) {
                     isArtist = true
                 }
                 emit(Result.Success(account.copy(isArtist = isArtist)))
@@ -198,6 +203,70 @@ class Repository @Inject constructor(
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
+    }
+
+    fun updateAccount(account: Account, photoFile: File? = null): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val request = account.toAccountRequest(photoFile)
+            val response = apiService.updateAccount(
+                accountId.toString(),
+                request.name,
+                request.password,
+                request.photo,
+            )
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                updateAccountState(account, photoFile)
+                emit(Result.Success(true))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "updateAccount: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun deleteAccount(): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response = apiService.deleteAccount(
+                accountId.toString(),
+            )
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                emit(Result.Success(true))
+                saveLoginState(false)
+                clearAccountState()
+            } else {
+                emit(Result.Success(false))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "deleteAccount: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    private suspend fun updateAccountState(account: Account, photoFile: File?) {
+        val accountState = appPreferences.getAccountState().first()
+
+        val photo = if (photoFile != null) {
+            val accountResponse = apiService.readAccountWithEmail(accountState.email)
+            accountResponse.data?.account?.get(0)?.accountPhoto ?: ""
+        } else {
+            ""
+        }
+
+        val updateAccount = accountState.copy(name = account.name.ifEmpty { accountState.name },
+            username = account.username.ifEmpty { accountState.username },
+            email = account.email.ifEmpty { accountState.email },
+            password = account.password.ifEmpty { accountState.password },
+            photo = photo.ifEmpty { accountState.photo })
+
+        appPreferences.saveAccountState(updateAccount)
     }
 
     companion object {

@@ -14,6 +14,9 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFragment
+import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
+import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,20 +54,16 @@ class ProfileFragment : Fragment() {
                 logoutProcess()
             }
 
-            imbUsername.setOnClickListener {
-                // TODO: MP-415
-            }
-
             imbName.setOnClickListener {
-                // TODO: MP-416
-            }
-
-            imbEmail.setOnClickListener {
-                // TODO: MP-417
+                openEditNameDialog()
             }
 
             imbChangePassword.setOnClickListener {
-                // TODO: MP-418
+                val editPasswordDialogFragment = EditPasswordDialogFragment()
+                editPasswordDialogFragment.show(
+                    childFragmentManager,
+                    EditPasswordDialogFragment.TAG
+                )
             }
 
             imbTnc.setOnClickListener {
@@ -72,7 +71,8 @@ class ProfileFragment : Fragment() {
             }
 
             tvDeleteAccount.setOnClickListener {
-                // TODO: MP-419
+                val deleteAccountDialogFragment = DeleteAccountDialogFragment()
+                deleteAccountDialogFragment.show(childFragmentManager, DeleteAccountDialogFragment.TAG)
             }
 
             imvProfile.setOnClickListener {
@@ -87,6 +87,12 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun openEditNameDialog() {
+        val name = binding.tvName.text.toString()
+        val editNameDialogFragment = EditNameDialogFragment.getInstance(name)
+        editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
+    }
+
     private fun setupView() {
         checkAccountArtist()
         setUserProfile() // #Anjar12
@@ -99,7 +105,8 @@ class ProfileFragment : Fragment() {
 
     private fun setUserProfile() {
         with(binding) {
-            Glide.with(requireActivity()).load(account.photo).error(R.drawable.ic_profile_placeholder).into(imvProfile)
+            Glide.with(requireActivity()).load(account.photo)
+                .error(R.drawable.ic_profile_placeholder).into(imvProfile)
             tvName.text = account.name
             tvYourUsername.text = account.username
             tvYourName.text = account.name
