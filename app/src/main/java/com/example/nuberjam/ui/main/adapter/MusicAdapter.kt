@@ -13,8 +13,12 @@ import com.example.nuberjam.databinding.MusicItemBinding
 import com.example.nuberjam.utils.Helper.concatenateArtist
 import com.example.nuberjam.utils.Helper.displayDuration
 
-class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
+class MusicAdapter(
+    private val musicAdapterCallback: MusicAdapterCallback,
+    private val viewType: Int
+) :
     ListAdapter<Music, MusicAdapter.ViewHolder>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = MusicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding, musicAdapterCallback)
@@ -37,7 +41,11 @@ class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
                 tvDuration.text = musicItem.duration?.let { displayDuration(it) }
 
                 imvAlbum.setOnClickListener {
-                    Toast.makeText(itemView.context, "Ini Album ${musicItem.albumName}",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        itemView.context,
+                        "Ini Album ${musicItem.albumName}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             itemView.setOnClickListener {

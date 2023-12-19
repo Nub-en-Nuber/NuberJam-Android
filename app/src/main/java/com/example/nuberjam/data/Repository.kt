@@ -14,7 +14,7 @@ import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
-import com.example.nuberjam.utils.NoConnectivityException
+import com.example.nuberjam.utils.network.NoConnectivityException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
