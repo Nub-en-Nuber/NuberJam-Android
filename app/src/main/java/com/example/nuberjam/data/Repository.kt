@@ -10,6 +10,8 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
+import com.example.nuberjam.data.source.remote.request.FavoriteRequest
+import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
@@ -212,6 +214,28 @@ class Repository @Inject constructor(
             emit(Result.Success(listFavorite))
         } catch (e: Exception) {
             Log.e(TAG, "readAllFavorite: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun addDeleteFavorite(musicId: Int, isInsert: Boolean): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response: DataResponse = if (isInsert) {
+                val request = FavoriteRequest(musicId, accountId)
+                apiService.addFavorite(request)
+            } else {
+                apiService.deleteFavorite(musicId, accountId)
+            }
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                emit(Result.Success(true))
+            } else {
+                throw Exception("")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "addDeleteFavorite: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
