@@ -15,3 +15,7 @@ object Constant {
     const val LIBRARY_LINEAR_TYPE = "linear"
     const val LIBRARY_GRID_TYPE = "grid"
 }
+
+enum class LibraryDetailType(val code: Int) {
+    FAVORITE(1), ALBUM(2), PLAYLIST(3)
+}
