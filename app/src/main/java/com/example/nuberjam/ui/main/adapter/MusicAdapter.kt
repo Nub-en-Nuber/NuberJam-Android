@@ -1,56 +1,99 @@
 package com.example.nuberjam.ui.main.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.MusicItemBinding
+import com.example.nuberjam.databinding.MusicKebabItemBinding
 import com.example.nuberjam.utils.Helper.concatenateArtist
 import com.example.nuberjam.utils.Helper.displayDuration
+import com.example.nuberjam.utils.LibraryDetailType
 
-class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
-    ListAdapter<Music, MusicAdapter.ViewHolder>(DIFF_CALLBACK) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = MusicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, musicAdapterCallback)
+class MusicAdapter(
+    private val musicAdapterCallback: MusicAdapterCallback,
+    private val viewType: LibraryDetailType = LibraryDetailType.Favorite
+) : ListAdapter<Music, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+
+    override fun getItemViewType(position: Int): Int {
+        return viewType.code
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == LibraryDetailType.Playlist.code) {
+            val binding =
+                MusicKebabItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            MusicViewHolder(binding, viewType, musicAdapterCallback)
+        } else {
+            val binding =
+                MusicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            MusicViewHolder(binding, viewType, musicAdapterCallback)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val musicItem = getItem(position)
-        holder.bind(musicItem)
+        (holder as MusicViewHolder<*>).bind(musicItem)
     }
 
-    class ViewHolder(
-        private val binding: MusicItemBinding,
-        private val musicAdapterCallback: MusicAdapterCallback
+    class MusicViewHolder<T : ViewBinding>(
+        private val binding: T,
+        private val viewType: Int,
+        private val callback: MusicAdapterCallback
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(musicItem: Music) {
-            binding.apply {
-                Glide.with(itemView.context).load(musicItem.albumPhoto).into(imvAlbum)
-                tvTitle.text = musicItem.name
-                tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
-                tvDuration.text = musicItem.duration?.let { displayDuration(it) }
+            if (viewType == LibraryDetailType.Playlist.code) {
+                with(binding as MusicKebabItemBinding) {
+                    Glide.with(itemView.context).load(musicItem.albumPhoto).into(imvAlbum)
+                    tvTitle.text = musicItem.name
+                    tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
+                    tvDuration.text = musicItem.duration?.let { displayDuration(it) }
 
-                imvAlbum.setOnClickListener {
-                    Toast.makeText(itemView.context, "Ini Album ${musicItem.albumName}",Toast.LENGTH_SHORT).show()
+                    imvAlbum.setOnClickListener {
+                        callback.onAlbumImageClick(musicItem.albumId ?: 0)
+                    }
+                    imbLove.setOnClickListener {
+                        callback.onFavoriteActionClick(musicItem.id ?: 0)
+                    }
+                    imbKebab.setOnClickListener {
+                        // TODO: Show popup menu
+                    }
+                }
+            } else {
+                with(binding as MusicItemBinding) {
+                    Glide.with(itemView.context).load(musicItem.albumPhoto).into(imvAlbum)
+                    tvTitle.text = musicItem.name
+                    tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
+                    tvDuration.text = musicItem.duration?.let { displayDuration(it) }
+
+                    imvAlbum.setOnClickListener {
+                        callback.onAlbumImageClick(musicItem.albumId ?: 0)
+                    }
+                    imbLove.setOnClickListener {
+                        callback.onFavoriteActionClick(musicItem.id ?: 0)
+                    }
+                    imbPlaylist.setOnClickListener {
+                        callback.onPlaylistActionClick(musicItem.id ?: 0)
+                    }
                 }
             }
             itemView.setOnClickListener {
-                musicAdapterCallback.onItemClick(musicItem.id ?: 0)
+                callback.onItemClick(musicItem.id ?: 0)
             }
         }
     }
 
     interface MusicAdapterCallback {
         fun onItemClick(musicId: Int)
+        fun onAlbumImageClick(albumId: Int) {}
         fun onFavoriteActionClick(musicId: Int) {}
         fun onPlaylistActionClick(musicId: Int) {}
-        fun onMenuPlaylistActionClick(musicId: Int) {}
+        fun addItemToPlaylist(musicId: Int) {}
+        fun deleteItemFromPlaylist(musicId: Int) {}
     }
 
     companion object {
@@ -61,7 +104,6 @@ class MusicAdapter(private val musicAdapterCallback: MusicAdapterCallback) :
                 return oldItem.id == newItem.id
             }
 
-            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
                 oldItem: Music, newItem: Music
             ): Boolean {

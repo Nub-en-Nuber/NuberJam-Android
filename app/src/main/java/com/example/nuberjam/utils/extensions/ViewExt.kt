@@ -1,4 +1,4 @@
-package com.example.nuberjam.utils
+package com.example.nuberjam.utils.extensions
 
 import android.view.View
 

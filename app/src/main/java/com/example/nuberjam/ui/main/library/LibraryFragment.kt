@@ -19,9 +19,8 @@ import com.example.nuberjam.ui.main.adapter.GridPlaylistAdapter
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.Helper
-import com.example.nuberjam.utils.showNuberJamDefaultState
-import com.example.nuberjam.utils.showNuberJamErrorState
-import com.example.nuberjam.utils.showNuberJamLoadingState
+import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
+import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,7 +1,6 @@
 package com.example.nuberjam.ui.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentHomeBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
-import com.example.nuberjam.ui.main.adapter.MusicAdapter
-import dagger.hilt.android.AndroidEntryPoint
-import com.example.nuberjam.data.Result
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
-import com.example.nuberjam.ui.main.profile.ProfileFragmentDirections
+import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Helper
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {

@@ -1,16 +1,10 @@
-package com.example.nuberjam.utils
+package com.example.nuberjam.utils.extensions
 
-import android.graphics.drawable.Drawable
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.DrawableRes
-import androidx.annotation.RawRes
 import com.airbnb.lottie.LottieAnimationView
-import com.bumptech.glide.Glide
 import com.example.nuberjam.R
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.google.android.material.button.MaterialButton
 import com.kennyc.view.MultiStateView
 
 fun MultiStateView.showNuberJamErrorState(
