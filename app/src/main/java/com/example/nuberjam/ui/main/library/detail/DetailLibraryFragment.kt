@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
+import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
@@ -31,7 +32,7 @@ class DetailLibraryFragment : Fragment() {
 
     private val viewModel: DetailLibraryViewModel by viewModels()
 
-    private lateinit var adapter: MusicAdapter
+    private lateinit var musicAdapter: MusicAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,15 +51,22 @@ class DetailLibraryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MusicAdapter(object : MusicAdapter.MusicAdapterCallback {
+        musicAdapter = MusicAdapter(object : MusicAdapter.MusicAdapterCallback {
             override fun onItemClick(musicId: Int) {
-//                TODO("Not yet implemented")
+                navigateToDetailMusic(musicId)
             }
         })
         binding.rvMusicList.apply {
-            adapter = adapter
+            adapter = musicAdapter
             layoutManager = LinearLayoutManager(requireActivity())
         }
+    }
+
+    private fun navigateToDetailMusic(musicId: Int) {
+        val toMusicFragment =
+            DetailLibraryFragmentDirections.actionDetailLibraryFragmentToMusicFragment()
+        toMusicFragment.musicId = musicId
+        findNavController().navigate(toMusicFragment)
     }
 
     private fun observeFavoriteData() {
@@ -66,26 +74,9 @@ class DetailLibraryFragment : Fragment() {
             if (result != null) {
                 when (result) {
                     is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
-                    is Result.Success -> {
-                        binding.msvPlaylistOuter.showNuberJamDefaultState()
-                        val data = result.data
-                        binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
-                        binding.imvCover.tvLibraryType.text =
-                            getString(R.string.total_song, data.size)
-                        binding.imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
-                        if (data.isEmpty()) {
-                            binding.msvPlaylistInner.showNuberJamEmptyState(
-                                emptyMessage = getString(R.string.data_not_available)
-                            )
-                        } else {
-                            adapter.submitList(data)
-                        }
-                    }
-
+                    is Result.Success -> setView(result.data)
                     is Result.Error -> {
-                        binding.msvPlaylistInner.showNuberJamEmptyState(
-                            emptyMessage = getString(R.string.data_not_available)
-                        )
+                        setView()
                         viewModel.setSnackbar(
                             Helper.getApiErrorMessage(requireActivity(), result.errorCode),
                             CustomSnackbar.STATE_ERROR
@@ -93,6 +84,22 @@ class DetailLibraryFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setView(data: List<Music> = ArrayList()) {
+        binding.msvPlaylistOuter.showNuberJamDefaultState()
+        binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
+        binding.imvCover.tvLibraryType.text =
+            getString(R.string.total_song, data.size)
+        binding.imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
+        if (data.isEmpty()) {
+            binding.msvPlaylistInner.showNuberJamEmptyState(
+                emptyMessage = getString(R.string.data_not_available)
+            )
+        } else {
+            binding.msvPlaylistInner.showNuberJamDefaultState()
+            musicAdapter.submitList(data)
         }
     }
 

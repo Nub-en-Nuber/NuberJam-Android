@@ -210,7 +210,9 @@ class Repository @Inject constructor(
         try {
             val accountId = appPreferences.getAccountState().first().id
             val response = apiService.readAllFavorite(accountId.toString())
+            Log.d(TAG, "readAllFavorite: response $response")
             val listFavorite = Mapping.dataResponseToMusic(response)
+            Log.d(TAG, "readAllFavorite: listFavorite $listFavorite")
             emit(Result.Success(listFavorite))
         } catch (e: Exception) {
             Log.e(TAG, "readAllFavorite: ${e.message.toString()}")

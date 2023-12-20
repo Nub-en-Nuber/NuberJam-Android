@@ -98,6 +98,14 @@
         android:id="@+id/detailLibraryFragment"
         android:name="com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment"
         android:label="fragment_detail_library"
-        tools:layout="@layout/fragment_detail_library" />
+        tools:layout="@layout/fragment_detail_library">
+        <action
+            android:id="@+id/action_detailLibraryFragment_to_musicFragment"
+            app:destination="@id/musicFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
 </navigation>
