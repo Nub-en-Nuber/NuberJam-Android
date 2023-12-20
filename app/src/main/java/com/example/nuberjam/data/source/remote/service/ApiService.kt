@@ -1,7 +1,9 @@
 package com.example.nuberjam.data.source.remote.service
 
+import com.example.nuberjam.data.source.remote.request.FavoriteRequest
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.utils.Constant
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -87,5 +89,16 @@ interface ApiService {
     @GET("favorite/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllFavorite(
         @Query("accountId") accountId: String,
+    ): DataResponse
+
+    @POST("favorite/add.php?token=${Constant.TOKEN}")
+    suspend fun addFavorite(
+        @Body favoriteRequest: FavoriteRequest,
+    ): DataResponse
+
+    @POST("favorite/delete.php?token=${Constant.TOKEN}")
+    suspend fun deleteFavorite(
+        @Query("musicId") musicId: Int,
+        @Query("accountId") accountId: Int,
     ): DataResponse
 }
