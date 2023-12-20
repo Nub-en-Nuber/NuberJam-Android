@@ -16,7 +16,7 @@ import com.example.nuberjam.utils.LibraryDetailType
 
 class MusicAdapter(
     private val musicAdapterCallback: MusicAdapterCallback,
-    private val viewType: LibraryDetailType = LibraryDetailType.FAVORITE
+    private val viewType: LibraryDetailType = LibraryDetailType.Favorite
 ) : ListAdapter<Music, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun getItemViewType(position: Int): Int {
@@ -24,7 +24,7 @@ class MusicAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == LibraryDetailType.PLAYLIST.code) {
+        return if (viewType == LibraryDetailType.Playlist.code) {
             val binding =
                 MusicKebabItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             MusicViewHolder(binding, viewType, musicAdapterCallback)
@@ -46,7 +46,7 @@ class MusicAdapter(
         private val callback: MusicAdapterCallback
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(musicItem: Music) {
-            if (viewType == LibraryDetailType.PLAYLIST.code) {
+            if (viewType == LibraryDetailType.Playlist.code) {
                 with(binding as MusicKebabItemBinding) {
                     Glide.with(itemView.context).load(musicItem.albumPhoto).into(imvAlbum)
                     tvTitle.text = musicItem.name

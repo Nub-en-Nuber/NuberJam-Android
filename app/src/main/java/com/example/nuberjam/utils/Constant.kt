@@ -17,5 +17,5 @@ object Constant {
 }
 
 enum class LibraryDetailType(val code: Int) {
-    FAVORITE(1), ALBUM(2), PLAYLIST(3)
+    Favorite(1), Album(2), Playlist(3)
 }
