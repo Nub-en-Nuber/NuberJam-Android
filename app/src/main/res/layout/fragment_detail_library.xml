@@ -39,8 +39,10 @@
                     android:layout_marginTop="@dimen/space_16dp" />
 
                 <com.kennyc.view.MultiStateView
+                    android:id="@+id/msv_playlist_inner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:msv_emptyView="@layout/default_empty_state">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_music_list"
