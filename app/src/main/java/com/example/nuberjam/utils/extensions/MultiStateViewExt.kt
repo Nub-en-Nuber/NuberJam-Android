@@ -8,7 +8,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.kennyc.view.MultiStateView
 
 fun MultiStateView.showNuberJamErrorState(
-    lottieJson: Int? = null,
+    lottieJson: Int? = R.raw.no_data_animation,
     emptyMessage: String,
     onButtonClicked: (() -> Unit)? = null
 ) {
@@ -35,7 +35,7 @@ fun MultiStateView.showNuberJamErrorState(
 }
 
 fun MultiStateView.showNuberJamEmptyState(
-    lottieJson: String? = null,
+    lottieJson: String? = R.raw.no_data_animation,
     emptyMessage: String? = null
 ) {
     val shimmerLoading = findViewById<ShimmerFrameLayout>(R.id.shimmer_loading)
