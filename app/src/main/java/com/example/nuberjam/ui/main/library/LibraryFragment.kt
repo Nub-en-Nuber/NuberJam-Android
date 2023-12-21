@@ -150,7 +150,6 @@ class LibraryFragment : Fragment() {
 
                         // If you want to use Error State
 //                        binding.msvLibrary.showNuberJamErrorState(
-//                            lottieJson = R.raw.no_data_animation,
 //                            emptyMessage = "Gaada data cuy!",
 //                            onButtonClicked = {
 //                                setData()
