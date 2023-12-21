@@ -21,6 +21,7 @@ import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
 import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
 import com.example.nuberjam.utils.extensions.showNuberJamEmptyState
+import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,9 +75,31 @@ class DetailLibraryFragment : Fragment() {
             if (result != null) {
                 when (result) {
                     is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
-                    is Result.Success -> setView(result.data)
+                    is Result.Success -> {
+                        val data = arrayListOf<Music>()
+                        binding.msvPlaylistOuter.showNuberJamDefaultState()
+                        binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
+                        binding.imvCover.tvLibraryType.text =
+                            getString(R.string.total_song, data.size)
+                        binding.imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
+                        if (data.isEmpty()) {
+                            binding.msvPlaylistInner.showNuberJamEmptyState(
+                                lottieJson = null,
+                                emptyMessage = getString(R.string.data_not_available)
+                            )
+                        } else {
+                            musicAdapter.submitList(data)
+                        }
+                    }
+
                     is Result.Error -> {
-                        setView()
+                        binding.msvPlaylistOuter.showNuberJamErrorState(
+                            errorMessage = Helper.getApiErrorMessage(
+                                requireActivity(),
+                                result.errorCode
+                            ),
+                            onButtonClicked = viewModel::getFavoriteData
+                        )
                         viewModel.setSnackbar(
                             Helper.getApiErrorMessage(requireActivity(), result.errorCode),
                             CustomSnackbar.STATE_ERROR
@@ -84,22 +107,6 @@ class DetailLibraryFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-    private fun setView(data: List<Music> = ArrayList()) {
-        binding.msvPlaylistOuter.showNuberJamDefaultState()
-        binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
-        binding.imvCover.tvLibraryType.text =
-            getString(R.string.total_song, data.size)
-        binding.imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
-        if (data.isEmpty()) {
-            binding.msvPlaylistInner.showNuberJamEmptyState(
-                emptyMessage = getString(R.string.data_not_available)
-            )
-        } else {
-            binding.msvPlaylistInner.showNuberJamDefaultState()
-            musicAdapter.submitList(data)
         }
     }
 

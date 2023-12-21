@@ -34,7 +34,7 @@ class DetailLibraryViewModel @Inject constructor(
         _snackbarState.value = Event(CustomSnackbar.SnackbarState(message, state, length))
     }
 
-    private fun getFavoriteData() {
+    fun getFavoriteData() {
         viewModelScope.launch {
             repository.readAllFavorite().collect {
                 _favoriteState.value = it
