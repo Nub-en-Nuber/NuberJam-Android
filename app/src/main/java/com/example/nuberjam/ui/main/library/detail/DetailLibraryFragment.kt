@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
-import com.example.nuberjam.data.model.Music
+import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
@@ -34,6 +34,8 @@ class DetailLibraryFragment : Fragment() {
     private val viewModel: DetailLibraryViewModel by viewModels()
 
     private lateinit var musicAdapter: MusicAdapter
+
+    private var favoriteButtonLayout: FavoriteStateButtonBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,6 +58,19 @@ class DetailLibraryFragment : Fragment() {
             override fun onItemClick(musicId: Int) {
                 navigateToDetailMusic(musicId)
             }
+
+            override fun onFavoriteActionClick(
+                musicId: Int,
+                isFavorite: Boolean,
+                buttonFavoriteState: FavoriteStateButtonBinding
+            ) {
+                favoriteButtonLayout = buttonFavoriteState
+                if (isFavorite) {
+                    //delete
+                } else {
+                    //insert
+                }
+            }
         })
         binding.rvMusicList.apply {
             adapter = musicAdapter
@@ -76,7 +91,7 @@ class DetailLibraryFragment : Fragment() {
                 when (result) {
                     is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
                     is Result.Success -> {
-                        val data = arrayListOf<Music>()
+                        val data = result.data
                         binding.msvPlaylistOuter.showNuberJamDefaultState()
                         binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
                         binding.imvCover.tvLibraryType.text =

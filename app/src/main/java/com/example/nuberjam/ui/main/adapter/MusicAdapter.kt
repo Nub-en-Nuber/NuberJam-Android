@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.nuberjam.data.model.Music
+import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.MusicItemBinding
 import com.example.nuberjam.databinding.MusicKebabItemBinding
 import com.example.nuberjam.utils.Helper.concatenateArtist
@@ -56,8 +57,12 @@ class MusicAdapter(
                     imvAlbum.setOnClickListener {
                         callback.onAlbumImageClick(musicItem.albumId ?: 0)
                     }
-                    imbLove.setOnClickListener {
-                        callback.onFavoriteActionClick(musicItem.id ?: 0)
+                    buttonFavoriteState.imbLove.setOnClickListener {
+                        callback.onFavoriteActionClick(
+                            musicItem.id ?: 0,
+                            musicItem.isFavorite ?: false,
+                            buttonFavoriteState
+                        )
                     }
                     imbKebab.setOnClickListener {
                         // TODO: Show popup menu
@@ -73,8 +78,12 @@ class MusicAdapter(
                     imvAlbum.setOnClickListener {
                         callback.onAlbumImageClick(musicItem.albumId ?: 0)
                     }
-                    imbLove.setOnClickListener {
-                        callback.onFavoriteActionClick(musicItem.id ?: 0)
+                    buttonFavoriteState.imbLove.setOnClickListener {
+                        callback.onFavoriteActionClick(
+                            musicItem.id ?: 0,
+                            musicItem.isFavorite ?: false,
+                            buttonFavoriteState
+                        )
                     }
                     imbPlaylist.setOnClickListener {
                         callback.onPlaylistActionClick(musicItem.id ?: 0)
@@ -90,7 +99,13 @@ class MusicAdapter(
     interface MusicAdapterCallback {
         fun onItemClick(musicId: Int)
         fun onAlbumImageClick(albumId: Int) {}
-        fun onFavoriteActionClick(musicId: Int) {}
+        fun onFavoriteActionClick(
+            musicId: Int,
+            isFavorite: Boolean,
+            buttonFavoriteState: FavoriteStateButtonBinding
+        ) {
+        }
+
         fun onPlaylistActionClick(musicId: Int) {}
         fun addItemToPlaylist(musicId: Int) {}
         fun deleteItemFromPlaylist(musicId: Int) {}
