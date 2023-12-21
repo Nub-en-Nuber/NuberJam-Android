@@ -9,16 +9,16 @@ import com.kennyc.view.MultiStateView
 
 fun MultiStateView.showNuberJamErrorState(
     lottieJson: Int? = R.raw.no_data_animation,
-    emptyMessage: String,
+    errorMessage: String,
     onButtonClicked: (() -> Unit)? = null
 ) {
     val shimmerLoading = findViewById<ShimmerFrameLayout>(R.id.shimmer_loading)
     shimmerLoading?.stopShimmerAnimation()
     this.viewState = MultiStateView.ViewState.ERROR
 
-    emptyMessage.let {
+    errorMessage.let {
         val tvError = findViewById<TextView>(R.id.tv_error)
-        tvError?.text = emptyMessage
+        tvError?.text = errorMessage
     }
 
     lottieJson?.let {
@@ -35,7 +35,7 @@ fun MultiStateView.showNuberJamErrorState(
 }
 
 fun MultiStateView.showNuberJamEmptyState(
-    lottieJson: String? = R.raw.no_data_animation,
+    lottieJson: Int? = R.raw.no_data_animation,
     emptyMessage: String? = null
 ) {
     val shimmerLoading = findViewById<ShimmerFrameLayout>(R.id.shimmer_loading)

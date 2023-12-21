@@ -23,7 +23,15 @@
         android:id="@+id/navigation_library"
         android:name="com.example.nuberjam.ui.main.library.LibraryFragment"
         android:label="Library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_navigation_library_to_detailLibraryFragment"
+            app:destination="@id/detailLibraryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -53,7 +61,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <activity
@@ -85,6 +93,19 @@
         android:id="@+id/tncFragment"
         android:name="com.example.nuberjam.ui.main.profile.tnc.TncFragment"
         android:label="fragment_tnc"
-        tools:layout="@layout/fragment_tnc"/>
+        tools:layout="@layout/fragment_tnc" />
+    <fragment
+        android:id="@+id/detailLibraryFragment"
+        android:name="com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment"
+        android:label="fragment_detail_library"
+        tools:layout="@layout/fragment_detail_library">
+        <action
+            android:id="@+id/action_detailLibraryFragment_to_musicFragment"
+            app:destination="@id/musicFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 
 </navigation>

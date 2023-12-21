@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -174,11 +175,11 @@ class LibraryFragment : Fragment() {
                 .into(favoriteItem.favoriteGridItem.ivGridImage)
 
             favoriteItem.favoriteLinearItem.cvLibraryItem.setOnClickListener {
-                // TODO: Navigate to Favorite Screen
+                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
             }
 
             favoriteItem.favoriteGridItem.cvPlaylistItem.setOnClickListener {
-                // TODO: Navigate to Favorite Screen
+                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
             }
         }
     }
