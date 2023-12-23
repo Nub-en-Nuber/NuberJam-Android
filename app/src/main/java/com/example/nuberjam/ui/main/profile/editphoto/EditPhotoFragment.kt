@@ -19,6 +19,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentEditPhotoBinding
@@ -63,7 +65,11 @@ class EditPhotoFragment : Fragment() {
 
     private fun initUI() {
         Glide.with(requireActivity()).load(currentPhoto)
-            .error(R.drawable.ic_profile_placeholder).into(binding.imvProfilePhoto)
+            .placeholder(R.drawable.ic_profile_placeholder)
+            .error(R.drawable.ic_profile_placeholder)
+            .apply(RequestOptions.skipMemoryCacheOf(true))
+            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+            .into(binding.imvProfilePhoto)
     }
 
     private fun setToolbar() {
