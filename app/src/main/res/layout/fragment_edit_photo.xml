@@ -106,6 +106,17 @@
             app:layout_constraintStart_toEndOf="@+id/btn_cancel"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_save"
+            app:layout_constraintEnd_toEndOf="@+id/btn_save"
+            app:layout_constraintStart_toStartOf="@+id/btn_cancel"
+            app:layout_constraintTop_toTopOf="@+id/btn_save" />
+
         <Button
             android:id="@+id/btn_cancel"
             style="@style/CustomMaterialButton"

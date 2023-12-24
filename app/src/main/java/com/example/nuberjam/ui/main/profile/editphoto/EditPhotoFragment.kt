@@ -2,7 +2,6 @@ package com.example.nuberjam.ui.main.profile.editphoto
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,8 +132,8 @@ class EditPhotoFragment : Fragment() {
             viewModel.updateAccount(chosenImage)
     }
 
-    private fun getChosenImage() : File? {
-        var currentFile : File? = null
+    private fun getChosenImage(): File? {
+        var currentFile: File? = null
         viewModel.currentImageUri?.let { uri ->
             currentFile = PhotoLoaderManager.uriToFile(uri, requireActivity())
         }
@@ -146,6 +145,7 @@ class EditPhotoFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.updatePhotoState.collect { result ->
                     if (result != null) {
+                        showLoading(result is Result.Loading)
                         when (result) {
                             is Result.Success -> {
                                 val chosenImage = getChosenImage()
@@ -162,21 +162,29 @@ class EditPhotoFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { snackbarState ->
+                val customSnackbar =
+                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
+                customSnackbar.setMessage(snackbarState.message)
+                customSnackbar.setState(snackbarState.state)
+                customSnackbar.show()
+            }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.loading.isInvisible = !isLoading
+        binding.btnSave.isInvisible = isLoading
+        binding.btnCancel.isInvisible = isLoading
     }
 
     private fun showError(errorCode: Int) {
         val message = Helper.getApiErrorMessage(requireActivity(), errorCode)
+        viewModel.setSnackbar(
+            message,
+            CustomSnackbar.STATE_SUCCESS
+        )
     }
-
-//    private fun showSnackbarObserve() {
-//        viewModel.snackbarState.observe(this) { event ->
-//            event.getContentIfNotHandled()?.let { snackbarState ->
-//                val customSnackbar =
-//                    CustomSnackbar.build(layoutInflater, binding.root, snackbarState.length)
-//                customSnackbar.setMessage(snackbarState.message)
-//                customSnackbar.setState(snackbarState.state)
-//                customSnackbar.show()
-//            }
-//        }
-//    }
 }
