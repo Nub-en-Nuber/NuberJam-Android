@@ -158,6 +158,24 @@ class Repository @Inject constructor(
         }
     }
 
+    fun readDetailAlbum(albumId: Int): Flow<Result<Album>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response = apiService.readDetailAlbum(albumId.toString(), accountId.toString())
+            if (response.data?.album != null) {
+                val listMusicAlbum = Mapping.albumItemToAlbum(response.data.album[0])
+                emit(Result.Success(listMusicAlbum))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "readDetailAlbum: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
     fun readDetailMusic(accountId: Int, musicId: Int): LiveData<Result<Music>> = liveData {
         emit(Result.Loading)
         try {
