@@ -12,6 +12,7 @@ import com.example.nuberjam.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +23,9 @@ class DetailLibraryViewModel @Inject constructor(
 
     private val _favoriteState = MutableStateFlow<Result<List<Music>>?>(null)
     val favoriteState = _favoriteState.asStateFlow()
+
+    private val _addDeleteFavoriteState = MutableStateFlow<Result<Boolean>?>(null)
+    val addDeleteFavoriteState = _addDeleteFavoriteState.asStateFlow()
 
     private val _snackbarState = MutableLiveData<Event<CustomSnackbar.SnackbarState>>()
     val snackbarState: LiveData<Event<CustomSnackbar.SnackbarState>> = _snackbarState
@@ -38,6 +42,14 @@ class DetailLibraryViewModel @Inject constructor(
         viewModelScope.launch {
             repository.readAllFavorite().collect {
                 _favoriteState.value = it
+            }
+        }
+    }
+
+    fun updateFavoriteData(musicId: Int, isInsert: Boolean) {
+        viewModelScope.launch {
+            repository.addDeleteFavorite(musicId, isInsert).collect {
+                _addDeleteFavoriteState.value = it
             }
         }
     }

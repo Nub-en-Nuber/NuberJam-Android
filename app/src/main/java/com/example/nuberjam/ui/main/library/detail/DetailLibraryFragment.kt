@@ -19,10 +19,14 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
+import com.example.nuberjam.utils.extensions.gone
+import com.example.nuberjam.utils.extensions.invisible
+import com.example.nuberjam.utils.extensions.onlyVisibleIf
 import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
 import com.example.nuberjam.utils.extensions.showNuberJamEmptyState
 import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
+import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +39,7 @@ class DetailLibraryFragment : Fragment() {
 
     private lateinit var musicAdapter: MusicAdapter
 
-    private var favoriteButtonLayout: FavoriteStateButtonBinding? = null
+    private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,7 +54,7 @@ class DetailLibraryFragment : Fragment() {
         setupAppbar()
         setupRecyclerView()
         showSnackbarObserve()
-        observeFavoriteData()
+        initObserver()
     }
 
     private fun setupRecyclerView() {
@@ -59,17 +63,29 @@ class DetailLibraryFragment : Fragment() {
                 navigateToDetailMusic(musicId)
             }
 
+            override fun onAlbumImageClick(albumId: Int) {
+            }
+
             override fun onFavoriteActionClick(
                 musicId: Int,
                 isFavorite: Boolean,
                 buttonFavoriteState: FavoriteStateButtonBinding
             ) {
-                favoriteButtonLayout = buttonFavoriteState
+                favoriteButtonBinding = buttonFavoriteState
                 if (isFavorite) {
-                    //delete
+                    viewModel.updateFavoriteData(musicId, false)
                 } else {
-                    //insert
+                    viewModel.updateFavoriteData(musicId, true)
                 }
+            }
+
+            override fun onPlaylistActionClick(musicId: Int) {
+            }
+
+            override fun addItemToPlaylist(musicId: Int) {
+            }
+
+            override fun deleteItemFromPlaylist(musicId: Int) {
             }
         })
         binding.rvMusicList.apply {
@@ -85,7 +101,7 @@ class DetailLibraryFragment : Fragment() {
         findNavController().navigate(toMusicFragment)
     }
 
-    private fun observeFavoriteData() {
+    private fun initObserver() {
         viewLifecycleOwner.collectLifecycleFlow(viewModel.favoriteState) { result ->
             if (result != null) {
                 when (result) {
@@ -122,6 +138,48 @@ class DetailLibraryFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        viewLifecycleOwner.collectLifecycleFlow(viewModel.addDeleteFavoriteState) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        updateFavoriteState(isLoading = true)
+                    }
+                    is Result.Success -> {
+                        updateFavoriteState(isLoading = false, isSuccess = true)
+                        viewModel.getFavoriteData()
+                    }
+
+                    is Result.Error -> {
+                        updateFavoriteState(isLoading = false, isSuccess = false)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateFavoriteState(isLoading: Boolean, isSuccess: Boolean = false) {
+        if (!isLoading) {
+            favoriteButtonBinding?.loading?.invisible()
+            val selectedView = favoriteButtonBinding?.imbLove
+            selectedView?.visible()
+            if (isSuccess){
+                selectedView?.setImageResource(
+                    R.drawable.ic_love_red
+                )
+            } else {
+                selectedView?.setImageResource(
+                    R.drawable.ic_love_gray
+                )
+            }
+        } else {
+            favoriteButtonBinding?.loading?.visible()
+            favoriteButtonBinding?.imbLove?.invisible()
         }
     }
 

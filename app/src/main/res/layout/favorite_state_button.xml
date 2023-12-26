@@ -4,6 +4,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading"
+        android:layout_width="@dimen/space_0dp"
+        android:layout_height="@dimen/space_0dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imb_love"
+        app:layout_constraintEnd_toEndOf="@+id/imb_love"
+        app:layout_constraintStart_toStartOf="@+id/imb_love"
+        app:layout_constraintTop_toTopOf="@+id/imb_love" />
+
     <ImageButton
         android:id="@+id/imb_love"
         android:layout_width="@dimen/space_24dp"
@@ -14,16 +25,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_love_gray" />
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loading"
-        android:layout_width="@dimen/space_0dp"
-        android:layout_height="@dimen/space_0dp"
-        android:indeterminate="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/imb_love"
-        app:layout_constraintEnd_toEndOf="@+id/imb_love"
-        app:layout_constraintStart_toStartOf="@+id/imb_love"
-        app:layout_constraintTop_toTopOf="@+id/imb_love" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

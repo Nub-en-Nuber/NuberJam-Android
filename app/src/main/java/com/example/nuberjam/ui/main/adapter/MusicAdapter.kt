@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
+import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.MusicItemBinding
@@ -54,6 +55,10 @@ class MusicAdapter(
                     tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
                     tvDuration.text = musicItem.duration?.let { displayDuration(it) }
 
+                    buttonFavoriteState.imbLove.setImageResource(
+                        if (musicItem.isFavorite == true) R.drawable.ic_love_red else R.drawable.ic_love_gray
+                    )
+
                     imvAlbum.setOnClickListener {
                         callback.onAlbumImageClick(musicItem.albumId ?: 0)
                     }
@@ -74,6 +79,10 @@ class MusicAdapter(
                     tvTitle.text = musicItem.name
                     tvSinger.text = musicItem.artist?.let { concatenateArtist(it) }
                     tvDuration.text = musicItem.duration?.let { displayDuration(it) }
+
+                    buttonFavoriteState.imbLove.setImageResource(
+                        if (musicItem.isFavorite == true) R.drawable.ic_love_red else R.drawable.ic_love_gray
+                    )
 
                     imvAlbum.setOnClickListener {
                         callback.onAlbumImageClick(musicItem.albumId ?: 0)
@@ -98,17 +107,16 @@ class MusicAdapter(
 
     interface MusicAdapterCallback {
         fun onItemClick(musicId: Int)
-        fun onAlbumImageClick(albumId: Int) {}
+        fun onAlbumImageClick(albumId: Int)
         fun onFavoriteActionClick(
             musicId: Int,
             isFavorite: Boolean,
             buttonFavoriteState: FavoriteStateButtonBinding
-        ) {
-        }
+        )
 
-        fun onPlaylistActionClick(musicId: Int) {}
-        fun addItemToPlaylist(musicId: Int) {}
-        fun deleteItemFromPlaylist(musicId: Int) {}
+        fun onPlaylistActionClick(musicId: Int)
+        fun addItemToPlaylist(musicId: Int)
+        fun deleteItemFromPlaylist(musicId: Int)
     }
 
     companion object {

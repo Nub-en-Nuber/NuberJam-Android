@@ -16,6 +16,7 @@ import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
+import com.example.nuberjam.utils.Mapping.toRequestBodyType
 import com.example.nuberjam.utils.network.NoConnectivityException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -226,8 +227,7 @@ class Repository @Inject constructor(
         try {
             val accountId = appPreferences.getAccountState().first().id
             val response: DataResponse = if (isInsert) {
-                val request = FavoriteRequest(musicId, accountId)
-                apiService.addFavorite(request)
+                apiService.addFavorite(musicId, accountId)
             } else {
                 apiService.deleteFavorite(musicId, accountId)
             }
