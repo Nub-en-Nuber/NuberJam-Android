@@ -1,6 +1,7 @@
 package com.example.nuberjam.ui.main.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.FragmentProfileBinding
@@ -75,7 +78,9 @@ class ProfileFragment : Fragment() {
             }
 
             imvProfile.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_profile_to_editPhotoFragment)
+                val toPhotoFragment = ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
+                toPhotoFragment.currentPhoto = account.photo
+                findNavController().navigate(toPhotoFragment)
             }
 
 //            viewModel.setSnackbar(
@@ -92,7 +97,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupView() {
         checkAccountArtist()
-        setUserProfile()
+        setUserProfile() // #Anjar12
     }
 
     private fun checkAccountArtist() {
@@ -103,7 +108,11 @@ class ProfileFragment : Fragment() {
     private fun setUserProfile() {
         with(binding) {
             Glide.with(requireActivity()).load(account.photo)
-                .error(R.drawable.ic_profile_placeholder).into(imvProfile)
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .error(R.drawable.ic_profile_placeholder)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(imvProfile)
             tvName.text = account.name
             tvYourUsername.text = account.username
             tvYourName.text = account.name

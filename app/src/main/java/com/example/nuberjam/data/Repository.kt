@@ -205,7 +205,7 @@ class Repository @Inject constructor(
         }
     }
 
-    fun updateAccount(account: Account, photoFile: File? = null): Flow<Result<Boolean>> = flow {
+    fun updateAccount(account: Account = Account(), photoFile: File? = null): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
             val accountId = appPreferences.getAccountState().first().id
