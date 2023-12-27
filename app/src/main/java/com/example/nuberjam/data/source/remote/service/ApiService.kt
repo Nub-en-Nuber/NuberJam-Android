@@ -91,9 +91,11 @@ interface ApiService {
         @Query("accountId") accountId: String,
     ): DataResponse
 
+    @FormUrlEncoded
     @POST("favorite/add.php?token=${Constant.TOKEN}")
     suspend fun addFavorite(
-        @Body favoriteRequest: FavoriteRequest,
+        @Field("musicId") musicId: Int,
+        @Field("accountId") accountId: Int,
     ): DataResponse
 
     @POST("favorite/delete.php?token=${Constant.TOKEN}")

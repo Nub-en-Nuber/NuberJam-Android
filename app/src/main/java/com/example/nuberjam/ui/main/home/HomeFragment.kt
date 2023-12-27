@@ -5,17 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
+import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentHomeBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.extensions.collectLifecycleFlow
+import com.example.nuberjam.utils.extensions.gone
+import com.example.nuberjam.utils.extensions.invisible
+import com.example.nuberjam.utils.extensions.onlyVisibleIf
+import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +37,8 @@ class HomeFragment : Fragment() {
     private lateinit var musicAdapter: MusicAdapter
 
     private lateinit var albumAdapter: AlbumAdapter
+
+    private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -97,7 +107,7 @@ class HomeFragment : Fragment() {
                         showLoading(false)
                         val data = result.data
                         if (data.isNotEmpty()) {
-                            musicAdapter.submitList(data.shuffled())
+                            musicAdapter.submitList(data)
                         } else {
                             showNoData()
                         }
@@ -124,6 +134,31 @@ class HomeFragment : Fragment() {
         musicAdapter = MusicAdapter(object : MusicAdapter.MusicAdapterCallback {
             override fun onItemClick(musicId: Int) {
                 navigateToDetailMusic(musicId)
+            }
+
+            override fun onAlbumImageClick(albumId: Int) {
+            }
+
+            override fun onFavoriteActionClick(
+                musicId: Int,
+                isFavorite: Boolean,
+                buttonFavoriteState: FavoriteStateButtonBinding
+            ) {
+                favoriteButtonBinding = buttonFavoriteState
+                if (isFavorite) {
+                    viewModel.updateFavoriteData(musicId, false)
+                } else {
+                    viewModel.updateFavoriteData(musicId, true)
+                }
+            }
+
+            override fun onPlaylistActionClick(musicId: Int) {
+            }
+
+            override fun addItemToPlaylist(musicId: Int) {
+            }
+
+            override fun deleteItemFromPlaylist(musicId: Int) {
             }
         })
         binding.rvMusicList.apply {
@@ -169,6 +204,48 @@ class HomeFragment : Fragment() {
                 customSnackbar.setState(snackbarState.state)
                 customSnackbar.show()
             }
+        }
+
+        viewLifecycleOwner.collectLifecycleFlow(viewModel.addDeleteFavoriteState) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        updateFavoriteState(isLoading = true)
+                    }
+                    is Result.Success -> {
+                        updateFavoriteState(isLoading = false, isSuccess = true)
+                        setData()
+                    }
+
+                    is Result.Error -> {
+                        updateFavoriteState(isLoading = false, isSuccess = false)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateFavoriteState(isLoading: Boolean, isSuccess: Boolean = false) {
+        if (!isLoading) {
+            favoriteButtonBinding?.loading?.invisible()
+            val selectedView = favoriteButtonBinding?.imbLove
+            selectedView?.visible()
+            if (isSuccess){
+                selectedView?.setImageResource(
+                    R.drawable.ic_love_red
+                )
+            } else {
+                selectedView?.setImageResource(
+                    R.drawable.ic_love_gray
+                )
+            }
+        } else {
+            favoriteButtonBinding?.loading?.visible()
+            favoriteButtonBinding?.imbLove?.invisible()
         }
     }
 
