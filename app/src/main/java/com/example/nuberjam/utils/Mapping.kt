@@ -5,6 +5,7 @@ import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Artist
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
+import com.example.nuberjam.data.model.PlaylistDetail
 import com.example.nuberjam.data.source.remote.response.AccountItem
 import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.response.DataResponse
@@ -74,6 +75,15 @@ object Mapping {
         }
 
         return listMusic
+    }
+
+    fun dataResponseToPlaylistDetail(data: DataResponse): PlaylistDetail {
+        val playlistInfo = playlistItemToPlaylist(data.data?.playlist ?: ArrayList()).first()
+        val playlistMusic = dataResponseToMusic(data)
+        return PlaylistDetail(
+            info = playlistInfo,
+            music = playlistMusic
+        )
     }
 
     fun playlistItemToPlaylist(data: List<PlaylistItem>): List<Playlist> {

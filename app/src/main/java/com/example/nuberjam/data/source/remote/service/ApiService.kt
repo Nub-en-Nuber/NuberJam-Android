@@ -91,6 +91,12 @@ interface ApiService {
         @Query("accountId") accountId: String,
     ): DataResponse
 
+    @GET("playlist/detail/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readPlaylistDetail(
+        @Query("accountId") accountId: String,
+        @Query("playlistId") playlistId: String,
+    ): DataResponse
+
     @FormUrlEncoded
     @POST("playlist/add.php?token=${Constant.TOKEN}")
     suspend fun addPlaylist(

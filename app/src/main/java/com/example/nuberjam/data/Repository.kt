@@ -8,6 +8,7 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
+import com.example.nuberjam.data.model.PlaylistDetail
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
 import com.example.nuberjam.data.source.remote.service.ApiService
@@ -186,6 +187,24 @@ class Repository @Inject constructor(
             emit(Result.Success(listPlaylist))
         } catch (e: Exception) {
             Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun readPlaylistDetail(playlistId: Int): Flow<Result<PlaylistDetail>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val response = apiService.readPlaylistDetail(accountId.toString(), playlistId.toString())
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
+                emit(Result.Success(playlistDetail))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "readPlaylistDetail: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
             else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
         }
