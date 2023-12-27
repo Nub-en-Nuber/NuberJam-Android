@@ -5,14 +5,18 @@ import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Artist
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
+import com.example.nuberjam.data.model.PlaylistDetail
+import com.example.nuberjam.data.source.remote.request.AccountRequest
 import com.example.nuberjam.data.source.remote.response.AccountItem
 import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.data.source.remote.response.MusicArtistItem
 import com.example.nuberjam.data.source.remote.response.MusicItem
 import com.example.nuberjam.data.source.remote.response.PlaylistItem
+import com.example.nuberjam.utils.extensions.toMultipartBody
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 object Mapping {
     fun accountItemToAccount(data: AccountItem): Account = Account(
@@ -78,6 +82,15 @@ object Mapping {
         return listMusic
     }
 
+    fun dataResponseToPlaylistDetail(data: DataResponse): PlaylistDetail {
+        val playlistInfo = playlistItemToPlaylist(data.data?.playlist ?: ArrayList()).first()
+        val playlistMusic = dataResponseToMusic(data)
+        return PlaylistDetail(
+            info = playlistInfo,
+            music = playlistMusic
+        )
+    }
+
     fun playlistItemToPlaylist(data: List<PlaylistItem>): List<Playlist> {
         return data.map { playlistItem ->
             Playlist(
@@ -89,4 +102,11 @@ object Mapping {
     }
 
     fun String.toRequestBodyType() = this.toRequestBody("text/plain".toMediaType())
+
+    fun Account.toAccountRequest(photoFile: File?) =
+        AccountRequest(
+            name = name.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
+            password = password.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
+            photo = photoFile?.toMultipartBody("accountPhoto")
+        )
 }
