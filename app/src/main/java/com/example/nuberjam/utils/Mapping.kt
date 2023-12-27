@@ -11,6 +11,8 @@ import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.data.source.remote.response.MusicArtistItem
 import com.example.nuberjam.data.source.remote.response.MusicItem
 import com.example.nuberjam.data.source.remote.response.PlaylistItem
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 object Mapping {
     fun accountItemToAccount(data: AccountItem): Account = Account(
@@ -85,4 +87,6 @@ object Mapping {
             )
         }
     }
+
+    fun String.toRequestBodyType() = this.toRequestBody("text/plain".toMediaType())
 }

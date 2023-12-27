@@ -63,7 +63,7 @@
 
 
     <ImageButton
-        android:id="@+id/imb_playlist"
+        android:id="@+id/imb_kebab"
         android:layout_width="@dimen/space_24dp"
         android:layout_height="@dimen/space_24dp"
         android:layout_marginEnd="@dimen/space_24dp"
@@ -71,7 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_playlist_gray" />
+        app:srcCompat="@drawable/ic_more_gray" />
 
     <include
         android:id="@+id/button_favorite_state"
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imb_playlist"
+        app:layout_constraintEnd_toStartOf="@+id/imb_kebab"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,6 +44,7 @@
     <string name="playlist">Playlist</string>
     <string name="favorite">Favorite</string>
     <string name="liked_song">Liked Song</string>
+    <string name="total_song">%d Song</string>
     <string name="save">Save</string>
     <string name="add_new_playlist">Add New Playlist</string>
     <string name="playlist_name">Playlist Name</string>

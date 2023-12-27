@@ -1,5 +1,6 @@
 package com.example.nuberjam.data.source.remote.service
 
+import com.example.nuberjam.data.source.remote.request.FavoriteRequest
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.utils.Constant
 import okhttp3.MultipartBody
@@ -95,5 +96,25 @@ interface ApiService {
     @POST("playlist/add.php?token=${Constant.TOKEN}")
     suspend fun addPlaylist(
         @Field("playlistName") playlistName: String, @Field("accountId") accountId: String
+    ): DataResponse
+
+
+    // Favorite API Endpoint Collection
+    @GET("favorite/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readAllFavorite(
+        @Query("accountId") accountId: String,
+    ): DataResponse
+
+    @FormUrlEncoded
+    @POST("favorite/add.php?token=${Constant.TOKEN}")
+    suspend fun addFavorite(
+        @Field("musicId") musicId: Int,
+        @Field("accountId") accountId: Int,
+    ): DataResponse
+
+    @POST("favorite/delete.php?token=${Constant.TOKEN}")
+    suspend fun deleteFavorite(
+        @Query("musicId") musicId: Int,
+        @Query("accountId") accountId: Int,
     ): DataResponse
 }

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -19,6 +20,8 @@ import com.example.nuberjam.ui.main.adapter.GridPlaylistAdapter
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
+import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -127,26 +130,32 @@ class LibraryFragment : Fragment() {
             if (result != null) {
                 when (result) {
                     is Result.Loading -> {
-                        showLoading(true)
+                        binding.msvLibrary.showNuberJamLoadingState()
                     }
 
                     is Result.Success -> {
-                        showLoading(false)
+                        binding.msvLibrary.showNuberJamDefaultState()
                         val data = result.data.reversed()
                         if (data.isNotEmpty()) {
                             linearAdapter.submitList(data)
                             gridAdapter.submitList(data)
-                        } else {
-                            showNoData()
                         }
                     }
 
                     is Result.Error -> {
-                        showLoading(false)
+                        binding.msvLibrary.showNuberJamDefaultState()
                         viewModel.setSnackbar(
                             Helper.getApiErrorMessage(requireActivity(), result.errorCode),
                             CustomSnackbar.STATE_ERROR
                         )
+
+                        // If you want to use Error State
+//                        binding.msvLibrary.showNuberJamErrorState(
+//                            emptyMessage = "Gaada data cuy!",
+//                            onButtonClicked = {
+//                                setData()
+//                            }
+//                        )
                     }
                 }
             }
@@ -166,11 +175,11 @@ class LibraryFragment : Fragment() {
                 .into(favoriteItem.favoriteGridItem.ivGridImage)
 
             favoriteItem.favoriteLinearItem.cvLibraryItem.setOnClickListener {
-                // TODO: Navigate to Favorite Screen
+                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
             }
 
             favoriteItem.favoriteGridItem.cvPlaylistItem.setOnClickListener {
-                // TODO: Navigate to Favorite Screen
+                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
             }
         }
     }
@@ -189,12 +198,6 @@ class LibraryFragment : Fragment() {
         }
     }
 
-    private fun showNoData() {
-        changeLibraryTypeLayout()
-        binding.rvPlaylist.visibility = View.GONE
-        binding.shimmerLoading.shimmerLibraryLayout.visibility = View.GONE
-    }
-
     private fun showSnackbarObserve() {
         viewModel.snackbarState.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { snackbarState ->
@@ -205,25 +208,5 @@ class LibraryFragment : Fragment() {
                 customSnackbar.show()
             }
         }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.apply {
-            if (isLoading) {
-                favoriteItem.favoriteLinearItem.cvLibraryItem.visibility = View.GONE
-                favoriteItem.favoriteGridItem.clGridItem.visibility = View.GONE
-                rvPlaylist.visibility = View.GONE
-                shimmerLoading.shimmerLibraryLayout.visibility = View.VISIBLE
-            } else {
-                changeLibraryTypeLayout()
-                rvPlaylist.visibility = View.VISIBLE
-                shimmerLoading.shimmerLibraryLayout.visibility = View.GONE
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.shimmerLoading.shimmerLibrary.startShimmerAnimation()
     }
 }
