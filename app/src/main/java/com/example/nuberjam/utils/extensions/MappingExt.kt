@@ -1,4 +1,4 @@
-package com.example.nuberjam.utils.extension
+package com.example.nuberjam.utils.extensions
 
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.source.remote.request.AccountRequest
