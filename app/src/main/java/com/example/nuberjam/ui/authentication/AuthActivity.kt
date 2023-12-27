@@ -48,7 +48,7 @@ class AuthActivity : AppCompatActivity() {
     private fun loadNavigationData() {
         if (intent != null) {
             val username = intent.extras?.let { AuthActivityArgs.fromBundle(it).username }
-            if (username != null && doSnackbar) viewModel.setSnackbar(
+            if (username != null && username != "null" && doSnackbar) viewModel.setSnackbar(
                 getString(R.string.logout_success_message, username), CustomSnackbar.STATE_SUCCESS
             )
         }
