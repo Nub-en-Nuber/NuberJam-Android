@@ -10,14 +10,13 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.source.local.service.DbDao
 import com.example.nuberjam.data.source.preferences.AppPreferences
-import com.example.nuberjam.data.source.remote.request.FavoriteRequest
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.data.source.remote.service.ApiService
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.FormValidation
 import com.example.nuberjam.utils.Mapping
 import com.example.nuberjam.utils.NoConnectivityException
-import com.example.nuberjam.utils.extension.toAccountRequest
+import com.example.nuberjam.utils.extensions.toAccountRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

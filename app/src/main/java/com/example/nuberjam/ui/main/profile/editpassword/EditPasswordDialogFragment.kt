@@ -19,7 +19,7 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.PasswordDialogBinding
 import com.example.nuberjam.ui.main.profile.UpdateAccountViewModel
 import com.example.nuberjam.utils.FormValidation
-import com.example.nuberjam.utils.extension.launchLifecycleScopeOnStarted
+import com.example.nuberjam.utils.extensions.launchLifecycleScopeOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.nuberjam.utils.network
+package com.example.nuberjam.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
