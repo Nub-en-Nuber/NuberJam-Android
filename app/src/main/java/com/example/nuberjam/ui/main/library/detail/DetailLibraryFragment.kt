@@ -9,12 +9,12 @@ import android.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
+import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
@@ -29,8 +29,6 @@ import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailLibraryFragment : Fragment() {
@@ -55,10 +53,8 @@ class DetailLibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAppbar()
-        setupViewType()
         setupRecyclerView()
-        showSnackbarObserve()
-        initObserver()
+        initDataObserver()
     }
 
     private fun setupAppbar() {
@@ -72,26 +68,6 @@ class DetailLibraryFragment : Fragment() {
         binding.appbar.btnSearch.setOnClickListener {
             // TODO: navigate to search
             Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setupViewType() {
-        with(binding) {
-            when (viewModel.libraryViewType) {
-                LibraryDetailType.Favorite -> {
-                    appbar.tvLibraryAppbar.text = getString(R.string.liked_song)
-                }
-
-                LibraryDetailType.Playlist -> {
-                    viewModel.playlistId
-                    appbar.tvLibraryAppbar.text = getString(R.string.playlist)
-                }
-
-                LibraryDetailType.Album -> {
-                    viewModel.albumId
-                    appbar.tvLibraryAppbar.text = getString(R.string.album)
-                }
-            }
         }
     }
 
@@ -139,47 +115,100 @@ class DetailLibraryFragment : Fragment() {
         findNavController().navigate(toMusicFragment)
     }
 
-    private fun initObserver() {
-        lifecycleScope.launch {
-            viewModel.favoriteState.collectLatest { result ->
-                when (result) {
-                    is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
-                    is Result.Success -> {
-                        val data = result.data
-                        binding.msvPlaylistOuter.showNuberJamDefaultState()
-                        binding.imvCover.tvLibraryTitle.text = getString(R.string.liked_song)
-                        binding.imvCover.tvLibraryType.text =
-                            getString(R.string.total_song, data.size)
-                        binding.imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
-                        if (data.isEmpty()) {
-                            binding.msvPlaylistInner.showNuberJamEmptyState(
-                                lottieJson = null,
-                                emptyMessage = getString(R.string.data_not_available)
-                            )
-                        } else {
-                            musicAdapter.submitList(data)
+    private fun initDataObserver() {
+        when (viewModel.libraryViewType) {
+            LibraryDetailType.Favorite -> {
+                binding.appbar.tvLibraryAppbar.text = getString(R.string.liked_song)
+                viewLifecycleOwner.collectLifecycleFlow(viewModel.favoriteState) { result ->
+                    when (result) {
+                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                        is Result.Success -> {
+                            val data = result.data
+                            setViewState(getString(R.string.liked_song), data.size, null, data)
                         }
-                    }
 
-                    is Result.Error -> {
-                        binding.msvPlaylistOuter.showNuberJamErrorState(
-                            errorMessage = Helper.getApiErrorMessage(
-                                requireActivity(),
-                                result.errorCode
-                            ),
-                            onButtonClicked = viewModel::getFavoriteData
+                        is Result.Error -> showErrorState(
+                            result.errorCode,
+                            viewModel::getFavoriteData
                         )
-                        viewModel.setSnackbar(
-                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
-                            CustomSnackbar.STATE_ERROR
-                        )
-                    }
 
-                    else -> {}
+                        else -> {}
+                    }
                 }
             }
-        }
 
+            LibraryDetailType.Album -> {
+                binding.appbar.tvLibraryAppbar.text = getString(R.string.album)
+                viewLifecycleOwner.collectLifecycleFlow(viewModel.albumState) { result ->
+                    when (result) {
+                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                        is Result.Success -> {
+                            val data = result.data
+                            setViewState(data.name, data.music?.size, data.photo, data.music)
+                        }
+
+                        is Result.Error -> showErrorState(
+                            result.errorCode,
+                            viewModel::getAlbumData
+                        )
+
+                        else -> {}
+                    }
+                }
+            }
+
+            LibraryDetailType.Playlist -> {
+                binding.appbar.tvLibraryAppbar.text = getString(R.string.playlist)
+            }
+        }
+        showSnackbarObserve()
+        observeAddDeleteFavoriteState()
+    }
+
+    private fun setViewState(
+        title: String?,
+        dataSize: Int?,
+        image: String?,
+        listMusic: List<Music>?
+    ) {
+        with(binding) {
+            msvPlaylistOuter.showNuberJamDefaultState()
+            imvCover.tvLibraryTitle.text = title
+            imvCover.tvLibraryType.text = getString(R.string.total_song, dataSize)
+            if (image == null) {
+                imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
+            } else {
+                Glide.with(requireActivity()).load(image)
+                    .placeholder(R.drawable.ic_profile_placeholder)
+                    .error(R.drawable.ic_profile_placeholder)
+                    .into(imvCover.ivGridImage)
+            }
+            if (listMusic?.isEmpty() == true) {
+                msvPlaylistInner.showNuberJamEmptyState(
+                    lottieJson = null,
+                    emptyMessage = getString(R.string.data_not_available)
+                )
+            } else {
+                musicAdapter.submitList(listMusic)
+            }
+        }
+    }
+
+    private fun showErrorState(errorCode: Int, errorAction: () -> Unit) {
+        binding.msvPlaylistOuter.showNuberJamErrorState(
+            errorMessage = Helper.getApiErrorMessage(
+                requireActivity(),
+                errorCode
+            ),
+            onButtonClicked = errorAction
+        )
+        viewModel.setSnackbar(
+            Helper.getApiErrorMessage(requireActivity(), errorCode),
+            CustomSnackbar.STATE_ERROR
+        )
+    }
+
+    private fun observeAddDeleteFavoriteState() {
         viewLifecycleOwner.collectLifecycleFlow(viewModel.addDeleteFavoriteState) { result ->
             if (result != null) {
                 when (result) {
