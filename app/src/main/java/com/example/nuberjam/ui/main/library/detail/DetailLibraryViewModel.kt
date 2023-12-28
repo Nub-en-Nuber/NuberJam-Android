@@ -30,10 +30,6 @@ class DetailLibraryViewModel @Inject constructor(
     private val _snackbarState = MutableLiveData<Event<CustomSnackbar.SnackbarState>>()
     val snackbarState: LiveData<Event<CustomSnackbar.SnackbarState>> = _snackbarState
 
-    init {
-        getFavoriteData()
-    }
-
     fun setSnackbar(message: String, state: Int, length: Int = CustomSnackbar.LENGTH_LONG) {
         _snackbarState.value = Event(CustomSnackbar.SnackbarState(message, state, length))
     }

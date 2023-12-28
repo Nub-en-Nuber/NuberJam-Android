@@ -20,6 +20,7 @@ import com.example.nuberjam.ui.main.adapter.GridPlaylistAdapter
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +33,8 @@ class LibraryFragment : Fragment() {
 
     private val viewModel: LibraryViewModel by viewModels()
 
-    private var linearAdapter: LinearPlaylistAdapter = LinearPlaylistAdapter()
-    private var gridAdapter: GridPlaylistAdapter = GridPlaylistAdapter()
+    private lateinit var linearAdapter: LinearPlaylistAdapter
+    private lateinit var gridAdapter: GridPlaylistAdapter
 
     lateinit var onAddPlaylistDialogListener: AddPlaylistDialogFragment.OnAddPlaylistDialogListener
 
@@ -52,9 +53,22 @@ class LibraryFragment : Fragment() {
         setToolbar()
         showSnackbarObserve()
         setFavoriteItem()
-        changeLibraryTypeLayout()
+        initAction()
         setData()
         refreshFragment()
+    }
+
+    private fun initAction() {
+        with(binding) {
+            changeLibraryTypeLayout()
+            favoriteItem.favoriteLinearItem.cvLibraryItem.setOnClickListener {
+                goToDetailLibraryPage(LibraryDetailType.Favorite)
+            }
+
+            favoriteItem.favoriteGridItem.cvPlaylistItem.setOnClickListener {
+                goToDetailLibraryPage(LibraryDetailType.Favorite)
+            }
+        }
     }
 
     private fun setToolbar() {
@@ -173,18 +187,14 @@ class LibraryFragment : Fragment() {
             favoriteItem.favoriteGridItem.tvLibraryType.text = getString(R.string.favorite)
             Glide.with(requireActivity()).load(R.drawable.favorite_pic)
                 .into(favoriteItem.favoriteGridItem.ivGridImage)
-
-            favoriteItem.favoriteLinearItem.cvLibraryItem.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
-            }
-
-            favoriteItem.favoriteGridItem.cvPlaylistItem.setOnClickListener {
-                findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment)
-            }
         }
     }
 
     private fun setLinearRecyclerView() {
+        linearAdapter = LinearPlaylistAdapter {
+            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
+        }
+
         binding.rvPlaylist.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = linearAdapter
@@ -192,10 +202,21 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setGridRecyclerView() {
+        gridAdapter = GridPlaylistAdapter {
+            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
+        }
+
         binding.rvPlaylist.apply {
             layoutManager = GridLayoutManager(requireActivity(), 2)
             adapter = gridAdapter
         }
+    }
+
+    private fun goToDetailLibraryPage(viewType: LibraryDetailType, playlistId: Int = 0) {
+        val toDetailLibraryFragment = LibraryFragmentDirections.actionNavigationLibraryToDetailLibraryFragment()
+        toDetailLibraryFragment.viewType = viewType
+        toDetailLibraryFragment.playlistId = playlistId
+        findNavController().navigate(toDetailLibraryFragment)
     }
 
     private fun showSnackbarObserve() {

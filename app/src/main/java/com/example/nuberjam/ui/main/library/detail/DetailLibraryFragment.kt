@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
@@ -18,10 +19,9 @@ import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
-import com.example.nuberjam.utils.extensions.gone
 import com.example.nuberjam.utils.extensions.invisible
-import com.example.nuberjam.utils.extensions.onlyVisibleIf
 import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
 import com.example.nuberjam.utils.extensions.showNuberJamEmptyState
 import com.example.nuberjam.utils.extensions.showNuberJamErrorState
@@ -41,6 +41,10 @@ class DetailLibraryFragment : Fragment() {
 
     private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
 
+    private lateinit var libraryViewType: LibraryDetailType
+    private var albumId = 0
+    private var playlistId = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -52,9 +56,50 @@ class DetailLibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAppbar()
+        setupViewType()
         setupRecyclerView()
         showSnackbarObserve()
         initObserver()
+    }
+
+    private fun setupAppbar() {
+        val toolbar: Toolbar = binding.appbar.toolbar
+        toolbar.navigationIcon = ContextCompat.getDrawable(
+            requireContext(), R.drawable.ic_back_gray
+        )
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.appbar.btnSearch.setOnClickListener {
+            // TODO: navigate to search
+            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupViewType() {
+        val args: DetailLibraryFragmentArgs by navArgs()
+        libraryViewType = args.viewType
+
+        with(binding) {
+            when (libraryViewType) {
+                LibraryDetailType.Favorite -> {
+                    appbar.tvLibraryAppbar.text = getString(R.string.liked_song)
+                    viewModel.getFavoriteData()
+                }
+
+                LibraryDetailType.Playlist -> {
+                    playlistId = args.playlistId
+                    appbar.tvLibraryAppbar.text = getString(R.string.playlist)
+                    // TODO: Call Playlist API here
+                }
+
+                LibraryDetailType.Album -> {
+                    albumId = args.albumId
+                    appbar.tvLibraryAppbar.text = getString(R.string.album)
+                    // TODO: Call Album API here
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -146,6 +191,7 @@ class DetailLibraryFragment : Fragment() {
                     is Result.Loading -> {
                         updateFavoriteState(isLoading = true)
                     }
+
                     is Result.Success -> {
                         updateFavoriteState(isLoading = false, isSuccess = true)
                         viewModel.getFavoriteData()
@@ -168,7 +214,7 @@ class DetailLibraryFragment : Fragment() {
             favoriteButtonBinding?.loading?.invisible()
             val selectedView = favoriteButtonBinding?.imbLove
             selectedView?.visible()
-            if (isSuccess){
+            if (isSuccess) {
                 selectedView?.setImageResource(
                     R.drawable.ic_love_red
                 )
@@ -180,21 +226,6 @@ class DetailLibraryFragment : Fragment() {
         } else {
             favoriteButtonBinding?.loading?.visible()
             favoriteButtonBinding?.imbLove?.invisible()
-        }
-    }
-
-    private fun setupAppbar() {
-        val toolbar: Toolbar = binding.appbar.toolbar
-        toolbar.navigationIcon = ContextCompat.getDrawable(
-            requireContext(), R.drawable.ic_back_gray
-        )
-        toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.appbar.tvLibraryAppbar.text = getString(R.string.liked_song)
-        binding.appbar.btnSearch.setOnClickListener {
-            // TODO: navigate to search
-            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
         }
     }
 

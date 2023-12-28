@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,10 +18,9 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
-import com.example.nuberjam.utils.extensions.gone
 import com.example.nuberjam.utils.extensions.invisible
-import com.example.nuberjam.utils.extensions.onlyVisibleIf
 import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -126,7 +124,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        albumAdapter = AlbumAdapter()
+        albumAdapter = AlbumAdapter {
+            goToDetailLibraryPage(LibraryDetailType.Album, it.id ?: 0)
+        }
         binding.rvMusicAlbum.apply {
             layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
             adapter = albumAdapter
@@ -247,6 +247,13 @@ class HomeFragment : Fragment() {
             favoriteButtonBinding?.loading?.visible()
             favoriteButtonBinding?.imbLove?.invisible()
         }
+    }
+
+    private fun goToDetailLibraryPage(viewType: LibraryDetailType, albumId: Int = 0) {
+        val toDetailLibraryFragment = HomeFragmentDirections.actionNavigationHomeToDetailLibraryFragment()
+        toDetailLibraryFragment.viewType = viewType
+        toDetailLibraryFragment.albumId = albumId
+        findNavController().navigate(toDetailLibraryFragment)
     }
 
     private fun showLoading(isLoading: Boolean) {
