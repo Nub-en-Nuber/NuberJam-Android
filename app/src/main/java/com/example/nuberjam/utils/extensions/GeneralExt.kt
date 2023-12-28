@@ -27,11 +27,3 @@ fun File.toMultipartBody(field: String): MultipartBody.Part {
         requestImageFile
     )
 }
-
-fun LifecycleOwner.launchLifecycleScopeOnStarted(block: suspend () -> Unit) {
-    lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            block()
-        }
-    }
-}

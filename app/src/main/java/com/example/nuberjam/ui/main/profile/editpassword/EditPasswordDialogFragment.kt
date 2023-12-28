@@ -19,7 +19,7 @@ import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.PasswordDialogBinding
 import com.example.nuberjam.ui.main.profile.UpdateAccountViewModel
 import com.example.nuberjam.utils.FormValidation
-import com.example.nuberjam.utils.extensions.launchLifecycleScopeOnStarted
+import com.example.nuberjam.utils.extensions.collectLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,34 +72,30 @@ class EditPasswordDialogFragment : DialogFragment() {
     }
 
     private fun observeState() {
-        viewLifecycleOwner.launchLifecycleScopeOnStarted {
-            viewModel.loginState.collect { result ->
-                if (result != null) {
-                    showLoading(result is Result.Loading)
-                    when (result) {
-                        is Result.Success -> {
-                            if (result.data) {
-                                binding.etPassword.error = null
-                                viewModel.updateAccount(Account(password = newPassword))
-                            } else {
-                                binding.etPassword.error =
-                                    getString(R.string.current_password_is_incorrect)
-                            }
+        viewLifecycleOwner.collectLifecycleFlow(viewModel.loginState) { result ->
+            if (result != null) {
+                showLoading(result is Result.Loading)
+                when (result) {
+                    is Result.Success -> {
+                        if (result.data) {
+                            binding.etPassword.error = null
+                            viewModel.updateAccount(Account(password = newPassword))
+                        } else {
+                            binding.etPassword.error =
+                                getString(R.string.current_password_is_incorrect)
                         }
-
-                        else -> {}
                     }
+
+                    else -> {}
                 }
             }
         }
-        viewLifecycleOwner.launchLifecycleScopeOnStarted {
-            viewModel.updateAccountState.collect { result ->
-                if (result != null) {
-                    showLoading(result is Result.Loading)
-                    when (result) {
-                        is Result.Success -> dismiss()
-                        else -> {}
-                    }
+        viewLifecycleOwner.collectLifecycleFlow(viewModel.updateAccountState) { result ->
+            if (result != null) {
+                showLoading(result is Result.Loading)
+                when (result) {
+                    is Result.Success -> dismiss()
+                    else -> {}
                 }
             }
         }

@@ -74,6 +74,12 @@ interface ApiService {
     @GET("album/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllAlbum(): DataResponse
 
+    @GET("album/retrieve.php?token=${Constant.TOKEN}")
+    suspend fun readDetailAlbum(
+        @Query("albumId") albumId: String,
+        @Query("accountId") accountId: String,
+    ): DataResponse
+
     // Music API Endpoint Collection
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllMusic(

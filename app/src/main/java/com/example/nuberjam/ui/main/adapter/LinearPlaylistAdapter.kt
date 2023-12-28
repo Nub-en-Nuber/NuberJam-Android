@@ -11,8 +11,9 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.databinding.LinearPlaylistItemBinding
 
-class LinearPlaylistAdapter :
-    ListAdapter<Playlist, LinearPlaylistAdapter.ViewHolder>(DIFF_CALLBACK) {
+class LinearPlaylistAdapter(
+    private val onCardItemClick : (Playlist) -> Unit
+) : ListAdapter<Playlist, LinearPlaylistAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -25,13 +26,17 @@ class LinearPlaylistAdapter :
         holder.bind(playlistItem)
     }
 
-    class ViewHolder(private var binding: LinearPlaylistItemBinding) :
+    inner class ViewHolder(private var binding: LinearPlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(playlistItem: Playlist) {
             binding.apply {
                 Glide.with(itemView.context).load(playlistItem.photo).into(ivPlaylistImage)
                 tvPlaylistName.text = playlistItem.name
                 tvPlaylistType.text = itemView.context.getString(R.string.playlist)
+            }
+
+            itemView.setOnClickListener {
+                onCardItemClick(playlistItem)
             }
         }
     }

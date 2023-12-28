@@ -22,7 +22,7 @@
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginEnd="@dimen/space_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imb_love"
+        app:layout_constraintEnd_toStartOf="@+id/button_favorite_state"
         app:layout_constraintStart_toEndOf="@+id/imv_album"
         app:layout_constraintTop_toTopOf="parent">
 
