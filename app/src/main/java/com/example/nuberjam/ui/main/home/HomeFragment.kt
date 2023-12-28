@@ -17,6 +17,7 @@ import com.example.nuberjam.databinding.FragmentHomeBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.AlbumAdapter
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
@@ -250,10 +251,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun goToDetailLibraryPage(viewType: LibraryDetailType, albumId: Int = 0) {
-        val toDetailLibraryFragment = HomeFragmentDirections.actionNavigationHomeToDetailLibraryFragment()
-        toDetailLibraryFragment.viewType = viewType
-        toDetailLibraryFragment.albumId = albumId
-        findNavController().navigate(toDetailLibraryFragment)
+        val args = Bundle().apply {
+            putSerializable(BundleKeys.LIBRARY_VIEW_TYPE_KEY, viewType)
+            putInt(BundleKeys.ALBUM_ID_KEY, albumId)
+        }
+        findNavController().navigate(R.id.action_navigation_home_to_detailLibraryFragment, args)
     }
 
     private fun showLoading(isLoading: Boolean) {

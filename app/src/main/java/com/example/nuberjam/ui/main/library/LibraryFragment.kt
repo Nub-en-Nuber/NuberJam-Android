@@ -18,6 +18,7 @@ import com.example.nuberjam.databinding.FragmentLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.GridPlaylistAdapter
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
+import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Constant
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
@@ -213,10 +214,11 @@ class LibraryFragment : Fragment() {
     }
 
     private fun goToDetailLibraryPage(viewType: LibraryDetailType, playlistId: Int = 0) {
-        val toDetailLibraryFragment = LibraryFragmentDirections.actionNavigationLibraryToDetailLibraryFragment()
-        toDetailLibraryFragment.viewType = viewType
-        toDetailLibraryFragment.playlistId = playlistId
-        findNavController().navigate(toDetailLibraryFragment)
+        val args = Bundle().apply {
+            putSerializable(BundleKeys.LIBRARY_VIEW_TYPE_KEY, viewType)
+            putInt(BundleKeys.PLAYLIST_ID_KEY, playlistId)
+        }
+        findNavController().navigate(R.id.action_navigation_library_to_detailLibraryFragment, args)
     }
 
     private fun showSnackbarObserve() {

@@ -9,6 +9,7 @@ import android.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,8 @@ import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailLibraryFragment : Fragment() {
@@ -40,10 +43,6 @@ class DetailLibraryFragment : Fragment() {
     private lateinit var musicAdapter: MusicAdapter
 
     private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
-
-    private lateinit var libraryViewType: LibraryDetailType
-    private var albumId = 0
-    private var playlistId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -77,26 +76,20 @@ class DetailLibraryFragment : Fragment() {
     }
 
     private fun setupViewType() {
-        val args: DetailLibraryFragmentArgs by navArgs()
-        libraryViewType = args.viewType
-
         with(binding) {
-            when (libraryViewType) {
+            when (viewModel.libraryViewType) {
                 LibraryDetailType.Favorite -> {
                     appbar.tvLibraryAppbar.text = getString(R.string.liked_song)
-                    viewModel.getFavoriteData()
                 }
 
                 LibraryDetailType.Playlist -> {
-                    playlistId = args.playlistId
+                    viewModel.playlistId
                     appbar.tvLibraryAppbar.text = getString(R.string.playlist)
-                    // TODO: Call Playlist API here
                 }
 
                 LibraryDetailType.Album -> {
-                    albumId = args.albumId
+                    viewModel.albumId
                     appbar.tvLibraryAppbar.text = getString(R.string.album)
-                    // TODO: Call Album API here
                 }
             }
         }
@@ -147,8 +140,8 @@ class DetailLibraryFragment : Fragment() {
     }
 
     private fun initObserver() {
-        viewLifecycleOwner.collectLifecycleFlow(viewModel.favoriteState) { result ->
-            if (result != null) {
+        lifecycleScope.launch {
+            viewModel.favoriteState.collectLatest { result ->
                 when (result) {
                     is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
                     is Result.Success -> {
@@ -181,6 +174,8 @@ class DetailLibraryFragment : Fragment() {
                             CustomSnackbar.STATE_ERROR
                         )
                     }
+
+                    else -> {}
                 }
             }
         }
