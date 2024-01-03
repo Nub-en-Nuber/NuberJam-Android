@@ -9,6 +9,7 @@ import com.example.nuberjam.data.Repository
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Album
 import com.example.nuberjam.data.model.Music
+import com.example.nuberjam.data.model.PlaylistDetail
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Event
@@ -31,6 +32,9 @@ class DetailLibraryViewModel @Inject constructor(
     private val _albumState = MutableStateFlow<Result<Album>?>(null)
     val albumState = _albumState.asStateFlow()
 
+    private val _playlistState = MutableStateFlow<Result<PlaylistDetail>?>(null)
+    val playlistState = _playlistState.asStateFlow()
+
     private val _addDeleteFavoriteState = MutableStateFlow<Result<Boolean>?>(null)
     val addDeleteFavoriteState = _addDeleteFavoriteState.asStateFlow()
 
@@ -51,11 +55,19 @@ class DetailLibraryViewModel @Inject constructor(
             }
 
             LibraryDetailType.Playlist -> {
-                // TODO: Call playlist API here
+                getPlaylistDetailData()
             }
 
             LibraryDetailType.Album -> {
                 getAlbumData()
+            }
+        }
+    }
+
+    fun getPlaylistDetailData() {
+        viewModelScope.launch {
+            repository.readPlaylistDetail(playlistId).collect {
+                _playlistState.value = it
             }
         }
     }

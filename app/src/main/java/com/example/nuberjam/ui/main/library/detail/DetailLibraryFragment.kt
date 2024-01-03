@@ -166,6 +166,32 @@ class DetailLibraryFragment : Fragment() {
                     imvCover.imbKebab.setOnClickListener {
                         popupMenu.show()
                     }
+                    imvCover.ivGridImage.setOnClickListener {
+                        // TODO: MOVE TO EDIT PHOTO PAGE
+                        Toast.makeText(requireActivity(), "Move to edit image", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
+                    when (result) {
+                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                        is Result.Success -> {
+                            val data = result.data
+                            setViewState(
+                                data.info.name,
+                                data.music.size,
+                                data.info.photo,
+                                data.music
+                            )
+                        }
+
+                        is Result.Error -> showErrorState(
+                            result.errorCode,
+                            viewModel::getPlaylistDetailData
+                        )
+
+                        else -> {}
+                    }
                 }
             }
         }
