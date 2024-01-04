@@ -30,7 +30,7 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-            buildConfigField "String", "BASE_API_URL", '"http://nuberjam-dev.orgfree.com/api/"'
+            buildConfigField "String", "BASE_API_URL", '"https://nuber-jam.000webhostapp.com/api/"'
             buildConfigField "String", "TOKEN", "${properties.getProperty("PRE_TOKEN")}"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
@@ -38,7 +38,7 @@ android {
         prod {
             minifyEnabled true
             shrinkResources true
-            buildConfigField "String", "BASE_API_URL", '"http://nuberjam.orgfree.com/api/"'
+            buildConfigField "String", "BASE_API_URL", '"https://nuber-jam.000webhostapp.com/api/"'
             buildConfigField "String", "TOKEN", "${properties.getProperty("PROD_TOKEN")}"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
