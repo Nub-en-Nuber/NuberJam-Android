@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -158,11 +159,70 @@ class DetailLibraryFragment : Fragment() {
             }
 
             LibraryDetailType.Playlist -> {
-                binding.appbar.tvLibraryAppbar.text = getString(R.string.playlist)
+                with(binding) {
+                    val popupMenu = initPopupMenu(imvCover.imbKebab)
+                    appbar.tvLibraryAppbar.text = getString(R.string.playlist)
+                    imvCover.imbKebab.visible()
+                    imvCover.imbKebab.setOnClickListener {
+                        popupMenu.show()
+                    }
+                    imvCover.ivGridImage.setOnClickListener {
+                        // TODO: MOVE TO EDIT PHOTO PAGE
+                        Toast.makeText(requireActivity(), "Move to edit image", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
+                    when (result) {
+                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                        is Result.Success -> {
+                            val data = result.data
+                            setViewState(
+                                data.info.name,
+                                data.music.size,
+                                data.info.photo,
+                                data.music
+                            )
+                        }
+
+                        is Result.Error -> showErrorState(
+                            result.errorCode,
+                            viewModel::getPlaylistDetailData
+                        )
+
+                        else -> {}
+                    }
+                }
             }
         }
         showSnackbarObserve()
         observeAddDeleteFavoriteState()
+    }
+
+    private fun initPopupMenu(view: View): PopupMenu {
+        val popupMenu = PopupMenu(requireActivity(), view)
+        popupMenu.inflate(R.menu.kebab_playlist_menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.edit_playlist -> {
+                    // TODO: SHOW EDIT PLAYLIST NAME DIALOG
+                    Toast.makeText(requireActivity(), "Edit Playlist", Toast.LENGTH_SHORT)
+                        .show()
+                    true
+                }
+
+                R.id.delete_playlist -> {
+                    // TODO: SHOW DELETE PLAYLIST CONFIRMATION DIALOG
+                    Toast.makeText(requireActivity(), "Delete Playlist", Toast.LENGTH_SHORT)
+                        .show()
+                    true
+                }
+
+                else -> false
+            }
+        }
+        return popupMenu
     }
 
     private fun setViewState(
