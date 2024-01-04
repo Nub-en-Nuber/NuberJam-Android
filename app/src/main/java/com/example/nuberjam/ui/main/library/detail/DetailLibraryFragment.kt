@@ -246,7 +246,7 @@ class DetailLibraryFragment : Fragment() {
             if (listMusic?.isEmpty() == true) {
                 msvPlaylistInner.showNuberJamEmptyState(
                     lottieJson = null,
-                    emptyMessage = getString(R.string.data_not_available)
+                    emptyMessage = getString(R.string.no_liked_song)
                 )
             } else {
                 musicAdapter.submitList(listMusic)

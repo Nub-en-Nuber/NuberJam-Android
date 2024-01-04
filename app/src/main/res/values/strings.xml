@@ -40,6 +40,7 @@
     <string name="api_internet_error_message">No internet connection</string>
     <string name="edit_success_message">Edit successfully</string>
     <string name="data_not_available">Data not available</string>
+    <string name="no_liked_song">No liked song yet</string>
     <string name="form_empty_message">This field can\'t be empty!</string>
     <string name="login_failed_message">Incorrect username/email or password</string>
     <string name="login_success_message">Welcome, %s!</string>
