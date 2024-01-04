@@ -153,9 +153,6 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            override fun onPlaylistActionClick(musicId: Int) {
-            }
-
             override fun addItemToPlaylist(musicId: Int) {
             }
 
@@ -204,6 +201,7 @@ class HomeFragment : Fragment() {
                     is Result.Loading -> {
                         updateFavoriteState(isLoading = true)
                     }
+
                     is Result.Success -> {
                         updateFavoriteState(isLoading = false, isSuccess = true)
                         setData()
@@ -226,7 +224,7 @@ class HomeFragment : Fragment() {
             favoriteButtonBinding?.loading?.invisible()
             val selectedView = favoriteButtonBinding?.imbLove
             selectedView?.visible()
-            if (isSuccess){
+            if (isSuccess) {
                 selectedView?.setImageResource(
                     R.drawable.ic_love_red
                 )

@@ -1,7 +1,10 @@
 package com.example.nuberjam.ui.main.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -69,8 +72,10 @@ class MusicAdapter(
                             buttonFavoriteState
                         )
                     }
+
+                    val popupMenu = initPopupMenu(imbKebab, musicItem.id ?: 0)
                     imbKebab.setOnClickListener {
-                        // TODO: Show popup menu
+                        popupMenu.show()
                     }
                 }
             } else {
@@ -94,14 +99,45 @@ class MusicAdapter(
                             buttonFavoriteState
                         )
                     }
+
                     imbPlaylist.setOnClickListener {
-                        callback.onPlaylistActionClick(musicItem.id ?: 0)
+                        // TODO: SHOW DIALOG ADD MUSIC TO PLAYLIST
                     }
                 }
             }
             itemView.setOnClickListener {
                 callback.onItemClick(musicItem.id ?: 0)
             }
+        }
+
+        private fun initPopupMenu(view: View, musicId: Int): PopupMenu {
+            val popupMenu = PopupMenu(itemView.context, view)
+            popupMenu.inflate(R.menu.kebab_music_playlist_menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.add_music_playlist -> {
+                        // TODO: SHOW DIALOG ADD MUSIC TO PLAYLIST
+                        Toast.makeText(itemView.context, "Add Music $musicId", Toast.LENGTH_SHORT)
+                            .show()
+                        true
+                    }
+
+                    R.id.delete_music_playlist -> {
+                        // TODO: SHOW DIALOG DELETE MUSIC FROM PLAYLIST
+                        Toast.makeText(
+                            itemView.context,
+                            "Delete Music $musicId",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            return popupMenu
         }
     }
 
@@ -114,7 +150,6 @@ class MusicAdapter(
             buttonFavoriteState: FavoriteStateButtonBinding
         )
 
-        fun onPlaylistActionClick(musicId: Int)
         fun addItemToPlaylist(musicId: Int)
         fun deleteItemFromPlaylist(musicId: Int)
     }
