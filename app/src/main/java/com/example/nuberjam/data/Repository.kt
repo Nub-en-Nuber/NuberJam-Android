@@ -215,7 +215,8 @@ class Repository @Inject constructor(
         emit(Result.Loading)
         try {
             val accountId = appPreferences.getAccountState().first().id
-            val response = apiService.readPlaylistDetail(accountId.toString(), playlistId.toString())
+            val response =
+                apiService.readPlaylistDetail(accountId.toString(), playlistId.toString())
             if (response.status == Constant.API_SUCCESS_CODE) {
                 val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
                 emit(Result.Success(playlistDetail))
@@ -259,7 +260,10 @@ class Repository @Inject constructor(
         }
     }
 
-    fun updateAccount(account: Account = Account(), photoFile: File? = null): Flow<Result<Boolean>> = flow {
+    fun updateAccount(
+        account: Account = Account(),
+        photoFile: File? = null
+    ): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
             val accountId = appPreferences.getAccountState().first().id
@@ -342,6 +346,33 @@ class Repository @Inject constructor(
             photo = photo.ifEmpty { accountState.photo })
 
         appPreferences.saveAccountState(updateAccount)
+    }
+
+    fun updatePlaylist(
+        playlistId: Int,
+        playlistName: String? = null,
+        photoFile: File? = null
+    ): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val accountId = appPreferences.getAccountState().first().id
+            val request =
+                Mapping.createPlaylistRequest(accountId.toString(), playlistName, photoFile)
+
+            val response = apiService.updatePlaylist(
+                playlistId.toString(), request.accountId, request.name, request.photo
+            )
+
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                emit(Result.Success(true))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "updatePlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
     }
 
     companion object {
