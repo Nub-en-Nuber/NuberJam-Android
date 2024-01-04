@@ -1,5 +1,6 @@
 package com.example.nuberjam.ui.main.library.detail
 
+import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -220,7 +221,11 @@ class DetailLibraryFragment : Fragment() {
         listMusic: List<Music>?
     ) {
         with(binding) {
+            val scale = requireContext().resources.displayMetrics.density
+            val height = (166 * scale + 0.5f)
             msvPlaylistOuter.showNuberJamDefaultState()
+            imvCover.cvPlaylistItem.layoutParams =
+                ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, height.toInt())
             imvCover.tvLibraryTitle.text = title
             imvCover.tvLibraryType.text = getString(R.string.total_song, dataSize)
             if (image == null) {
