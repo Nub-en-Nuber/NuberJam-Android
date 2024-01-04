@@ -49,22 +49,14 @@ class DetailLibraryViewModel @Inject constructor(
     var albumId = savedStateHandle[BundleKeys.ALBUM_ID_KEY] ?: 0
 
     init {
-        when (libraryViewType) {
-            LibraryDetailType.Favorite -> {
-                getFavoriteData()
-            }
-
-            LibraryDetailType.Playlist -> {
-                getPlaylistDetailData()
-            }
-
-            LibraryDetailType.Album -> {
-                getAlbumData()
-            }
-        }
+        getData()
     }
 
-    fun getPlaylistDetailData() {
+    fun setSnackbar(message: String, state: Int, length: Int = CustomSnackbar.LENGTH_LONG) {
+        _snackbarState.value = Event(CustomSnackbar.SnackbarState(message, state, length))
+    }
+
+    private fun getPlaylistDetailData() {
         viewModelScope.launch {
             repository.readPlaylistDetail(playlistId).collect {
                 _playlistState.value = it
@@ -72,11 +64,7 @@ class DetailLibraryViewModel @Inject constructor(
         }
     }
 
-    fun setSnackbar(message: String, state: Int, length: Int = CustomSnackbar.LENGTH_LONG) {
-        _snackbarState.value = Event(CustomSnackbar.SnackbarState(message, state, length))
-    }
-
-    fun getFavoriteData() {
+    private fun getFavoriteData() {
         viewModelScope.launch {
             repository.readAllFavorite().collect {
                 _favoriteState.value = it
@@ -84,7 +72,7 @@ class DetailLibraryViewModel @Inject constructor(
         }
     }
 
-    fun getAlbumData() {
+    private fun getAlbumData() {
         viewModelScope.launch {
             repository.readDetailAlbum(albumId).collect {
                 _albumState.value = it
@@ -96,6 +84,22 @@ class DetailLibraryViewModel @Inject constructor(
         viewModelScope.launch {
             repository.addDeleteFavorite(musicId, isInsert).collect {
                 _addDeleteFavoriteState.value = it
+            }
+        }
+    }
+
+    fun getData() {
+        when (libraryViewType) {
+            LibraryDetailType.Favorite -> {
+                getFavoriteData()
+            }
+
+            LibraryDetailType.Playlist -> {
+                getPlaylistDetailData()
+            }
+
+            LibraryDetailType.Album -> {
+                getAlbumData()
             }
         }
     }
