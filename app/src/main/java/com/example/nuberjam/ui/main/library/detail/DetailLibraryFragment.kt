@@ -20,6 +20,8 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
+import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
@@ -43,6 +45,10 @@ class DetailLibraryFragment : Fragment() {
 
     private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
 
+    companion object {
+        const val EDIT_PLAYLIST_REQUEST_KEY = "edit_playlist_request_key"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -55,7 +61,24 @@ class DetailLibraryFragment : Fragment() {
 
         setupAppbar()
         setupRecyclerView()
+        setupFragmentResultListener()
         initDataObserver()
+    }
+
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            EDIT_PLAYLIST_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            handleFragmentResultData(bundle)
+        }
+    }
+
+    private fun handleFragmentResultData(bundle: Bundle) {
+        val state = bundle.getBoolean(BundleKeys.EDIT_PLAYLIST_STATE_KEY)
+        if (state) {
+            viewModel.getPlaylistDetailData()
+        }
     }
 
     private fun setupAppbar() {
@@ -206,9 +229,11 @@ class DetailLibraryFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.edit_playlist -> {
-                    // TODO: SHOW EDIT PLAYLIST NAME DIALOG
-                    Toast.makeText(requireActivity(), "Edit Playlist", Toast.LENGTH_SHORT)
-                        .show()
+                    val editNameDialogFragment = EditNameDialogFragment.getInstance(
+                        viewModel.playlistId,
+                        binding.imvCover.tvLibraryTitle.text.toString()
+                    )
+                    editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
                     true
                 }
 
