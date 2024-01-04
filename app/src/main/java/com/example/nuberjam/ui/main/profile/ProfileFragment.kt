@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -19,6 +20,7 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFragment
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
+import com.example.nuberjam.utils.BundleKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +31,10 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModels()
 
     private var account = Account()
+
+    companion object {
+        const val EDIT_REQUEST_KEY = "edit_request_key"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,29 @@ class ProfileFragment : Fragment() {
 
         setupAction()
         showSnackBarObserve()
+        setupFragmentResultListener()
+    }
+
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            EDIT_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            showEditResultSnackbar(bundle)
+        }
+        setFragmentResultListener(EDIT_REQUEST_KEY) { _, bundle ->
+            showEditResultSnackbar(bundle)
+        }
+    }
+
+    private fun showEditResultSnackbar(bundle: Bundle) {
+        val state = bundle.getBoolean(BundleKeys.EDIT_PROFILE_STATE_KEY)
+        if (state) {
+            viewModel.setSnackbar(
+                getString(R.string.edit_success_message),
+                CustomSnackbar.STATE_SUCCESS
+            )
+        }
     }
 
     private fun setupAction() {
@@ -74,18 +103,18 @@ class ProfileFragment : Fragment() {
 
             tvDeleteAccount.setOnClickListener {
                 val deleteAccountDialogFragment = DeleteAccountDialogFragment()
-                deleteAccountDialogFragment.show(childFragmentManager, DeleteAccountDialogFragment.TAG)
+                deleteAccountDialogFragment.show(
+                    childFragmentManager,
+                    DeleteAccountDialogFragment.TAG
+                )
             }
 
             imvProfile.setOnClickListener {
-                val toPhotoFragment = ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
+                val toPhotoFragment =
+                    ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
                 toPhotoFragment.currentPhoto = account.photo
                 findNavController().navigate(toPhotoFragment)
             }
-
-//            viewModel.setSnackbar(
-//                "", CustomSnackbar.STATE_SUCCESS
-//            )
         }
     }
 
@@ -97,7 +126,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupView() {
         checkAccountArtist()
-        setUserProfile() // #Anjar12
+        setUserProfile()
     }
 
     private fun checkAccountArtist() {
