@@ -7,6 +7,7 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.model.PlaylistDetail
 import com.example.nuberjam.data.source.remote.request.AccountRequest
+import com.example.nuberjam.data.source.remote.request.PlaylistRequest
 import com.example.nuberjam.data.source.remote.response.AccountItem
 import com.example.nuberjam.data.source.remote.response.AlbumItem
 import com.example.nuberjam.data.source.remote.response.DataResponse
@@ -108,5 +109,12 @@ object Mapping {
             name = name.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
             password = password.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
             photo = photoFile?.toMultipartBody("accountPhoto")
+        )
+
+    fun createPlaylistRequest(accountId: String, name: String?, photoFile: File?) =
+        PlaylistRequest(
+            accountId = accountId.toRequestBody("text/plain".toMediaType()),
+            name = name?.ifEmpty { null }?.toRequestBody("text/plain".toMediaType()),
+            photo = photoFile?.toMultipartBody("playlistPhoto")
         )
 }
