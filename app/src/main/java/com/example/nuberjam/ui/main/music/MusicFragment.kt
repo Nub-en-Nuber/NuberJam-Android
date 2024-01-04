@@ -28,6 +28,9 @@ import com.example.nuberjam.databinding.FragmentMusicBinding
 import com.example.nuberjam.service.MediaService
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.utils.Helper
+import com.example.nuberjam.utils.extensions.collectLifecycleFlow
+import com.example.nuberjam.utils.extensions.invisible
+import com.example.nuberjam.utils.extensions.visible
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +49,8 @@ class MusicFragment : Fragment() {
     private var isMediaReady = false
     private var runnable: Runnable? = null
     private var handler: Handler = Handler(Looper.getMainLooper())
+
+    private lateinit var musicData: Music
 
     private val connection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName) {
@@ -100,6 +105,8 @@ class MusicFragment : Fragment() {
         showNavBar(false)
         showSnackbarObserve()
         setData()
+
+        initAction()
     }
 
     override fun onStop() {
@@ -119,6 +126,18 @@ class MusicFragment : Fragment() {
         if (boundServiceStatus) {
             requireActivity().unbindService(connection)
             boundServiceStatus = false
+        }
+    }
+
+    private fun initAction() {
+        with(binding) {
+            incMusicController.buttonFavoriteState.imbLove.setOnClickListener {
+                if (musicData.isFavorite == true) {
+                    viewModel.updateFavoriteData(false)
+                } else {
+                    viewModel.updateFavoriteData(true)
+                }
+            }
         }
     }
 
@@ -210,8 +229,8 @@ class MusicFragment : Fragment() {
 
                     is Result.Success -> {
                         showLoading(false)
-                        val musicData = result.data
-                        setView(musicData)
+                        musicData = result.data
+                        setView()
                     }
 
                     is Result.Error -> {
@@ -224,25 +243,77 @@ class MusicFragment : Fragment() {
                 }
             }
         }
-    }
 
-    private fun setView(music: Music) {
-        Glide.with(this).load(music.albumPhoto).into(binding.ivAlbumImage)
-        binding.incMusicController.tvSongTitle.text = music.name
-        binding.incMusicController.tvArtist.text =
-            Helper.concatenateArtist(music.artist ?: ArrayList())
-        binding.incMusicController.tvDuration.text = Helper.displayDuration(music.duration ?: 0)
-        binding.incMusicController.tvCurrentDuration.text = Helper.displayDuration(0)
-        binding.incMusicController.btnPlay.setOnClickListener {
-            if (isMediaReady) {
-                mediaService.playOrPauseMedia()
+        viewLifecycleOwner.collectLifecycleFlow(viewModel.addDeleteFavoriteState) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        updateFavoriteState(isLoading = true)
+                    }
+                    is Result.Success -> {
+                        updateFavoriteState(isLoading = false, isSuccess = true)
+                        val currentData = musicData.isFavorite ?: false
+                        musicData.isFavorite = !currentData
+                        binding.incMusicController.buttonFavoriteState.imbLove.setImageResource(
+                            if (musicData.isFavorite == true) R.drawable.ic_love_red else R.drawable.ic_love_gray
+                        )
+                    }
+
+                    is Result.Error -> {
+                        updateFavoriteState(isLoading = false, isSuccess = false)
+                        viewModel.setSnackbar(
+                            Helper.getApiErrorMessage(requireActivity(), result.errorCode),
+                            CustomSnackbar.STATE_ERROR
+                        )
+                    }
+                }
             }
         }
-        if (isServiceRunning(MediaService::class.java.name) && viewModel.isMusicIdSameCurrentPlaying()) {
-            resumeMediaView()
-        } else if (!boundServiceStatus || !isMediaReady) {
-            showMediaLoading(true)
-            initMediaService(music)
+    }
+
+    private fun updateFavoriteState(isLoading: Boolean, isSuccess: Boolean = false) {
+        binding.incMusicController.buttonFavoriteState.apply {
+            if (!isLoading) {
+                loading.invisible()
+                imbLove.visible()
+                if (isSuccess) {
+                    imbLove.setImageResource(
+                        R.drawable.ic_love_red
+                    )
+                } else {
+                    imbLove.setImageResource(
+                        R.drawable.ic_love_gray
+                    )
+                }
+            } else {
+                loading.visible()
+                imbLove.invisible()
+            }
+        }
+    }
+
+    private fun setView() {
+        binding.incMusicController.apply {
+            Glide.with(this@MusicFragment).load(musicData.albumPhoto).into(binding.ivAlbumImage)
+            tvSongTitle.text = musicData.name
+            tvArtist.text = Helper.concatenateArtist(musicData.artist ?: ArrayList())
+            tvDuration.text = Helper.displayDuration(musicData.duration ?: 0)
+            tvCurrentDuration.text = Helper.displayDuration(0)
+            btnPlay.setOnClickListener {
+                if (isMediaReady) {
+                    mediaService.playOrPauseMedia()
+                }
+            }
+            if (isServiceRunning(MediaService::class.java.name) && viewModel.isMusicIdSameCurrentPlaying()) {
+                resumeMediaView()
+            } else if (!boundServiceStatus || !isMediaReady) {
+                showMediaLoading(true)
+                initMediaService()
+            }
+
+            buttonFavoriteState.imbLove.setImageResource(
+                if (musicData.isFavorite == true) R.drawable.ic_love_red else R.drawable.ic_love_gray
+            )
         }
     }
 
@@ -265,10 +336,10 @@ class MusicFragment : Fragment() {
         return false
     }
 
-    private fun initMediaService(music: Music) {
+    private fun initMediaService() {
         val mediaIntent = Intent(requireActivity(), MediaService::class.java)
         requireActivity().stopService(mediaIntent)
-        mediaIntent.putExtra(MediaService.EXTRA_MEDIA_FILE, music)
+        mediaIntent.putExtra(MediaService.EXTRA_MEDIA_FILE, musicData)
         requireActivity().startService(mediaIntent)
         requireActivity().bindService(mediaIntent, connection, Context.BIND_AUTO_CREATE)
     }
