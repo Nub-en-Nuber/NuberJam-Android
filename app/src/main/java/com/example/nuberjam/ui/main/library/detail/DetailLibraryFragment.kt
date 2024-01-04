@@ -102,7 +102,7 @@ class DetailLibraryFragment : Fragment() {
 
             override fun deleteItemFromPlaylist(musicId: Int) {
             }
-        })
+        }, viewType = viewModel.libraryViewType)
         binding.rvMusicList.apply {
             adapter = musicAdapter
             layoutManager = LinearLayoutManager(requireActivity())
@@ -128,11 +128,7 @@ class DetailLibraryFragment : Fragment() {
                             setViewState(getString(R.string.liked_song), data.size, null, data)
                         }
 
-                        is Result.Error -> showErrorState(
-                            result.errorCode,
-                            viewModel::getFavoriteData
-                        )
-
+                        is Result.Error -> showErrorState(result.errorCode)
                         else -> {}
                     }
                 }
@@ -148,11 +144,7 @@ class DetailLibraryFragment : Fragment() {
                             setViewState(data.name, data.music?.size, data.photo, data.music)
                         }
 
-                        is Result.Error -> showErrorState(
-                            result.errorCode,
-                            viewModel::getAlbumData
-                        )
-
+                        is Result.Error -> showErrorState(result.errorCode)
                         else -> {}
                     }
                 }
@@ -185,11 +177,7 @@ class DetailLibraryFragment : Fragment() {
                             )
                         }
 
-                        is Result.Error -> showErrorState(
-                            result.errorCode,
-                            viewModel::getPlaylistDetailData
-                        )
-
+                        is Result.Error -> showErrorState(result.errorCode)
                         else -> {}
                     }
                 }
@@ -254,13 +242,13 @@ class DetailLibraryFragment : Fragment() {
         }
     }
 
-    private fun showErrorState(errorCode: Int, errorAction: () -> Unit) {
+    private fun showErrorState(errorCode: Int) {
         binding.msvPlaylistOuter.showNuberJamErrorState(
             errorMessage = Helper.getApiErrorMessage(
                 requireActivity(),
                 errorCode
             ),
-            onButtonClicked = errorAction
+            onButtonClicked = viewModel::getData
         )
         viewModel.setSnackbar(
             Helper.getApiErrorMessage(requireActivity(), errorCode),
@@ -278,7 +266,7 @@ class DetailLibraryFragment : Fragment() {
 
                     is Result.Success -> {
                         updateFavoriteState(isLoading = false, isSuccess = true)
-                        viewModel.getFavoriteData()
+                        viewModel.getData()
                     }
 
                     is Result.Error -> {
