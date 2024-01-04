@@ -117,9 +117,6 @@ class DetailLibraryFragment : Fragment() {
                 }
             }
 
-            override fun onPlaylistActionClick(musicId: Int) {
-            }
-
             override fun addItemToPlaylist(musicId: Int) {
             }
 
