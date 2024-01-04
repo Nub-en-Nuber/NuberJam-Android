@@ -77,7 +77,7 @@ class DetailLibraryFragment : Fragment() {
     private fun handleFragmentResultData(bundle: Bundle) {
         val state = bundle.getBoolean(BundleKeys.EDIT_PLAYLIST_STATE_KEY)
         if (state) {
-            viewModel.getPlaylistDetailData()
+            viewModel.getData()
         }
     }
 
