@@ -118,4 +118,5 @@
     <string name="text_update_notification">Our services and the terms stated may change or be updated. The terms may change from time to time to represent our services and policies in an accurate and current manner. You are subject to the amended terms if you use our services going forward. You have the option to delete your account if you disagree with the revised conditions.</string>
     <string name="title_edit_playlist_name">Edit Playlist Name</string>
     <string name="playlist_name_hint">Playlist Name</string>
+    <string name="add_to_playlist">Add to playlist</string>
 </resources>
