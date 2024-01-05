@@ -110,6 +110,11 @@ interface ApiService {
         @Field("playlistName") playlistName: String, @Field("accountId") accountId: String
     ): DataResponse
 
+    @POST("playlist/detail/delete.php?token=${Constant.TOKEN}")
+    suspend fun deleteMusicFromPlaylist(
+        @Query("playlistDetailId") playlistDetailId: String
+    ): DataResponse
+
     // Favorite API Endpoint Collection
     @GET("favorite/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllFavorite(
