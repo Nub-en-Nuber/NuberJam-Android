@@ -120,5 +120,6 @@
     <string name="edit">Edit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="logout_confirmation_text">Are you sure to log out?</string>
 
 </resources>

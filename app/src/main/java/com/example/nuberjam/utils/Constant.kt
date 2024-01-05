@@ -21,6 +21,7 @@ object BundleKeys {
     const val ALBUM_ID_KEY = "album_id_key"
     const val PLAYLIST_ID_KEY = "playlist_id_key"
     const val EDIT_PROFILE_STATE_KEY = "edit_profile_state_key"
+    const val USERNAME_KEY = "username_key"
 }
 
 enum class LibraryDetailType(val code: Int) {
