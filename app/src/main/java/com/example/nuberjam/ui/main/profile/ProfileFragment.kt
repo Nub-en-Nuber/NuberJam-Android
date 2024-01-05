@@ -1,7 +1,6 @@
 package com.example.nuberjam.ui.main.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFragment
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
+import com.example.nuberjam.ui.main.profile.logout.LogoutDialogFragment
 import com.example.nuberjam.utils.BundleKeys
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,7 +82,7 @@ class ProfileFragment : Fragment() {
     private fun setupAction() {
         with(binding) {
             btnLogout.setOnClickListener {
-                logoutProcess()
+                openLogoutDialog()
             }
 
             imbName.setOnClickListener {
@@ -118,6 +118,11 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun openLogoutDialog() {
+        val logoutDialog = LogoutDialogFragment.getInstance(account.username)
+        logoutDialog.show(childFragmentManager, LogoutDialogFragment.TAG)
+    }
+
     private fun openEditNameDialog() {
         val name = binding.tvName.text.toString()
         val editNameDialogFragment = EditNameDialogFragment.getInstance(name)
@@ -147,16 +152,6 @@ class ProfileFragment : Fragment() {
             tvYourName.text = account.name
             tvYourEmail.text = account.email
         }
-    }
-
-    private fun logoutProcess() {
-        viewModel.saveLoginState(false)
-        viewModel.clearAccountState()
-
-        val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
-        toAuthActivity.username = account.username
-        findNavController().navigate(toAuthActivity)
-        requireActivity().finish()
     }
 
     private fun showSnackBarObserve() {
