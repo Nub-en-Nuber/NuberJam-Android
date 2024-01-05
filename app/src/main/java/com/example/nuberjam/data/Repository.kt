@@ -290,6 +290,22 @@ class Repository @Inject constructor(
         }
     }
 
+    fun deleteMusicFromPlaylist(playlistDetailId: String): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = apiService.deleteMusicFromPlaylist(playlistDetailId)
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                emit(Result.Success(true))
+            } else {
+                throw Exception()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "deleteMusicFromPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
     fun readAllFavorite(): Flow<Result<List<Music>>> = flow {
         emit(Result.Loading)
         try {
