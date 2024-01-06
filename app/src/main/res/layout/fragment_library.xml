@@ -42,11 +42,12 @@
                     android:id="@+id/rv_playlist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/space_8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/favorite_item"
                     tools:itemCount="10"
-                    tools:listitem="@layout/linear_playlist_item"/>
+                    tools:listitem="@layout/linear_playlist_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
