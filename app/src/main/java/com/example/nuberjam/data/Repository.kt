@@ -197,19 +197,21 @@ class Repository @Inject constructor(
 
     fun getCurrentMusic(): LiveData<Int?> = appPreferences.getCurrentMusic().asLiveData()
 
-    fun readAllPlaylist(accountId: Int): LiveData<Result<List<Playlist>>> = liveData {
-        emit(Result.Loading)
-        try {
-            val response = apiService.readAllPlaylist(accountId.toString())
-            val listPlaylist =
-                response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) } ?: ArrayList()
-            emit(Result.Success(listPlaylist))
-        } catch (e: Exception) {
-            Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
-            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
-            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+    fun readAllPlaylist(accountId: Int, query: String = ""): LiveData<Result<List<Playlist>>> =
+        liveData {
+            emit(Result.Loading)
+            try {
+                val response = apiService.readAllPlaylist(accountId.toString(), query)
+                val listPlaylist =
+                    response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) }
+                        ?: ArrayList()
+                emit(Result.Success(listPlaylist))
+            } catch (e: Exception) {
+                Log.e(TAG, "readAllPlaylist: ${e.message.toString()}")
+                if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+                else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+            }
         }
-    }
 
     fun readPlaylistDetail(playlistId: Int): Flow<Result<PlaylistDetail>> = flow {
         emit(Result.Loading)
@@ -258,6 +260,35 @@ class Repository @Inject constructor(
         }
     }
 
+    fun addMusicToPlaylist(playlistId: Int, musicId: Int): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = apiService.addMusicToPlaylist(playlistId, musicId)
+            val status = response.status
+            if (status == Constant.API_SUCCESS_CODE) emit(Result.Success(true))
+            else emit(Result.Success(false))
+        } catch (e: Exception) {
+            Log.e(TAG, "addMusicToPlaylist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
+    fun checkMusicIsExist(playlistId: Int, musicId: Int): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = apiService.checkMusicIsExist(playlistId, musicId)
+            val status = response.status
+            var isMusicExist = false
+            if (status == Constant.API_SUCCESS_CODE) isMusicExist = true
+            emit(Result.Success(isMusicExist))
+        } catch (e: Exception) {
+            Log.e(TAG, "checkMusicIsExist: ${e.message.toString()}")
+            if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))
+            else emit(Result.Error(Constant.API_GENERAL_ERROR_CODE))
+        }
+    }
+
     fun readAllFavorite(): Flow<Result<List<Music>>> = flow {
         emit(Result.Loading)
         try {
@@ -275,8 +306,7 @@ class Repository @Inject constructor(
     }
 
     fun updateAccount(
-        account: Account = Account(),
-        photoFile: File? = null
+        account: Account = Account(), photoFile: File? = null
     ): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
@@ -363,9 +393,7 @@ class Repository @Inject constructor(
     }
 
     fun updatePlaylist(
-        playlistId: Int,
-        playlistName: String? = null,
-        photoFile: File? = null
+        playlistId: Int, playlistName: String? = null, photoFile: File? = null
     ): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
