@@ -138,6 +138,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onAlbumImageClick(albumId: Int) {
+                goToDetailLibraryPage(LibraryDetailType.Album, albumId)
             }
 
             override fun onFavoriteActionClick(

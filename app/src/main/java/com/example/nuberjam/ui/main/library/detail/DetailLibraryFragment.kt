@@ -11,6 +11,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -21,6 +22,7 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
@@ -80,6 +82,7 @@ class DetailLibraryFragment : Fragment() {
             }
 
             override fun onAlbumImageClick(albumId: Int) {
+                goToDetailLibraryPage(LibraryDetailType.Album, albumId)
             }
 
             override fun onFavoriteActionClick(
@@ -316,5 +319,13 @@ class DetailLibraryFragment : Fragment() {
                 customSnackbar.show()
             }
         }
+    }
+
+    private fun goToDetailLibraryPage(viewType: LibraryDetailType, albumId: Int = 0) {
+        val args = Bundle().apply {
+            putSerializable(BundleKeys.LIBRARY_VIEW_TYPE_KEY, viewType)
+            putInt(BundleKeys.ALBUM_ID_KEY, albumId)
+        }
+        findNavController().navigate(R.id.action_detailLibraryFragment_self, args)
     }
 }
