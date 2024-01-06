@@ -34,8 +34,17 @@ class LibraryFragment : Fragment() {
 
     private val viewModel: LibraryViewModel by viewModels()
 
-    private lateinit var linearAdapter: LinearPlaylistAdapter
-    private lateinit var gridAdapter: GridPlaylistAdapter
+    private val linearAdapter: LinearPlaylistAdapter by lazy {
+        LinearPlaylistAdapter {
+            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
+        }
+    }
+
+    private val gridAdapter: GridPlaylistAdapter by lazy {
+        GridPlaylistAdapter {
+            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
+        }
+    }
 
     lateinit var onAddPlaylistDialogListener: AddPlaylistDialogFragment.OnAddPlaylistDialogListener
 
@@ -192,10 +201,6 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setLinearRecyclerView() {
-        linearAdapter = LinearPlaylistAdapter {
-            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
-        }
-
         binding.rvPlaylist.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = linearAdapter
@@ -203,10 +208,6 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setGridRecyclerView() {
-        gridAdapter = GridPlaylistAdapter {
-            goToDetailLibraryPage(LibraryDetailType.Playlist, it.id)
-        }
-
         binding.rvPlaylist.apply {
             layoutManager = GridLayoutManager(requireActivity(), 2)
             adapter = gridAdapter
