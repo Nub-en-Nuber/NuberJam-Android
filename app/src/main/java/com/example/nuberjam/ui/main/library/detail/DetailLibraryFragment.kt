@@ -69,10 +69,6 @@ class DetailLibraryFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-        binding.appbar.btnSearch.setOnClickListener {
-            // TODO: navigate to search
-            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupRecyclerView() {

@@ -49,7 +49,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbar()
         setRecyclerView()
         showSnackbarObserve()
         setData()
@@ -179,15 +178,6 @@ class HomeFragment : Fragment() {
         super.onResume()
         binding.shimmerLoading.shimmerAlbum.startShimmerAnimation()
         binding.shimmerLoading.shimmerMusic.startShimmerAnimation()
-    }
-
-    private fun setToolbar() {
-        val searchButton = binding.appbar.btnSearch
-
-        searchButton.setOnClickListener {
-            // TODO: navigate to search
-            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun showNoData() {

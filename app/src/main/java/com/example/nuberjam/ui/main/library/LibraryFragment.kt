@@ -82,14 +82,8 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setToolbar() {
-        val searchButton = binding.appbar.btnSearch
         val viewTypeButton = binding.appbar.btnViewType
         val plusButton = binding.appbar.btnPlus
-
-        searchButton.setOnClickListener {
-            // TODO: navigate to search
-            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
-        }
 
         viewTypeButton.setOnClickListener {
             libraryViewType =
