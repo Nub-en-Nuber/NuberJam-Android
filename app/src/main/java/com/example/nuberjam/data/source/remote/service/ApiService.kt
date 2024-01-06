@@ -96,6 +96,7 @@ interface ApiService {
     @GET("playlist/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllPlaylist(
         @Query("accountId") accountId: String,
+        @Query("q") query: String,
     ): DataResponse
 
     @GET("playlist/detail/retrieve.php?token=${Constant.TOKEN}")
@@ -119,6 +120,19 @@ interface ApiService {
         @Part playlistPhoto: MultipartBody.Part? = null,
     ): DataResponse
 
+    @FormUrlEncoded
+    @POST("playlist/detail/check.php?token=${Constant.TOKEN}")
+    suspend fun addMusicToPlaylist(
+        @Field("playlistId") playlistId: Int,
+        @Field("musicId") musicId: Int,
+    ): DataResponse
+
+    @FormUrlEncoded
+    @POST("playlist/detail/add.php?token=${Constant.TOKEN}")
+    suspend fun checkMusicIsExist(
+        @Field("playlistId") playlistId: Int,
+        @Field("musicId") musicId: Int,
+    ): DataResponse
 
     // Favorite API Endpoint Collection
     @GET("favorite/retrieve.php?token=${Constant.TOKEN}")
