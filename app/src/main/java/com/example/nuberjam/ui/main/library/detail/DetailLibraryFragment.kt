@@ -9,10 +9,13 @@ import android.widget.Toolbar
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Music
@@ -21,7 +24,9 @@ import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
 import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
+import com.example.nuberjam.ui.main.profile.ProfileFragmentDirections
 import com.example.nuberjam.utils.BundleKeys
+import com.example.nuberjam.utils.EditPhotoType
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
@@ -69,6 +74,12 @@ class DetailLibraryFragment : Fragment() {
         childFragmentManager.setFragmentResultListener(
             EDIT_PLAYLIST_REQUEST_KEY,
             viewLifecycleOwner
+        ) { _, bundle ->
+            handleFragmentResultData(bundle)
+        }
+
+        setFragmentResultListener(
+            EDIT_PLAYLIST_REQUEST_KEY,
         ) { _, bundle ->
             handleFragmentResultData(bundle)
         }
@@ -181,27 +192,32 @@ class DetailLibraryFragment : Fragment() {
                     imvCover.imbKebab.setOnClickListener {
                         popupMenu.show()
                     }
-                    imvCover.ivGridImage.setOnClickListener {
-                        // TODO: MOVE TO EDIT PHOTO PAGE
-                        Toast.makeText(requireActivity(), "Move to edit image", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-                viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
-                    when (result) {
-                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
-                        is Result.Success -> {
-                            val data = result.data
-                            setViewState(
-                                data.info.name,
-                                data.music.size,
-                                data.info.photo,
-                                data.music
-                            )
-                        }
 
-                        is Result.Error -> showErrorState(result.errorCode)
-                        else -> {}
+                    viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
+                        when (result) {
+                            is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                            is Result.Success -> {
+                                val data = result.data
+                                setViewState(
+                                    data.info.name,
+                                    data.music.size,
+                                    data.info.photo,
+                                    data.music
+                                )
+
+                                imvCover.ivGridImage.setOnClickListener {
+                                    val toPhotoFragment =
+                                        DetailLibraryFragmentDirections.actionDetailLibraryFragmentToEditPhotoFragment()
+                                    toPhotoFragment.currentPhoto = data.info.photo
+                                    toPhotoFragment.entryPoint = EditPhotoType.Playlist
+                                    toPhotoFragment.playlistId = viewModel.playlistId
+                                    findNavController().navigate(toPhotoFragment)
+                                }
+                            }
+
+                            is Result.Error -> showErrorState(result.errorCode)
+                            else -> {}
+                        }
                     }
                 }
             }
@@ -253,6 +269,8 @@ class DetailLibraryFragment : Fragment() {
             } else {
                 Glide.with(requireActivity()).load(image)
                     .placeholder(R.drawable.ic_profile_placeholder)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .error(R.drawable.ic_profile_placeholder)
                     .into(imvCover.ivGridImage)
             }

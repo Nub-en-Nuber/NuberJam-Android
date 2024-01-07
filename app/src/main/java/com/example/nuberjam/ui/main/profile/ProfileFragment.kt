@@ -19,6 +19,7 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFragment
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
+import com.example.nuberjam.utils.EditPhotoType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -80,6 +81,7 @@ class ProfileFragment : Fragment() {
             imvProfile.setOnClickListener {
                 val toPhotoFragment = ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
                 toPhotoFragment.currentPhoto = account.photo
+                toPhotoFragment.entryPoint = EditPhotoType.Profile
                 findNavController().navigate(toPhotoFragment)
             }
 

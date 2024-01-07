@@ -26,6 +26,9 @@ class EditPhotoViewModel @Inject constructor(
     private val _updatePhotoState = MutableStateFlow<Result<Boolean>?>(null)
     val updatePhotoState = _updatePhotoState.asStateFlow()
 
+    private val _updatePlaylistPhotoState = MutableStateFlow<Result<Boolean>?>(null)
+    val updatePlaylistPhotoState = _updatePlaylistPhotoState.asStateFlow()
+
     private val _snackbarState = MutableLiveData<Event<CustomSnackbar.SnackbarState>>()
     val snackbarState: LiveData<Event<CustomSnackbar.SnackbarState>> = _snackbarState
 
@@ -33,6 +36,14 @@ class EditPhotoViewModel @Inject constructor(
         viewModelScope.launch {
             repository.updateAccount(photoFile = photoFile).collect { result ->
                 _updatePhotoState.value = result
+            }
+        }
+    }
+
+    fun updatePlaylist(playlistId: Int, photoFile: File) {
+        viewModelScope.launch {
+            repository.updatePlaylist(playlistId = playlistId, photoFile = photoFile).collect { result ->
+                _updatePlaylistPhotoState.value = result
             }
         }
     }

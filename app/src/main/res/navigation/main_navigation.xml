@@ -99,6 +99,14 @@
             android:name="currentPhoto"
             android:defaultValue="null"
             app:argType="string"/>
+        <argument
+            android:name="entryPoint"
+            app:argType="com.example.nuberjam.utils.EditPhotoType"
+            android:defaultValue="Profile" />
+        <argument
+            android:name="playlistId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/tncFragment"
@@ -129,6 +137,9 @@
             android:name="playlistId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_detailLibraryFragment_to_editPhotoFragment"
+            app:destination="@id/editPhotoFragment" />
     </fragment>
 
 </navigation>

@@ -100,8 +100,8 @@ interface ApiService {
 
     @GET("playlist/detail/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readPlaylistDetail(
-        @Query("accountId") accountId: String,
-        @Query("playlistId") playlistId: String,
+        @Query("accountId") accountId: Int,
+        @Query("playlistId") playlistId: Int,
     ): DataResponse
 
     @FormUrlEncoded
