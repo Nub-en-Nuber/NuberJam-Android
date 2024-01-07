@@ -216,13 +216,10 @@ class Repository @Inject constructor(
         try {
             val accountId = appPreferences.getAccountState().first().id
             val response =
-                apiService.readPlaylistDetail(accountId.toString(), playlistId.toString())
-            if (response.status == Constant.API_SUCCESS_CODE) {
-                val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
-                emit(Result.Success(playlistDetail))
-            } else {
-                throw Exception()
-            }
+                apiService.readPlaylistDetail(accountId, playlistId)
+
+            val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
+            emit(Result.Success(playlistDetail))
         } catch (e: Exception) {
             Log.e(TAG, "readPlaylistDetail: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))

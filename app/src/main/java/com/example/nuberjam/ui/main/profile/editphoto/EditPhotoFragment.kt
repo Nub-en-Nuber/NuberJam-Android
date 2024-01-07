@@ -9,8 +9,10 @@ import android.widget.Toolbar
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,9 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentEditPhotoBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment
+import com.example.nuberjam.utils.BundleKeys
+import com.example.nuberjam.utils.EditPhotoType
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.PhotoLoaderManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +44,8 @@ class EditPhotoFragment : Fragment() {
 
     private lateinit var tempUri: Uri
     private lateinit var currentPhoto: String
+    private lateinit var entryPoint: EditPhotoType
+    private var playlistId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +67,8 @@ class EditPhotoFragment : Fragment() {
     private fun setArgs() {
         val args: EditPhotoFragmentArgs by navArgs()
         currentPhoto = args.currentPhoto
+        entryPoint = args.entryPoint
+        playlistId = args.playlistId
     }
 
     private fun initUI() {
@@ -73,6 +82,9 @@ class EditPhotoFragment : Fragment() {
 
     private fun setToolbar() {
         val toolbar: Toolbar = binding.appbar.toolbar
+
+        binding.appbar.tvToolbarName.text = getString(R.string.edit_profile_photo, entryPoint)
+
         toolbar.navigationIcon = ContextCompat.getDrawable(
             requireContext(), R.drawable.ic_back_gray
         )
@@ -128,8 +140,16 @@ class EditPhotoFragment : Fragment() {
 
     private fun uploadPhoto() {
         val chosenImage = getChosenImage()
-        if (chosenImage != null)
-            viewModel.updateAccount(chosenImage)
+        if (chosenImage != null) {
+            when(entryPoint) {
+                EditPhotoType.Profile -> {
+                    viewModel.updateAccount(chosenImage)
+                }
+                EditPhotoType.Playlist -> {
+                    viewModel.updatePlaylist(playlistId, chosenImage)
+                }
+            }
+        }
     }
 
     private fun getChosenImage(): File? {
@@ -151,6 +171,32 @@ class EditPhotoFragment : Fragment() {
                                 val chosenImage = getChosenImage()
                                 if (chosenImage != null)
                                     PhotoLoaderManager.deleteFile(chosenImage)
+                                findNavController().popBackStack()
+                            }
+                            is Result.Error -> {
+                                showError(result.errorCode)
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updatePlaylistPhotoState.collect { result ->
+                    if (result != null) {
+                        showLoading(result is Result.Loading)
+                        when (result) {
+                            is Result.Success -> {
+                                val chosenImage = getChosenImage()
+                                if (chosenImage != null)
+                                    PhotoLoaderManager.deleteFile(chosenImage)
+                                setFragmentResult(
+                                    DetailLibraryFragment.EDIT_PLAYLIST_REQUEST_KEY,
+                                    bundleOf(BundleKeys.EDIT_PLAYLIST_STATE_KEY to true)
+                                )
                                 findNavController().popBackStack()
                             }
                             is Result.Error -> {

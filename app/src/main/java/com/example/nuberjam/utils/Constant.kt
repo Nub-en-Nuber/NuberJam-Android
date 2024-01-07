@@ -27,3 +27,7 @@ object BundleKeys {
 enum class LibraryDetailType(val code: Int) {
     Favorite(1), Album(2), Playlist(3)
 }
+
+enum class EditPhotoType(val id: Int, type: String) {
+    Profile(1, "Profile"), Playlist(2, "Playlist")
+}
