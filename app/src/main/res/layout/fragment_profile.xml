@@ -32,10 +32,13 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_24dp"
+        android:ellipsize="end"
         android:fontFamily="@font/century_gothic_bold"
+        android:gravity="center"
+        android:maxLines="2"
         android:text="@string/profile_name"
         android:textSize="@dimen/font_20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,13 +106,13 @@
         android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
+        android:ellipsize="end"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
         app:layout_constraintTop_toTopOf="@+id/tv_username"
-        tools:text="@string/your_username"
-        android:ellipsize="end"/>
+        tools:text="@string/your_username" />
 
     <!--    NAME   -->
     <TextView
@@ -126,11 +129,14 @@
 
     <TextView
         android:id="@+id/tv_your_name"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
-        android:maxLength="15"
+        android:layout_marginEnd="@dimen/space_8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_name_option"
+        app:layout_constraintEnd_toStartOf="@+id/imb_name"
         app:layout_constraintStart_toStartOf="@+id/tv_your_username"
         app:layout_constraintTop_toTopOf="@+id/tv_name_option"
         tools:text="@string/your_name" />
@@ -190,12 +196,12 @@
         android:layout_width="@dimen/space_0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/space_8dp"
+        android:text="@string/password_placeholder"
         android:textSize="@dimen/font_13sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_change_password"
         app:layout_constraintEnd_toStartOf="@+id/imb_change_password"
         app:layout_constraintStart_toStartOf="@+id/tv_your_email"
-        app:layout_constraintTop_toTopOf="@+id/tv_change_password"
-        android:text="@string/password_placeholder" />
+        app:layout_constraintTop_toTopOf="@+id/tv_change_password" />
 
     <ImageButton
         android:id="@+id/imb_change_password"

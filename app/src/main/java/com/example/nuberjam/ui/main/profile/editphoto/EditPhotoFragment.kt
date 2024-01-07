@@ -9,8 +9,10 @@ import android.widget.Toolbar
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,8 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentEditPhotoBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.profile.ProfileFragment
+import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.PhotoLoaderManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -151,11 +155,17 @@ class EditPhotoFragment : Fragment() {
                                 val chosenImage = getChosenImage()
                                 if (chosenImage != null)
                                     PhotoLoaderManager.deleteFile(chosenImage)
+                                setFragmentResult(
+                                    ProfileFragment.EDIT_REQUEST_KEY,
+                                    bundleOf(BundleKeys.EDIT_PROFILE_STATE_KEY to true)
+                                )
                                 findNavController().popBackStack()
                             }
+
                             is Result.Error -> {
                                 showError(result.errorCode)
                             }
+
                             else -> {}
                         }
                     }

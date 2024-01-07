@@ -11,7 +11,7 @@ data class Music(
     val duration: Int?,
     val file: String?,
     val artist: List<Artist>?,
-    val isFavorite: Boolean?,
+    var isFavorite: Boolean?,
     val albumId: Int?,
     val albumPhoto: String?,
     val albumName: String?

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_dialog"
@@ -40,8 +40,8 @@
                 android:id="@+id/tv_confirmation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/confirmation_text"
                 android:layout_marginTop="@dimen/space_24dp"
+                android:text="@string/confirmation_text"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +51,8 @@
                 android:id="@+id/ll_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/space_24dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_confirmation">
@@ -60,23 +60,36 @@
                 <Button
                     android:id="@+id/btn_dialog_cancel"
                     style="@style/CustomMaterialButton"
-                    android:layout_width="0dp"
-                    android:textColor="@color/error_main"
-                    android:backgroundTint="@color/white"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/space_8dp"
+                    android:layout_width="@dimen/space_0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/dialog_button" />
+                    android:layout_marginHorizontal="@dimen/space_8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/dialog_button"
+                    android:textColor="@color/error_main" />
 
                 <Button
                     android:id="@+id/btn_dialog_accept"
                     style="@style/CustomMaterialButton"
-                    android:backgroundTint="@color/error_main"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="@dimen/space_0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/error_main"
                     android:text="@string/dialog_button" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:textAlignment="center"
+                android:textColor="@color/error_main"
+                android:textSize="@dimen/font_13sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/ll_button"
+                tools:text="error text"
+                tools:visibility="visible" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/loading"
