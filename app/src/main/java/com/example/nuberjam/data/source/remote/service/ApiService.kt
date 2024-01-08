@@ -119,6 +119,11 @@ interface ApiService {
         @Part playlistPhoto: MultipartBody.Part? = null,
     ): DataResponse
 
+    @POST("playlist/delete.php?token=${Constant.TOKEN}")
+    suspend fun deletePlaylist(
+        @Query("playlistId") playlistId: Int
+    ): DataResponse
+
 
     // Favorite API Endpoint Collection
     @GET("favorite/retrieve.php?token=${Constant.TOKEN}")

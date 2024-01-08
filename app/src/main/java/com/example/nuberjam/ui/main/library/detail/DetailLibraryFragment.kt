@@ -23,8 +23,8 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.ui.main.library.detail.deleteplaylist.DeletePlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
-import com.example.nuberjam.ui.main.profile.ProfileFragmentDirections
 import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.EditPhotoType
 import com.example.nuberjam.utils.Helper
@@ -52,6 +52,7 @@ class DetailLibraryFragment : Fragment() {
 
     companion object {
         const val EDIT_PLAYLIST_REQUEST_KEY = "edit_playlist_request_key"
+        const val DELETE_PLAYLIST_REQUEST_KEY = "delete_playlist_request_key"
     }
 
     override fun onCreateView(
@@ -82,6 +83,16 @@ class DetailLibraryFragment : Fragment() {
             EDIT_PLAYLIST_REQUEST_KEY,
         ) { _, bundle ->
             handleFragmentResultData(bundle)
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            DELETE_PLAYLIST_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val state = bundle.getBoolean(BundleKeys.DELETE_PLAYLIST_STATE_KEY)
+            if (state) {
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -242,9 +253,8 @@ class DetailLibraryFragment : Fragment() {
                 }
 
                 R.id.delete_playlist -> {
-                    // TODO: SHOW DELETE PLAYLIST CONFIRMATION DIALOG
-                    Toast.makeText(requireActivity(), "Delete Playlist", Toast.LENGTH_SHORT)
-                        .show()
+                    DeletePlaylistDialogFragment.getInstance(viewModel.playlistId)
+                        .show(childFragmentManager, DeletePlaylistDialogFragment.TAG)
                     true
                 }
 

@@ -22,6 +22,7 @@ object BundleKeys {
     const val PLAYLIST_ID_KEY = "playlist_id_key"
     const val PLAYLIST_NAME_KEY = "playlist_name_key"
     const val EDIT_PLAYLIST_STATE_KEY = "edit_playlist_state_key"
+    const val DELETE_PLAYLIST_STATE_KEY = "delete_playlist_state_key"
 }
 
 enum class LibraryDetailType(val code: Int) {
