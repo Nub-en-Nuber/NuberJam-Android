@@ -25,11 +25,24 @@ class UpdatePlaylistViewModel @Inject constructor(
     private val _updatePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
     val updatePlaylistState = _updatePlaylistState.asStateFlow()
 
+    private val _deletePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
+    val deletePlaylistState = _deletePlaylistState.asStateFlow()
+
     fun updatePlaylist() {
         if (id != null) {
             viewModelScope.launch {
                 repository.updatePlaylist(id!!, playlistName = name).collect { result ->
                     _updatePlaylistState.value = result
+                }
+            }
+        }
+    }
+
+    fun deletePlaylist() {
+        if (id != null) {
+            viewModelScope.launch {
+                repository.deletePlaylist(id).collect { result ->
+                    _deletePlaylistState.value = result
                 }
             }
         }
