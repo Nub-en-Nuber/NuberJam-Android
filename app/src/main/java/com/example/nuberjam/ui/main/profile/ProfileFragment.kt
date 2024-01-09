@@ -1,12 +1,12 @@
 package com.example.nuberjam.ui.main.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,6 +20,8 @@ import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFra
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
 import com.example.nuberjam.utils.EditPhotoType
+import com.example.nuberjam.ui.main.profile.logout.LogoutDialogFragment
+import com.example.nuberjam.utils.BundleKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +32,10 @@ class ProfileFragment : Fragment() {
     private val viewModel: ProfileViewModel by viewModels()
 
     private var account = Account()
+
+    companion object {
+        const val EDIT_REQUEST_KEY = "edit_request_key"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,12 +55,35 @@ class ProfileFragment : Fragment() {
 
         setupAction()
         showSnackBarObserve()
+        setupFragmentResultListener()
+    }
+
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            EDIT_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            showEditResultSnackbar(bundle)
+        }
+        setFragmentResultListener(EDIT_REQUEST_KEY) { _, bundle ->
+            showEditResultSnackbar(bundle)
+        }
+    }
+
+    private fun showEditResultSnackbar(bundle: Bundle) {
+        val state = bundle.getBoolean(BundleKeys.EDIT_PROFILE_STATE_KEY)
+        if (state) {
+            viewModel.setSnackbar(
+                getString(R.string.edit_success_message),
+                CustomSnackbar.STATE_SUCCESS
+            )
+        }
     }
 
     private fun setupAction() {
         with(binding) {
             btnLogout.setOnClickListener {
-                logoutProcess()
+                openLogoutDialog()
             }
 
             imbName.setOnClickListener {
@@ -75,20 +104,25 @@ class ProfileFragment : Fragment() {
 
             tvDeleteAccount.setOnClickListener {
                 val deleteAccountDialogFragment = DeleteAccountDialogFragment()
-                deleteAccountDialogFragment.show(childFragmentManager, DeleteAccountDialogFragment.TAG)
+                deleteAccountDialogFragment.show(
+                    childFragmentManager,
+                    DeleteAccountDialogFragment.TAG
+                )
             }
 
             imvProfile.setOnClickListener {
-                val toPhotoFragment = ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
+                val toPhotoFragment =
+                    ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
                 toPhotoFragment.currentPhoto = account.photo
                 toPhotoFragment.entryPoint = EditPhotoType.Profile
                 findNavController().navigate(toPhotoFragment)
             }
-
-//            viewModel.setSnackbar(
-//                "", CustomSnackbar.STATE_SUCCESS
-//            )
         }
+    }
+
+    private fun openLogoutDialog() {
+        val logoutDialog = LogoutDialogFragment.getInstance(account.username)
+        logoutDialog.show(childFragmentManager, LogoutDialogFragment.TAG)
     }
 
     private fun openEditNameDialog() {
@@ -99,7 +133,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupView() {
         checkAccountArtist()
-        setUserProfile() // #Anjar12
+        setUserProfile()
     }
 
     private fun checkAccountArtist() {
@@ -120,16 +154,6 @@ class ProfileFragment : Fragment() {
             tvYourName.text = account.name
             tvYourEmail.text = account.email
         }
-    }
-
-    private fun logoutProcess() {
-        viewModel.saveLoginState(false)
-        viewModel.clearAccountState()
-
-        val toAuthActivity = ProfileFragmentDirections.actionNavigationProfileToAuthActivity()
-        toAuthActivity.username = account.username
-        findNavController().navigate(toAuthActivity)
-        requireActivity().finish()
     }
 
     private fun showSnackBarObserve() {

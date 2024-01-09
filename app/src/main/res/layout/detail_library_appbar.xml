@@ -26,15 +26,6 @@
             android:text="@string/title_library"
             android:textSize="@dimen/font_25sp" />
 
-        <ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/space_24dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_search_gray" />
-
     </Toolbar>
 
 </com.google.android.material.appbar.AppBarLayout>

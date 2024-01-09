@@ -34,8 +34,10 @@ class LinearPlaylistAdapter(
             binding.apply {
                 Glide.with(itemView.context)
                     .load(playlistItem.photo)
+                    .placeholder(R.drawable.default_playlist)
                     .apply(RequestOptions.skipMemoryCacheOf(true))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .error(R.drawable.default_playlist)
                     .into(ivPlaylistImage)
                 tvPlaylistName.text = playlistItem.name
                 tvPlaylistType.text = itemView.context.getString(R.string.playlist)

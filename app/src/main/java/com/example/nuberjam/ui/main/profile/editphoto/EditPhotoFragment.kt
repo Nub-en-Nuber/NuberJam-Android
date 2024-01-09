@@ -29,6 +29,7 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment
 import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.EditPhotoType
+import com.example.nuberjam.ui.main.profile.ProfileFragment
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.PhotoLoaderManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -171,11 +172,17 @@ class EditPhotoFragment : Fragment() {
                                 val chosenImage = getChosenImage()
                                 if (chosenImage != null)
                                     PhotoLoaderManager.deleteFile(chosenImage)
+                                setFragmentResult(
+                                    ProfileFragment.EDIT_REQUEST_KEY,
+                                    bundleOf(BundleKeys.EDIT_PROFILE_STATE_KEY to true)
+                                )
                                 findNavController().popBackStack()
                             }
+
                             is Result.Error -> {
                                 showError(result.errorCode)
                             }
+
                             else -> {}
                         }
                     }

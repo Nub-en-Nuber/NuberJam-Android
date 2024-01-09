@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.os.bundleOf
 import androidx.core.view.isInvisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +22,9 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.databinding.SingleFormDialogBinding
+import com.example.nuberjam.ui.main.profile.ProfileFragment
 import com.example.nuberjam.ui.main.profile.UpdateAccountViewModel
+import com.example.nuberjam.utils.BundleKeys.EDIT_PROFILE_STATE_KEY
 import com.example.nuberjam.utils.Helper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -74,7 +78,14 @@ class EditNameDialogFragment : DialogFragment() {
                     if (result != null) {
                         showLoading(result is Result.Loading)
                         when (result) {
-                            is Result.Success -> dismiss()
+                            is Result.Success -> {
+                                setFragmentResult(
+                                    ProfileFragment.EDIT_REQUEST_KEY,
+                                    bundleOf(EDIT_PROFILE_STATE_KEY to true)
+                                )
+                                dismiss()
+                            }
+
                             is Result.Error -> showError(result.errorCode)
                             else -> {}
                         }

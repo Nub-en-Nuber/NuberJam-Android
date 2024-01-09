@@ -1,5 +1,6 @@
 package com.example.nuberjam.ui.main.library.detail
 
+import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -111,10 +113,6 @@ class DetailLibraryFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
-        binding.appbar.btnSearch.setOnClickListener {
-            // TODO: navigate to search
-            Toast.makeText(requireActivity(), "You clicked me.", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupRecyclerView() {
@@ -124,6 +122,7 @@ class DetailLibraryFragment : Fragment() {
             }
 
             override fun onAlbumImageClick(albumId: Int) {
+                goToDetailLibraryPage(LibraryDetailType.Album, albumId)
             }
 
             override fun onFavoriteActionClick(
@@ -271,7 +270,11 @@ class DetailLibraryFragment : Fragment() {
         listMusic: List<Music>?
     ) {
         with(binding) {
+            val scale = requireContext().resources.displayMetrics.density
+            val height = (166 * scale + 0.5f)
             msvPlaylistOuter.showNuberJamDefaultState()
+            imvCover.cvPlaylistItem.layoutParams =
+                ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, height.toInt())
             imvCover.tvLibraryTitle.text = title
             imvCover.tvLibraryType.text = getString(R.string.total_song, dataSize)
             if (image == null) {
@@ -287,7 +290,7 @@ class DetailLibraryFragment : Fragment() {
             if (listMusic?.isEmpty() == true) {
                 msvPlaylistInner.showNuberJamEmptyState(
                     lottieJson = null,
-                    emptyMessage = getString(R.string.data_not_available)
+                    emptyMessage = getString(R.string.no_liked_song)
                 )
             } else {
                 musicAdapter.submitList(listMusic)
@@ -364,5 +367,13 @@ class DetailLibraryFragment : Fragment() {
                 customSnackbar.show()
             }
         }
+    }
+
+    private fun goToDetailLibraryPage(viewType: LibraryDetailType, albumId: Int = 0) {
+        val args = Bundle().apply {
+            putSerializable(BundleKeys.LIBRARY_VIEW_TYPE_KEY, viewType)
+            putInt(BundleKeys.ALBUM_ID_KEY, albumId)
+        }
+        findNavController().navigate(R.id.action_detailLibraryFragment_self, args)
     }
 }

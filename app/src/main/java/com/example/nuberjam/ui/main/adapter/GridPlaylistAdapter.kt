@@ -34,8 +34,10 @@ class GridPlaylistAdapter (
             binding.apply {
                 Glide.with(itemView.context)
                     .load(playlistItem.photo)
+                    .placeholder(R.drawable.default_playlist)
                     .apply(RequestOptions.skipMemoryCacheOf(true))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .error(R.drawable.default_playlist)
                     .into(ivGridImage)
                 tvLibraryTitle.text = playlistItem.name
                 tvLibraryType.text = itemView.context.getString(R.string.playlist)

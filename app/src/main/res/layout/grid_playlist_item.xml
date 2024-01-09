@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_playlist_item"
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="@dimen/space_145dp"
         app:cardCornerRadius="@dimen/space_8dp"
         app:cardElevation="@dimen/space_8dp"
         app:layout_constraintEnd_toEndOf="parent"

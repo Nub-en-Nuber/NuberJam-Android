@@ -140,6 +140,9 @@
         <action
             android:id="@+id/action_detailLibraryFragment_to_editPhotoFragment"
             app:destination="@id/editPhotoFragment" />
+        <action
+            android:id="@+id/action_detailLibraryFragment_self"
+            app:destination="@id/detailLibraryFragment" />
     </fragment>
 
 </navigation>
