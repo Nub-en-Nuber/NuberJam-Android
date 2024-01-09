@@ -73,8 +73,8 @@ class EditPhotoFragment : Fragment() {
 
     private fun initUI() {
         Glide.with(requireActivity()).load(currentPhoto)
-            .placeholder(R.drawable.ic_profile_placeholder)
-            .error(R.drawable.ic_profile_placeholder)
+            .placeholder(R.drawable.ic_profile_placeholder_256)
+            .error(R.drawable.ic_profile_placeholder_256)
             .apply(RequestOptions.skipMemoryCacheOf(true))
             .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
             .into(binding.imvProfilePhoto)
