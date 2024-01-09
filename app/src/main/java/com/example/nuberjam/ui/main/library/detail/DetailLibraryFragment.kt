@@ -10,11 +10,14 @@ import android.widget.Toolbar
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.data.model.Music
@@ -22,7 +25,10 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.ui.main.library.detail.deleteplaylist.DeletePlaylistDialogFragment
+import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
 import com.example.nuberjam.utils.BundleKeys
+import com.example.nuberjam.utils.EditPhotoType
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.LibraryDetailType
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
@@ -46,6 +52,11 @@ class DetailLibraryFragment : Fragment() {
 
     private var favoriteButtonBinding: FavoriteStateButtonBinding? = null
 
+    companion object {
+        const val EDIT_PLAYLIST_REQUEST_KEY = "edit_playlist_request_key"
+        const val DELETE_PLAYLIST_REQUEST_KEY = "delete_playlist_request_key"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -58,7 +69,40 @@ class DetailLibraryFragment : Fragment() {
 
         setupAppbar()
         setupRecyclerView()
+        setupFragmentResultListener()
         initDataObserver()
+    }
+
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            EDIT_PLAYLIST_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            handleFragmentResultData(bundle)
+        }
+
+        setFragmentResultListener(
+            EDIT_PLAYLIST_REQUEST_KEY,
+        ) { _, bundle ->
+            handleFragmentResultData(bundle)
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            DELETE_PLAYLIST_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val state = bundle.getBoolean(BundleKeys.DELETE_PLAYLIST_STATE_KEY)
+            if (state) {
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun handleFragmentResultData(bundle: Bundle) {
+        val state = bundle.getBoolean(BundleKeys.EDIT_PLAYLIST_STATE_KEY)
+        if (state) {
+            viewModel.getData()
+        }
     }
 
     private fun setupAppbar() {
@@ -158,27 +202,32 @@ class DetailLibraryFragment : Fragment() {
                     imvCover.imbKebab.setOnClickListener {
                         popupMenu.show()
                     }
-                    imvCover.ivGridImage.setOnClickListener {
-                        // TODO: MOVE TO EDIT PHOTO PAGE
-                        Toast.makeText(requireActivity(), "Move to edit image", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-                viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
-                    when (result) {
-                        is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
-                        is Result.Success -> {
-                            val data = result.data
-                            setViewState(
-                                data.info.name,
-                                data.music.size,
-                                data.info.photo,
-                                data.music
-                            )
-                        }
 
-                        is Result.Error -> showErrorState(result.errorCode)
-                        else -> {}
+                    viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
+                        when (result) {
+                            is Result.Loading -> binding.msvPlaylistOuter.showNuberJamLoadingState()
+                            is Result.Success -> {
+                                val data = result.data
+                                setViewState(
+                                    data.info.name,
+                                    data.music.size,
+                                    data.info.photo,
+                                    data.music
+                                )
+
+                                imvCover.ivGridImage.setOnClickListener {
+                                    val toPhotoFragment =
+                                        DetailLibraryFragmentDirections.actionDetailLibraryFragmentToEditPhotoFragment()
+                                    toPhotoFragment.currentPhoto = data.info.photo
+                                    toPhotoFragment.entryPoint = EditPhotoType.Playlist
+                                    toPhotoFragment.playlistId = viewModel.playlistId
+                                    findNavController().navigate(toPhotoFragment)
+                                }
+                            }
+
+                            is Result.Error -> showErrorState(result.errorCode)
+                            else -> {}
+                        }
                     }
                 }
             }
@@ -194,16 +243,17 @@ class DetailLibraryFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.edit_playlist -> {
-                    // TODO: SHOW EDIT PLAYLIST NAME DIALOG
-                    Toast.makeText(requireActivity(), "Edit Playlist", Toast.LENGTH_SHORT)
-                        .show()
+                    val editNameDialogFragment = EditNameDialogFragment.getInstance(
+                        viewModel.playlistId,
+                        binding.imvCover.tvLibraryTitle.text.toString()
+                    )
+                    editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
                     true
                 }
 
                 R.id.delete_playlist -> {
-                    // TODO: SHOW DELETE PLAYLIST CONFIRMATION DIALOG
-                    Toast.makeText(requireActivity(), "Delete Playlist", Toast.LENGTH_SHORT)
-                        .show()
+                    DeletePlaylistDialogFragment.getInstance(viewModel.playlistId)
+                        .show(childFragmentManager, DeletePlaylistDialogFragment.TAG)
                     true
                 }
 
@@ -231,8 +281,10 @@ class DetailLibraryFragment : Fragment() {
                 imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
             } else {
                 Glide.with(requireActivity()).load(image)
-                    .placeholder(R.drawable.ic_profile_placeholder)
-                    .error(R.drawable.ic_profile_placeholder)
+                    .placeholder(R.drawable.default_playlist)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .error(R.drawable.default_playlist)
                     .into(imvCover.ivGridImage)
             }
             if (listMusic?.isEmpty() == true) {

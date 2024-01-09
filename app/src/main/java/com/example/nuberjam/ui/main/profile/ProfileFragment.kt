@@ -19,6 +19,7 @@ import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.profile.deleteaccount.DeleteAccountDialogFragment
 import com.example.nuberjam.ui.main.profile.editname.EditNameDialogFragment
 import com.example.nuberjam.ui.main.profile.editpassword.EditPasswordDialogFragment
+import com.example.nuberjam.utils.EditPhotoType
 import com.example.nuberjam.ui.main.profile.logout.LogoutDialogFragment
 import com.example.nuberjam.utils.BundleKeys
 import dagger.hilt.android.AndroidEntryPoint
@@ -113,6 +114,7 @@ class ProfileFragment : Fragment() {
                 val toPhotoFragment =
                     ProfileFragmentDirections.actionNavigationProfileToEditPhotoFragment()
                 toPhotoFragment.currentPhoto = account.photo
+                toPhotoFragment.entryPoint = EditPhotoType.Profile
                 findNavController().navigate(toPhotoFragment)
             }
         }
@@ -142,8 +144,8 @@ class ProfileFragment : Fragment() {
     private fun setUserProfile() {
         with(binding) {
             Glide.with(requireActivity()).load(account.photo)
-                .placeholder(R.drawable.ic_profile_placeholder)
-                .error(R.drawable.ic_profile_placeholder)
+                .placeholder(R.drawable.ic_profile_placeholder_96)
+                .error(R.drawable.ic_profile_placeholder_96)
                 .apply(RequestOptions.skipMemoryCacheOf(true))
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(imvProfile)

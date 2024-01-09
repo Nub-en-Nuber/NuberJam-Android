@@ -1,11 +1,9 @@
 package com.example.nuberjam.data.source.remote.service
 
-import com.example.nuberjam.data.source.remote.request.FavoriteRequest
 import com.example.nuberjam.data.source.remote.response.DataResponse
 import com.example.nuberjam.utils.Constant
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -70,6 +68,7 @@ interface ApiService {
         @Query("accountId") accountId: String,
     ): DataResponse
 
+
     // Album API Endpoint Collection
     @GET("album/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readAllAlbum(): DataResponse
@@ -79,6 +78,7 @@ interface ApiService {
         @Query("albumId") albumId: String,
         @Query("accountId") accountId: String,
     ): DataResponse
+
 
     // Music API Endpoint Collection
     @GET("music/retrieve.php?token=${Constant.TOKEN}")
@@ -100,8 +100,8 @@ interface ApiService {
 
     @GET("playlist/detail/retrieve.php?token=${Constant.TOKEN}")
     suspend fun readPlaylistDetail(
-        @Query("accountId") accountId: String,
-        @Query("playlistId") playlistId: String,
+        @Query("accountId") accountId: Int,
+        @Query("playlistId") playlistId: Int,
     ): DataResponse
 
     @FormUrlEncoded
@@ -109,6 +109,21 @@ interface ApiService {
     suspend fun addPlaylist(
         @Field("playlistName") playlistName: String, @Field("accountId") accountId: String
     ): DataResponse
+
+    @Multipart
+    @POST("playlist/edit.php?token=${Constant.TOKEN}")
+    suspend fun updatePlaylist(
+        @Query("playlistId") playlistId: String,
+        @Part("accountId") accountId: RequestBody,
+        @Part("playlistName") playlistName: RequestBody? = null,
+        @Part playlistPhoto: MultipartBody.Part? = null,
+    ): DataResponse
+
+    @POST("playlist/delete.php?token=${Constant.TOKEN}")
+    suspend fun deletePlaylist(
+        @Query("playlistId") playlistId: Int
+    ): DataResponse
+
 
     // Favorite API Endpoint Collection
     @GET("favorite/retrieve.php?token=${Constant.TOKEN}")

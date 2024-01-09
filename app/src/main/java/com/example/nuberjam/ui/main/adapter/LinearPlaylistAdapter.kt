@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.databinding.LinearPlaylistItemBinding
@@ -30,7 +32,13 @@ class LinearPlaylistAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(playlistItem: Playlist) {
             binding.apply {
-                Glide.with(itemView.context).load(playlistItem.photo).into(ivPlaylistImage)
+                Glide.with(itemView.context)
+                    .load(playlistItem.photo)
+                    .placeholder(R.drawable.default_playlist)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .error(R.drawable.default_playlist)
+                    .into(ivPlaylistImage)
                 tvPlaylistName.text = playlistItem.name
                 tvPlaylistType.text = itemView.context.getString(R.string.playlist)
             }

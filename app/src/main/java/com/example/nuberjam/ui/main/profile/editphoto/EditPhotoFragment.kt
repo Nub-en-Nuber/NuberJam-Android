@@ -26,8 +26,10 @@ import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.FragmentEditPhotoBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
-import com.example.nuberjam.ui.main.profile.ProfileFragment
+import com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment
 import com.example.nuberjam.utils.BundleKeys
+import com.example.nuberjam.utils.EditPhotoType
+import com.example.nuberjam.ui.main.profile.ProfileFragment
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.PhotoLoaderManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +45,8 @@ class EditPhotoFragment : Fragment() {
 
     private lateinit var tempUri: Uri
     private lateinit var currentPhoto: String
+    private lateinit var entryPoint: EditPhotoType
+    private var playlistId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,12 +68,14 @@ class EditPhotoFragment : Fragment() {
     private fun setArgs() {
         val args: EditPhotoFragmentArgs by navArgs()
         currentPhoto = args.currentPhoto
+        entryPoint = args.entryPoint
+        playlistId = args.playlistId
     }
 
     private fun initUI() {
         Glide.with(requireActivity()).load(currentPhoto)
-            .placeholder(R.drawable.ic_profile_placeholder)
-            .error(R.drawable.ic_profile_placeholder)
+            .placeholder(R.drawable.ic_profile_placeholder_256)
+            .error(R.drawable.ic_profile_placeholder_256)
             .apply(RequestOptions.skipMemoryCacheOf(true))
             .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
             .into(binding.imvProfilePhoto)
@@ -77,6 +83,9 @@ class EditPhotoFragment : Fragment() {
 
     private fun setToolbar() {
         val toolbar: Toolbar = binding.appbar.toolbar
+
+        binding.appbar.tvToolbarName.text = getString(R.string.edit_profile_photo, entryPoint)
+
         toolbar.navigationIcon = ContextCompat.getDrawable(
             requireContext(), R.drawable.ic_back_gray
         )
@@ -132,8 +141,16 @@ class EditPhotoFragment : Fragment() {
 
     private fun uploadPhoto() {
         val chosenImage = getChosenImage()
-        if (chosenImage != null)
-            viewModel.updateAccount(chosenImage)
+        if (chosenImage != null) {
+            when(entryPoint) {
+                EditPhotoType.Profile -> {
+                    viewModel.updateAccount(chosenImage)
+                }
+                EditPhotoType.Playlist -> {
+                    viewModel.updatePlaylist(playlistId, chosenImage)
+                }
+            }
+        }
     }
 
     private fun getChosenImage(): File? {
@@ -166,6 +183,32 @@ class EditPhotoFragment : Fragment() {
                                 showError(result.errorCode)
                             }
 
+                            else -> {}
+                        }
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updatePlaylistPhotoState.collect { result ->
+                    if (result != null) {
+                        showLoading(result is Result.Loading)
+                        when (result) {
+                            is Result.Success -> {
+                                val chosenImage = getChosenImage()
+                                if (chosenImage != null)
+                                    PhotoLoaderManager.deleteFile(chosenImage)
+                                setFragmentResult(
+                                    DetailLibraryFragment.EDIT_PLAYLIST_REQUEST_KEY,
+                                    bundleOf(BundleKeys.EDIT_PLAYLIST_STATE_KEY to true)
+                                )
+                                findNavController().popBackStack()
+                            }
+                            is Result.Error -> {
+                                showError(result.errorCode)
+                            }
                             else -> {}
                         }
                     }
