@@ -278,10 +278,10 @@ class DetailLibraryFragment : Fragment() {
                 imvCover.ivGridImage.setImageResource(R.drawable.favorite_pic)
             } else {
                 Glide.with(requireActivity()).load(image)
-                    .placeholder(R.drawable.ic_profile_placeholder)
+                    .placeholder(R.drawable.default_playlist)
                     .apply(RequestOptions.skipMemoryCacheOf(true))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                    .error(R.drawable.ic_profile_placeholder)
+                    .error(R.drawable.default_playlist)
                     .into(imvCover.ivGridImage)
             }
             if (listMusic?.isEmpty() == true) {
