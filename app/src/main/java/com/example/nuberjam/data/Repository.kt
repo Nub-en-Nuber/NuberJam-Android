@@ -290,7 +290,7 @@ class Repository @Inject constructor(
         }
     }
 
-    fun deleteMusicFromPlaylist(playlistDetailId: String): Flow<Result<Boolean>> = flow {
+    fun deleteMusicFromPlaylist(playlistDetailId: Int): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
             val response = apiService.deleteMusicFromPlaylist(playlistDetailId)
