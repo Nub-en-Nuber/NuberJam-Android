@@ -5,10 +5,12 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -26,6 +28,7 @@ import com.example.nuberjam.utils.extensions.showNuberJamEmptyState
 import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class SearchPlaylistDialogFragment : DialogFragment() {
@@ -50,13 +53,15 @@ class SearchPlaylistDialogFragment : DialogFragment() {
         return dialog
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            ActionBar.LayoutParams.MATCH_PARENT,
-            ActionBar.LayoutParams.WRAP_CONTENT
-        )
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    override fun onResume() {
+        super.onResume()
+        val width = (resources.displayMetrics.widthPixels)
+        val height = (resources.displayMetrics.heightPixels * 0.60).toInt()
+
+        dialog?.window?.run {
+            setLayout(width, height)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
     }
 
     override fun onCreateView(
