@@ -48,7 +48,7 @@ fun MultiStateView.showNuberJamEmptyState(
     }
 
     lottieJson?.let {
-        val imgError = findViewById<LottieAnimationView>(R.id.lt_error)
+        val imgError = findViewById<LottieAnimationView>(R.id.lt_empty)
         imgError?.setAnimation(lottieJson)
         imgError.playAnimation()
         imgError.visible()

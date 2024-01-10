@@ -4,8 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Parcelable
+import android.text.Editable
+import android.widget.EditText
+import androidx.core.os.postDelayed
+import androidx.core.widget.doAfterTextChanged
 import com.example.nuberjam.R
 import com.example.nuberjam.data.model.Artist
+import com.google.android.material.textfield.TextInputEditText
 
 object Helper {
 
@@ -38,6 +43,15 @@ object Helper {
 
     fun isAndroidTiramisuOrHigher(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+    }
+
+    fun TextInputEditText.debounce(action: (Editable?) -> Unit) {
+        doAfterTextChanged { text ->
+            var counter = getTag(id) as? Int ?: 0
+            handler.removeCallbacksAndMessages(counter)
+            handler.postDelayed(500L, ++counter) { action(text) }
+            setTag(id, counter)
+        }
     }
 }
 

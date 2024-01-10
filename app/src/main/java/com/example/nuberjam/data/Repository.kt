@@ -197,10 +197,11 @@ class Repository @Inject constructor(
 
     fun getCurrentMusic(): LiveData<Int?> = appPreferences.getCurrentMusic().asLiveData()
 
-    fun readAllPlaylist(accountId: Int, query: String = ""): LiveData<Result<List<Playlist>>> =
+    fun readAllPlaylist(query: String = ""): LiveData<Result<List<Playlist>>> =
         liveData {
             emit(Result.Loading)
             try {
+                val accountId = appPreferences.getAccountState().first().id
                 val response = apiService.readAllPlaylist(accountId.toString(), query)
                 val listPlaylist =
                     response.data?.let { Mapping.playlistItemToPlaylist(it.playlist) }

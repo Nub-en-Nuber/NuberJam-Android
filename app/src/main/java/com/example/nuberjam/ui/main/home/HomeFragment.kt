@@ -158,7 +158,8 @@ class HomeFragment : Fragment() {
 
             override fun deleteItemFromPlaylist(musicId: Int) {
             }
-        })
+        },
+            childFragmentManager = childFragmentManager)
         binding.rvMusicList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = musicAdapter

@@ -143,7 +143,9 @@ class DetailLibraryFragment : Fragment() {
 
             override fun deleteItemFromPlaylist(musicId: Int) {
             }
-        }, viewType = viewModel.libraryViewType)
+        },
+            viewType = viewModel.libraryViewType,
+            childFragmentManager = childFragmentManager)
         binding.rvMusicList.apply {
             adapter = musicAdapter
             layoutManager = LinearLayoutManager(requireActivity())

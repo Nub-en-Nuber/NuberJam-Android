@@ -6,14 +6,14 @@
     android:layout_height="match_parent">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lt_error"
+        android:id="@+id/lt_loading"
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_240dp"
         android:layout_centerInParent="true"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
+        android:scaleX="0.35"
+        android:scaleY="0.35"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading_animation"/>
+        app:lottie_rawRes="@raw/loading_animation" />
 
 </RelativeLayout>
