@@ -6,6 +6,7 @@
     <string name="title_register">Register</string>
     <string name="title_login">Login</string>
     <string name="title_delete_playlist">Delete Playlist</string>
+    <string name="title_add_to_playlist">Add To Playlist</string>
 
 
     <!--    Terms and Conditions-->
@@ -127,4 +128,6 @@
     <string name="title_edit_playlist_name">Edit Playlist Name</string>
     <string name="playlist_name_hint">Playlist Name</string>
     <string name="add_to_playlist">Add to playlist</string>
+    <string name="search_playlist">Search playlist</string>
+    <string name="no_playlist">No playlist, please create one in the library</string>
 </resources>

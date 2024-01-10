@@ -58,7 +58,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.kennyc.view.MultiStateView
-                android:id="@+id/msv_playlist_outer"
+                android:id="@+id/msv_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="@dimen/space_24dp"
