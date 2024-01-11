@@ -156,8 +156,6 @@ class HomeFragment : Fragment() {
             override fun addItemToPlaylist(musicId: Int) {
             }
 
-            override fun deleteItemFromPlaylist(musicId: Int) {
-            }
         },
             childFragmentManager = childFragmentManager)
         binding.rvMusicList.apply {

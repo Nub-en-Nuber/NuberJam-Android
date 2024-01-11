@@ -7,6 +7,7 @@
     <string name="title_login">Login</string>
     <string name="title_delete_playlist">Delete Playlist</string>
     <string name="title_add_to_playlist">Add To Playlist</string>
+    <string name="title_delete_song">Delete Song</string>
 
 
     <!--    Terms and Conditions-->
@@ -89,6 +90,7 @@
     <string name="playlist_name_counter">%1s/28</string>
     <string name="playlist_name_max_word">Maximum words is 28!</string>
     <string name="playlist_delete_confirmation">Are you sure to delete this Playlist ?</string>
+    <string name="music_delete_confirmation">Are you sure want to delete this song from this playlist?</string>
 
     <string name="library_type">Library Type</string>
     <string name="dialog_title">Dialog Title</string>
