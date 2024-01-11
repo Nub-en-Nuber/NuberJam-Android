@@ -21,6 +21,7 @@ object BundleKeys {
     const val ALBUM_ID_KEY = "album_id_key"
     const val PLAYLIST_ID_KEY = "playlist_id_key"
     const val MUSIC_ID_KEY = "music_id_key"
+    const val PLAYLIST_DETAIL_ID_KEY = "playlist_detail_id_key"
     const val PLAYLIST_NAME_KEY = "playlist_name_key"
     const val EDIT_PLAYLIST_STATE_KEY = "edit_playlist_state_key"
     const val DELETE_PLAYLIST_STATE_KEY = "delete_playlist_state_key"

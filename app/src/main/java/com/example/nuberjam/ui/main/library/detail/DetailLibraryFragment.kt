@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -25,6 +23,7 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
+import com.example.nuberjam.ui.main.library.detail.deletemusic.DeleteMusicFromPlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.deleteplaylist.DeletePlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
 import com.example.nuberjam.utils.BundleKeys
@@ -139,9 +138,6 @@ class DetailLibraryFragment : Fragment() {
             }
 
             override fun addItemToPlaylist(musicId: Int) {
-            }
-
-            override fun deleteItemFromPlaylist(musicId: Int) {
             }
         },
             viewType = viewModel.libraryViewType,

@@ -16,6 +16,7 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.MusicItemBinding
 import com.example.nuberjam.databinding.MusicKebabItemBinding
+import com.example.nuberjam.ui.main.library.detail.deletemusic.DeleteMusicFromPlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.searchplaylist.SearchPlaylistDialogFragment
 import com.example.nuberjam.utils.Helper.concatenateArtist
 import com.example.nuberjam.utils.Helper.displayDuration
@@ -76,7 +77,7 @@ class MusicAdapter(
                         )
                     }
 
-                    val popupMenu = initPopupMenu(imbKebab, musicItem.id ?: 0)
+                    val popupMenu = initPopupMenu(imbKebab, musicItem.id ?: 0, musicItem.playlistDetailId?:0)
                     imbKebab.setOnClickListener {
                         popupMenu.show()
                     }
@@ -113,7 +114,7 @@ class MusicAdapter(
             }
         }
 
-        private fun initPopupMenu(view: View, musicId: Int): PopupMenu {
+        private fun initPopupMenu(view: View, musicId: Int, playlistDetailId: Int): PopupMenu {
             val popupMenu = PopupMenu(itemView.context, view)
             popupMenu.inflate(R.menu.kebab_music_playlist_menu)
 
@@ -127,12 +128,7 @@ class MusicAdapter(
 
                     R.id.delete_music_playlist -> {
                         // TODO: SHOW DIALOG DELETE MUSIC FROM PLAYLIST
-                        Toast.makeText(
-                            itemView.context,
-                            "Delete Music $musicId",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                       DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId).show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
                         true
                     }
 
@@ -153,7 +149,6 @@ class MusicAdapter(
         )
 
         fun addItemToPlaylist(musicId: Int)
-        fun deleteItemFromPlaylist(musicId: Int)
     }
 
     companion object {

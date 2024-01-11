@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.nuberjam.data.Repository
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.utils.BundleKeys.MUSIC_ID_KEY
+import com.example.nuberjam.utils.BundleKeys.PLAYLIST_DETAIL_ID_KEY
 import com.example.nuberjam.utils.BundleKeys.PLAYLIST_ID_KEY
 import com.example.nuberjam.utils.BundleKeys.PLAYLIST_NAME_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +24,16 @@ class UpdatePlaylistViewModel @Inject constructor(
     var name = savedStateHandle.get<String>(PLAYLIST_NAME_KEY) ?: ""
     val playlistId = savedStateHandle.get<Int>(PLAYLIST_ID_KEY)
     val musicId = savedStateHandle.get<Int>(MUSIC_ID_KEY)
+    val playlistDetailId = savedStateHandle.get<Int>(PLAYLIST_DETAIL_ID_KEY)
 
     private val _updatePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
     val updatePlaylistState = _updatePlaylistState.asStateFlow()
 
     private val _deletePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
     val deletePlaylistState = _deletePlaylistState.asStateFlow()
+
+    private val _deleteMusicFromPlaylist = MutableStateFlow<Result<Boolean>?>(null)
+    val deleteMusicFromPlaylistState = _deleteMusicFromPlaylist.asStateFlow()
 
     fun updatePlaylist() {
         if (playlistId != null) {
@@ -51,4 +56,14 @@ class UpdatePlaylistViewModel @Inject constructor(
     }
 
     fun searchPlaylist(query: String = "") = repository.readAllPlaylist(query)
+
+    fun deleteMusicFromPlaylist() {
+        if (playlistDetailId != null) {
+            viewModelScope.launch {
+                repository.deleteMusicFromPlaylist(playlistDetailId).collect { result ->
+                    _deleteMusicFromPlaylist.value = result
+                }
+            }
+        }
+    }
 }

@@ -43,7 +43,7 @@ object Mapping {
     }
 
     fun musicItemToMusic(data: MusicItem, album: AlbumItem): Music = Music(
-        playlistId = data.playlistDetailId,
+        playlistDetailId = data.playlistDetailId,
         id = data.musicId,
         name = data.musicName,
         duration = data.musicDuration.toInt(),

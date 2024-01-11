@@ -141,7 +141,7 @@ interface ApiService {
 
     @POST("playlist/detail/delete.php?token=${Constant.TOKEN}")
     suspend fun deleteMusicFromPlaylist(
-        @Query("playlistDetailId") playlistDetailId: String
+        @Query("playlistDetailId") playlistDetailId: Int
     ): DataResponse
 
     // Favorite API Endpoint Collection
