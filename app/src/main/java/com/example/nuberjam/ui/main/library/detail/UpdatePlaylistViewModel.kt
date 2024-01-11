@@ -11,6 +11,7 @@ import com.example.nuberjam.utils.BundleKeys.PLAYLIST_NAME_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,16 +25,24 @@ class UpdatePlaylistViewModel @Inject constructor(
     val playlistId = savedStateHandle.get<Int>(PLAYLIST_ID_KEY)
     val musicId = savedStateHandle.get<Int>(MUSIC_ID_KEY)
 
+    var selectedPlaylistId = 0
+
     private val _updatePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
     val updatePlaylistState = _updatePlaylistState.asStateFlow()
 
     private val _deletePlaylistState = MutableStateFlow<Result<Boolean>?>(null)
     val deletePlaylistState = _deletePlaylistState.asStateFlow()
 
+    private val _checkMusicInPlaylistState = MutableStateFlow<Result<Boolean>?>(null)
+    val checkMusicInPlaylistState = _checkMusicInPlaylistState.asStateFlow()
+
+    private val _addMusicToPlaylistState = MutableStateFlow<Result<Boolean>?>(null)
+    val addMusicToPlaylistState = _addMusicToPlaylistState.asStateFlow()
+
     fun updatePlaylist() {
         if (playlistId != null) {
             viewModelScope.launch {
-                repository.updatePlaylist(playlistId!!, playlistName = name).collect { result ->
+                repository.updatePlaylist(playlistId, playlistName = name).collect { result ->
                     _updatePlaylistState.value = result
                 }
             }
@@ -51,4 +60,24 @@ class UpdatePlaylistViewModel @Inject constructor(
     }
 
     fun searchPlaylist(query: String = "") = repository.readAllPlaylist(query)
+
+    fun checkMusicIsExist() {
+        if (musicId != null) {
+            viewModelScope.launch {
+                repository.checkMusicIsExist(selectedPlaylistId, musicId).collect { result ->
+                    _checkMusicInPlaylistState.value = result
+                }
+            }
+        }
+    }
+
+    fun addMusicToPlaylist() {
+        if (musicId != null) {
+            viewModelScope.launch {
+                repository.addMusicToPlaylist(selectedPlaylistId, musicId).collect { result ->
+                    _addMusicToPlaylistState.value = result
+                }
+            }
+        }
+    }
 }

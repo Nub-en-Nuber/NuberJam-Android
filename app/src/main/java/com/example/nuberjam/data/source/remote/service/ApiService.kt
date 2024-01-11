@@ -125,14 +125,14 @@ interface ApiService {
         @Query("playlistId") playlistId: Int
     ): DataResponse
     @FormUrlEncoded
-    @POST("playlist/detail/check.php?token=${Constant.TOKEN}")
+    @POST("playlist/detail/add.php?token=${Constant.TOKEN}")
     suspend fun addMusicToPlaylist(
         @Field("playlistId") playlistId: Int,
         @Field("musicId") musicId: Int,
     ): DataResponse
 
     @FormUrlEncoded
-    @POST("playlist/detail/add.php?token=${Constant.TOKEN}")
+    @POST("playlist/detail/check.php?token=${Constant.TOKEN}")
     suspend fun checkMusicIsExist(
         @Field("playlistId") playlistId: Int,
         @Field("musicId") musicId: Int,
