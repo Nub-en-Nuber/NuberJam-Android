@@ -12,21 +12,27 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nuberjam.R
 import com.example.nuberjam.data.Result
 import com.example.nuberjam.databinding.PlaylistDialogBinding
 import com.example.nuberjam.ui.main.adapter.LinearPlaylistAdapter
+import com.example.nuberjam.ui.main.library.detail.DetailLibraryFragment
 import com.example.nuberjam.ui.main.library.detail.UpdatePlaylistViewModel
 import com.example.nuberjam.utils.BundleKeys
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.Helper.debounce
+import com.example.nuberjam.utils.extensions.collectLifecycleFlow
+import com.example.nuberjam.utils.extensions.gone
 import com.example.nuberjam.utils.extensions.showNuberJamDefaultState
 import com.example.nuberjam.utils.extensions.showNuberJamEmptyState
 import com.example.nuberjam.utils.extensions.showNuberJamErrorState
 import com.example.nuberjam.utils.extensions.showNuberJamLoadingState
+import com.example.nuberjam.utils.extensions.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -40,8 +46,8 @@ class SearchPlaylistDialogFragment : DialogFragment() {
 
     private val playlistAdapter: LinearPlaylistAdapter by lazy {
         LinearPlaylistAdapter { playlist ->
-            Toast.makeText(requireActivity(), "Playlist Id : ${playlist.id}", Toast.LENGTH_SHORT)
-                .show()
+            viewModel.selectedPlaylistId = playlist.id
+            viewModel.checkMusicIsExist()
         }
     }
 
@@ -55,11 +61,13 @@ class SearchPlaylistDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        val width = (resources.displayMetrics.widthPixels)
-        val height = (resources.displayMetrics.heightPixels * 0.60).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.70).toInt()
 
         dialog?.window?.run {
-            setLayout(width, height)
+            setLayout(
+                ActionBar.LayoutParams.MATCH_PARENT,
+                height
+            )
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
     }
@@ -75,7 +83,7 @@ class SearchPlaylistDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initUI()
         initAction()
-
+        initObserver()
         searchPlaylistObserver()
     }
 
@@ -108,37 +116,94 @@ class SearchPlaylistDialogFragment : DialogFragment() {
     private fun searchPlaylistObserver() {
         binding.apply {
             viewModel.searchPlaylist(query).observe(viewLifecycleOwner) { result ->
-                if (result != null)
-                    when (result) {
-                        is Result.Loading -> {
-                            msvPlaylist.showNuberJamLoadingState()
-                        }
+                if (result != null) when (result) {
+                    is Result.Loading -> {
+                        msvPlaylist.showNuberJamLoadingState()
+                    }
 
-                        is Result.Success -> {
-                            msvPlaylist.showNuberJamDefaultState()
-                            val data = result.data
-                            if (data.isNotEmpty()) {
-                                playlistAdapter.submitList(data)
-                            } else {
-                                msvPlaylist.showNuberJamEmptyState(
-                                    emptyMessage = getString(R.string.no_playlist)
-                                )
-                            }
-                        }
-
-                        is Result.Error -> {
-                            msvPlaylist.showNuberJamErrorState(
-                                errorMessage = Helper.getApiErrorMessage(
-                                    requireActivity(),
-                                    result.errorCode
-                                ),
-                                onButtonClicked = {
-                                    searchPlaylistObserver()
-                                }
+                    is Result.Success -> {
+                        msvPlaylist.showNuberJamDefaultState()
+                        val data = result.data
+                        if (data.isNotEmpty()) {
+                            playlistAdapter.submitList(data)
+                        } else {
+                            msvPlaylist.showNuberJamEmptyState(
+                                emptyMessage = getString(R.string.no_playlist)
                             )
                         }
                     }
 
+                    is Result.Error -> {
+                        msvPlaylist.showNuberJamErrorState(errorMessage = Helper.getApiErrorMessage(
+                            requireActivity(), result.errorCode
+                        ), onButtonClicked = {
+                            searchPlaylistObserver()
+                        })
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun initObserver() {
+        binding.apply {
+            viewLifecycleOwner.collectLifecycleFlow(viewModel.checkMusicInPlaylistState) { result ->
+                if (result != null) when (result) {
+                    is Result.Loading -> {
+                        msvPlaylist.showNuberJamLoadingState()
+                        tvConfirmation.gone()
+                    }
+
+                    is Result.Success -> {
+                        if (result.data) {
+//                            TODO: Show Music is Exist Dialog
+                            Toast.makeText(
+                                requireActivity(), "Exist Status : Yes", Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            viewModel.addMusicToPlaylist()
+                            Toast.makeText(
+                                requireActivity(), "Exist Status : No", Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    is Result.Error -> {
+                        msvPlaylist.showNuberJamDefaultState()
+                        tvConfirmation.visible()
+                        tvConfirmation.text = Helper.getApiErrorMessage(
+                            requireActivity(), result.errorCode
+                        )
+                    }
+                }
+            }
+
+            viewLifecycleOwner.collectLifecycleFlow(viewModel.addMusicToPlaylistState) { result ->
+                if (result != null) when (result) {
+                    is Result.Loading -> {
+                        msvPlaylist.showNuberJamLoadingState()
+                    }
+
+                    is Result.Success -> {
+                        msvPlaylist.showNuberJamDefaultState()
+                        if (result.data) {
+                            setFragmentResult(
+                                DetailLibraryFragment.EDIT_PLAYLIST_REQUEST_KEY,
+                                bundleOf(BundleKeys.EDIT_PLAYLIST_STATE_KEY to true)
+                            )
+                            dismiss()
+                        }
+                    }
+
+                    is Result.Error -> {
+                        msvPlaylist.showNuberJamDefaultState()
+                        tvConfirmation.visible()
+                        tvConfirmation.text = Helper.getApiErrorMessage(
+                            requireActivity(), result.errorCode
+                        )
+                    }
+                }
             }
         }
     }
