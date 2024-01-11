@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_dialog"
@@ -62,8 +62,10 @@
                 android:text="@string/confirmation_text"
                 android:textSize="@dimen/font_13sp"
                 android:visibility="gone"
+                android:layout_marginTop="@dimen/space_8dp"
                 android:layout_gravity="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/error_main"/>
 
             <com.kennyc.view.MultiStateView
                 android:id="@+id/msv_playlist"
