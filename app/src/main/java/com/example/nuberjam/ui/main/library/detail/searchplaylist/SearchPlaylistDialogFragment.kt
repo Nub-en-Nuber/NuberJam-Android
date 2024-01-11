@@ -5,13 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -84,6 +81,7 @@ class SearchPlaylistDialogFragment : DialogFragment() {
         initUI()
         initAction()
         initObserver()
+        setupFragmentResultListener()
         searchPlaylistObserver()
     }
 
@@ -146,6 +144,23 @@ class SearchPlaylistDialogFragment : DialogFragment() {
         }
     }
 
+    private fun setupFragmentResultListener() {
+        childFragmentManager.setFragmentResultListener(
+            DetailLibraryFragment.EDIT_PLAYLIST_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val state = bundle.getBoolean(BundleKeys.EDIT_PLAYLIST_STATE_KEY)
+            binding.msvPlaylist.showNuberJamDefaultState()
+            if (state) {
+                setFragmentResult(
+                    DetailLibraryFragment.EDIT_PLAYLIST_REQUEST_KEY,
+                    bundleOf(BundleKeys.EDIT_PLAYLIST_STATE_KEY to true)
+                )
+                dismiss()
+            }
+        }
+    }
+
     private fun initObserver() {
         binding.apply {
             viewLifecycleOwner.collectLifecycleFlow(viewModel.checkMusicInPlaylistState) { result ->
@@ -157,15 +172,13 @@ class SearchPlaylistDialogFragment : DialogFragment() {
 
                     is Result.Success -> {
                         if (result.data) {
-//                            TODO: Show Music is Exist Dialog
-                            Toast.makeText(
-                                requireActivity(), "Exist Status : Yes", Toast.LENGTH_SHORT
-                            ).show()
+                            AddMusicConfirmationDialogFragment.getInstance(
+                                viewModel.musicId ?: 0,
+                                viewModel.selectedPlaylistId ?: 0
+                            )
+                                .show(childFragmentManager, AddMusicConfirmationDialogFragment.TAG)
                         } else {
                             viewModel.addMusicToPlaylist()
-                            Toast.makeText(
-                                requireActivity(), "Exist Status : No", Toast.LENGTH_SHORT
-                            ).show()
                         }
                     }
 

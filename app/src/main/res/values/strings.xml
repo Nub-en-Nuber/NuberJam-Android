@@ -8,6 +8,7 @@
     <string name="title_delete_playlist">Delete Playlist</string>
     <string name="title_add_to_playlist">Add To Playlist</string>
     <string name="title_delete_song">Delete Song</string>
+    <string name="title_song_exist">This Song Already Exist</string>
 
 
     <!--    Terms and Conditions-->
@@ -91,6 +92,7 @@
     <string name="playlist_name_max_word">Maximum words is 28!</string>
     <string name="playlist_delete_confirmation">Are you sure to delete this Playlist ?</string>
     <string name="music_delete_confirmation">Are you sure want to delete this song from this playlist?</string>
+    <string name="music_exist_confirmation">Are you sure want to add this song anyway?</string>
 
     <string name="library_type">Library Type</string>
     <string name="dialog_title">Dialog Title</string>
@@ -126,6 +128,7 @@
     <string name="edit">Edit</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="confirmation_continue">Continue</string>
     <string name="logout_confirmation_text">Are you sure to log out?</string>
     <string name="title_edit_playlist_name">Edit Playlist Name</string>
     <string name="playlist_name_hint">Playlist Name</string>

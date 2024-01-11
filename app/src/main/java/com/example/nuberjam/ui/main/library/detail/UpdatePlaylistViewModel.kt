@@ -89,7 +89,7 @@ class UpdatePlaylistViewModel @Inject constructor(
     fun addMusicToPlaylist() {
         if (musicId != null) {
             viewModelScope.launch {
-                repository.addMusicToPlaylist(selectedPlaylistId, musicId).collect { result ->
+                repository.addMusicToPlaylist((if (selectedPlaylistId == 0) playlistId else selectedPlaylistId) ?:0 , musicId).collect { result ->
                     _addMusicToPlaylistState.value = result
                 }
             }
