@@ -65,6 +65,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/media_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/secondary_main"
+        app:layout_constraintBottom_toBottomOf="@+id/seek_bar"
+        app:layout_constraintTop_toTopOf="@+id/seek_bar"
+        app:trackColor="@color/primary_darker"
+        app:trackThickness="@dimen/space_8dp" />
+
     <SeekBar
         android:id="@+id/seek_bar"
         android:layout_width="match_parent"

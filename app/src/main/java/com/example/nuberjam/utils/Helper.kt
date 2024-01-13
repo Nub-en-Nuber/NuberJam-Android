@@ -1,5 +1,6 @@
 package com.example.nuberjam.utils
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -52,6 +53,20 @@ object Helper {
             handler.postDelayed(500L, ++counter) { action(text) }
             setTag(id, counter)
         }
+    }
+
+    @Suppress("DEPRECATION")
+    fun isServiceRunning(context: Context, serviceClassName: String): Boolean {
+        val activityManager =
+            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val services: List<ActivityManager.RunningServiceInfo> =
+            activityManager.getRunningServices(Int.MAX_VALUE)
+        for (runningServiceInfo in services) {
+            if (runningServiceInfo.service.className == serviceClassName) {
+                return true
+            }
+        }
+        return false
     }
 }
 
