@@ -27,6 +27,7 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FragmentMusicBinding
 import com.example.nuberjam.service.MediaService
 import com.example.nuberjam.ui.customview.CustomSnackbar
+import com.example.nuberjam.ui.main.library.detail.searchplaylist.SearchPlaylistDialogFragment
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.extensions.collectLifecycleFlow
 import com.example.nuberjam.utils.extensions.invisible
@@ -136,6 +137,12 @@ class MusicFragment : Fragment() {
                     viewModel.updateFavoriteData(false)
                 } else {
                     viewModel.updateFavoriteData(true)
+                }
+            }
+            nowPlayingAppbar.btnPlaylist.setOnClickListener {
+                musicData.id?.let { musicId ->
+                    SearchPlaylistDialogFragment.getInstance(musicId)
+                        .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
                 }
             }
         }
@@ -250,6 +257,7 @@ class MusicFragment : Fragment() {
                     is Result.Loading -> {
                         updateFavoriteState(isLoading = true)
                     }
+
                     is Result.Success -> {
                         updateFavoriteState(isLoading = false, isSuccess = true)
                         val currentData = musicData.isFavorite ?: false

@@ -3,7 +3,6 @@ package com.example.nuberjam.ui.main.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
@@ -77,7 +76,8 @@ class MusicAdapter(
                         )
                     }
 
-                    val popupMenu = initPopupMenu(imbKebab, musicItem.id ?: 0, musicItem.playlistDetailId?:0)
+                    val popupMenu =
+                        initPopupMenu(imbKebab, musicItem.id ?: 0, musicItem.playlistDetailId ?: 0)
                     imbKebab.setOnClickListener {
                         popupMenu.show()
                     }
@@ -105,7 +105,8 @@ class MusicAdapter(
                     }
 
                     imbPlaylist.setOnClickListener {
-                        // TODO: SHOW DIALOG ADD MUSIC TO PLAYLIST
+                        SearchPlaylistDialogFragment.getInstance(musicItem.id!!)
+                            .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
                     }
                 }
             }
@@ -121,14 +122,14 @@ class MusicAdapter(
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.add_music_playlist -> {
-                        // TODO: SHOW DIALOG ADD MUSIC TO PLAYLIST
-                        SearchPlaylistDialogFragment.getInstance(musicId).show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
+                        SearchPlaylistDialogFragment.getInstance(musicId)
+                            .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
                         true
                     }
 
                     R.id.delete_music_playlist -> {
-                        // TODO: SHOW DIALOG DELETE MUSIC FROM PLAYLIST
-                       DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId).show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
+                        DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId)
+                            .show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
                         true
                     }
 
