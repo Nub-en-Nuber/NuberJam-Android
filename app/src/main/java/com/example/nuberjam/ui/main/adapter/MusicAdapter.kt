@@ -105,7 +105,7 @@ class MusicAdapter(
                     }
 
                     imbPlaylist.setOnClickListener {
-                        SearchPlaylistDialogFragment.getInstance(musicItem.id!!)
+                        SearchPlaylistDialogFragment.getInstance(musicItem.id ?: 0)
                             .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
                     }
                 }
