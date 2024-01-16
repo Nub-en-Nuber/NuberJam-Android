@@ -1,7 +1,10 @@
 package com.example.nuberjam.ui.main.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,13 +15,16 @@ import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.MusicItemBinding
 import com.example.nuberjam.databinding.MusicKebabItemBinding
+import com.example.nuberjam.ui.main.library.detail.deletemusic.DeleteMusicFromPlaylistDialogFragment
+import com.example.nuberjam.ui.main.library.detail.searchplaylist.SearchPlaylistDialogFragment
 import com.example.nuberjam.utils.Helper.concatenateArtist
 import com.example.nuberjam.utils.Helper.displayDuration
 import com.example.nuberjam.utils.LibraryDetailType
 
 class MusicAdapter(
     private val musicAdapterCallback: MusicAdapterCallback,
-    private val viewType: LibraryDetailType = LibraryDetailType.Favorite
+    private val viewType: LibraryDetailType = LibraryDetailType.Favorite,
+    private val childFragmentManager: FragmentManager
 ) : ListAdapter<Music, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     override fun getItemViewType(position: Int): Int {
@@ -42,7 +48,7 @@ class MusicAdapter(
         (holder as MusicViewHolder<*>).bind(musicItem)
     }
 
-    class MusicViewHolder<T : ViewBinding>(
+    inner class MusicViewHolder<T : ViewBinding>(
         private val binding: T,
         private val viewType: Int,
         private val callback: MusicAdapterCallback
@@ -69,8 +75,11 @@ class MusicAdapter(
                             buttonFavoriteState
                         )
                     }
+
+                    val popupMenu =
+                        initPopupMenu(imbKebab, musicItem.id ?: 0, musicItem.playlistDetailId ?: 0)
                     imbKebab.setOnClickListener {
-                        // TODO: Show popup menu
+                        popupMenu.show()
                     }
                 }
             } else {
@@ -94,14 +103,40 @@ class MusicAdapter(
                             buttonFavoriteState
                         )
                     }
+
                     imbPlaylist.setOnClickListener {
-                        callback.onPlaylistActionClick(musicItem.id ?: 0)
+                        SearchPlaylistDialogFragment.getInstance(musicItem.id ?: 0)
+                            .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
                     }
                 }
             }
             itemView.setOnClickListener {
                 callback.onItemClick(musicItem.id ?: 0)
             }
+        }
+
+        private fun initPopupMenu(view: View, musicId: Int, playlistDetailId: Int): PopupMenu {
+            val popupMenu = PopupMenu(itemView.context, view)
+            popupMenu.inflate(R.menu.kebab_music_playlist_menu)
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.add_music_playlist -> {
+                        SearchPlaylistDialogFragment.getInstance(musicId)
+                            .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
+                        true
+                    }
+
+                    R.id.delete_music_playlist -> {
+                        DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId)
+                            .show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            return popupMenu
         }
     }
 
@@ -114,9 +149,7 @@ class MusicAdapter(
             buttonFavoriteState: FavoriteStateButtonBinding
         )
 
-        fun onPlaylistActionClick(musicId: Int)
         fun addItemToPlaylist(musicId: Int)
-        fun deleteItemFromPlaylist(musicId: Int)
     }
 
     companion object {

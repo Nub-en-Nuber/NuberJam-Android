@@ -23,7 +23,7 @@ class LibraryViewModel @Inject constructor(
 
     fun getAccountState() = repository.getAccountState()
 
-    fun readAllPlaylist(accountId: Int) = repository.readAllPlaylist(accountId)
+    fun readAllPlaylist() = repository.readAllPlaylist()
 
     fun addPlaylist(playlistName: String, accountId: Int) =
         repository.addPlaylist(playlistName, accountId)

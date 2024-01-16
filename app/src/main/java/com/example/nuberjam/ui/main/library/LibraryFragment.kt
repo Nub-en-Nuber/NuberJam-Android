@@ -103,11 +103,7 @@ class LibraryFragment : Fragment() {
     }
 
     private fun setData() {
-        viewModel.getAccountState().observe(viewLifecycleOwner) { account ->
-            if (account != null) {
-                readAllPlaylistObserve(account.id)
-            }
-        }
+        readAllPlaylistObserve()
     }
 
     private fun refreshFragment() {
@@ -143,8 +139,8 @@ class LibraryFragment : Fragment() {
         }
     }
 
-    private fun readAllPlaylistObserve(accountId: Int) {
-        viewModel.readAllPlaylist(accountId).observe(viewLifecycleOwner) { result ->
+    private fun readAllPlaylistObserve() {
+        viewModel.readAllPlaylist().observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is Result.Loading -> {

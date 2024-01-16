@@ -153,15 +153,11 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            override fun onPlaylistActionClick(musicId: Int) {
-            }
-
             override fun addItemToPlaylist(musicId: Int) {
             }
 
-            override fun deleteItemFromPlaylist(musicId: Int) {
-            }
-        })
+        },
+            childFragmentManager = childFragmentManager)
         binding.rvMusicList.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = musicAdapter
@@ -204,6 +200,7 @@ class HomeFragment : Fragment() {
                     is Result.Loading -> {
                         updateFavoriteState(isLoading = true)
                     }
+
                     is Result.Success -> {
                         updateFavoriteState(isLoading = false, isSuccess = true)
                         setData()
@@ -226,7 +223,7 @@ class HomeFragment : Fragment() {
             favoriteButtonBinding?.loading?.invisible()
             val selectedView = favoriteButtonBinding?.imbLove
             selectedView?.visible()
-            if (isSuccess){
+            if (isSuccess) {
                 selectedView?.setImageResource(
                     R.drawable.ic_love_red
                 )
