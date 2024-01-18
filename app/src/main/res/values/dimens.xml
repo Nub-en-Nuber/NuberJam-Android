@@ -40,4 +40,5 @@
     <dimen name="space_20dp">20dp</dimen>
     <dimen name="space_100dp">100dp</dimen>
     <dimen name="space_240dp">240dp</dimen>
+    <dimen name="space_104dp">104dp</dimen>
 </resources>

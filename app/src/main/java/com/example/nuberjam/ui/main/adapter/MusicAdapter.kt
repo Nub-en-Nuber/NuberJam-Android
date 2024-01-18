@@ -1,9 +1,12 @@
 package com.example.nuberjam.ui.main.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
+import android.widget.PopupWindow
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -76,10 +79,13 @@ class MusicAdapter(
                         )
                     }
 
-                    val popupMenu =
-                        initPopupMenu(imbKebab, musicItem.id ?: 0, musicItem.playlistDetailId ?: 0)
+                    val popupWindow = initPopupWindow(
+                        itemView,
+                        musicItem.id ?: 0,
+                        musicItem.playlistDetailId ?: 0
+                    )
                     imbKebab.setOnClickListener {
-                        popupMenu.show()
+                        popupWindow.showAsDropDown(it)
                     }
                 }
             } else {
@@ -115,28 +121,41 @@ class MusicAdapter(
             }
         }
 
-        private fun initPopupMenu(view: View, musicId: Int, playlistDetailId: Int): PopupMenu {
-            val popupMenu = PopupMenu(itemView.context, view)
-            popupMenu.inflate(R.menu.kebab_music_playlist_menu)
+        private fun initPopupWindow(
+            itemView: View,
+            musicId: Int,
+            playlistDetailId: Int
+        ): PopupWindow {
+            val inflater: LayoutInflater =
+                itemView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val view = inflater.inflate(R.layout.popup_kebab_playlist, null)
 
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.add_music_playlist -> {
-                        SearchPlaylistDialogFragment.getInstance(musicId)
-                            .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
-                        true
-                    }
+            val popupWindow = PopupWindow(
+                view,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                true
+            )
 
-                    R.id.delete_music_playlist -> {
-                        DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId)
-                            .show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
-                        true
-                    }
-
-                    else -> false
-                }
+            val itemFirst = view.findViewById<RelativeLayout>(R.id.item_first)
+            val tvFirst = view.findViewById<TextView>(R.id.tv_first)
+            tvFirst.text = itemView.context.getString(R.string.add_to_playlist)
+            itemFirst.setOnClickListener {
+                SearchPlaylistDialogFragment.getInstance(musicId)
+                    .show(childFragmentManager, SearchPlaylistDialogFragment.TAG)
+                popupWindow.dismiss()
             }
-            return popupMenu
+
+            val itemSecond = view.findViewById<RelativeLayout>(R.id.item_second)
+            val tvSecond = view.findViewById<TextView>(R.id.tv_second)
+            tvSecond.text = itemView.context.getString(R.string.delete)
+            itemSecond.setOnClickListener {
+                DeleteMusicFromPlaylistDialogFragment.getInstance(playlistDetailId)
+                    .show(childFragmentManager, DeleteMusicFromPlaylistDialogFragment.TAG)
+                popupWindow.dismiss()
+            }
+
+            return popupWindow
         }
     }
 
