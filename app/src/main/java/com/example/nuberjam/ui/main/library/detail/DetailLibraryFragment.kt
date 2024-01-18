@@ -1,12 +1,15 @@
 package com.example.nuberjam.ui.main.library.detail
 
 import android.app.ActionBar.LayoutParams
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toolbar
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -23,7 +26,6 @@ import com.example.nuberjam.databinding.FavoriteStateButtonBinding
 import com.example.nuberjam.databinding.FragmentDetailLibraryBinding
 import com.example.nuberjam.ui.customview.CustomSnackbar
 import com.example.nuberjam.ui.main.adapter.MusicAdapter
-import com.example.nuberjam.ui.main.library.detail.deletemusic.DeleteMusicFromPlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.deleteplaylist.DeletePlaylistDialogFragment
 import com.example.nuberjam.ui.main.library.detail.editname.EditNameDialogFragment
 import com.example.nuberjam.utils.BundleKeys
@@ -115,33 +117,35 @@ class DetailLibraryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        musicAdapter = MusicAdapter(object : MusicAdapter.MusicAdapterCallback {
-            override fun onItemClick(musicId: Int) {
-                navigateToDetailMusic(musicId)
-            }
-
-            override fun onAlbumImageClick(albumId: Int) {
-                goToDetailLibraryPage(LibraryDetailType.Album, albumId)
-            }
-
-            override fun onFavoriteActionClick(
-                musicId: Int,
-                isFavorite: Boolean,
-                buttonFavoriteState: FavoriteStateButtonBinding
-            ) {
-                favoriteButtonBinding = buttonFavoriteState
-                if (isFavorite) {
-                    viewModel.updateFavoriteData(musicId, false)
-                } else {
-                    viewModel.updateFavoriteData(musicId, true)
+        musicAdapter = MusicAdapter(
+            object : MusicAdapter.MusicAdapterCallback {
+                override fun onItemClick(musicId: Int) {
+                    navigateToDetailMusic(musicId)
                 }
-            }
 
-            override fun addItemToPlaylist(musicId: Int) {
-            }
-        },
+                override fun onAlbumImageClick(albumId: Int) {
+                    goToDetailLibraryPage(LibraryDetailType.Album, albumId)
+                }
+
+                override fun onFavoriteActionClick(
+                    musicId: Int,
+                    isFavorite: Boolean,
+                    buttonFavoriteState: FavoriteStateButtonBinding
+                ) {
+                    favoriteButtonBinding = buttonFavoriteState
+                    if (isFavorite) {
+                        viewModel.updateFavoriteData(musicId, false)
+                    } else {
+                        viewModel.updateFavoriteData(musicId, true)
+                    }
+                }
+
+                override fun addItemToPlaylist(musicId: Int) {
+                }
+            },
             viewType = viewModel.libraryViewType,
-            childFragmentManager = childFragmentManager)
+            childFragmentManager = childFragmentManager
+        )
         binding.rvMusicList.apply {
             adapter = musicAdapter
             layoutManager = LinearLayoutManager(requireActivity())
@@ -191,11 +195,12 @@ class DetailLibraryFragment : Fragment() {
 
             LibraryDetailType.Playlist -> {
                 with(binding) {
-                    val popupMenu = initPopupMenu(imvCover.imbKebab)
+                    val popupWindow = initPopupWindow()
                     appbar.tvLibraryAppbar.text = getString(R.string.playlist)
                     imvCover.imbKebab.visible()
+
                     imvCover.imbKebab.setOnClickListener {
-                        popupMenu.show()
+                        popupWindow.showAsDropDown(it)
                     }
 
                     viewLifecycleOwner.collectLifecycleFlow(viewModel.playlistState) { result ->
@@ -231,31 +236,40 @@ class DetailLibraryFragment : Fragment() {
         observeAddDeleteFavoriteState()
     }
 
-    private fun initPopupMenu(view: View): PopupMenu {
-        val popupMenu = PopupMenu(requireActivity(), view)
-        popupMenu.inflate(R.menu.kebab_playlist_menu)
+    private fun initPopupWindow(): PopupWindow {
+        val inflater: LayoutInflater =
+            requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.popup_kebab_playlist, null)
 
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.edit_playlist -> {
-                    val editNameDialogFragment = EditNameDialogFragment.getInstance(
-                        viewModel.playlistId,
-                        binding.imvCover.tvLibraryTitle.text.toString()
-                    )
-                    editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
-                    true
-                }
+        val popupWindow = PopupWindow(
+            view,
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
 
-                R.id.delete_playlist -> {
-                    DeletePlaylistDialogFragment.getInstance(viewModel.playlistId)
-                        .show(childFragmentManager, DeletePlaylistDialogFragment.TAG)
-                    true
-                }
-
-                else -> false
-            }
+        val itemFirst = view.findViewById<RelativeLayout>(R.id.item_first)
+        val tvFirst = view.findViewById<TextView>(R.id.tv_first)
+        tvFirst.text = getString(R.string.edit)
+        itemFirst.setOnClickListener {
+            val editNameDialogFragment = EditNameDialogFragment.getInstance(
+                viewModel.playlistId,
+                binding.imvCover.tvLibraryTitle.text.toString()
+            )
+            editNameDialogFragment.show(childFragmentManager, EditNameDialogFragment.TAG)
+            popupWindow.dismiss()
         }
-        return popupMenu
+
+        val itemSecond = view.findViewById<RelativeLayout>(R.id.item_second)
+        val tvSecond = view.findViewById<TextView>(R.id.tv_second)
+        tvSecond.text = getString(R.string.delete)
+        itemSecond.setOnClickListener {
+            DeletePlaylistDialogFragment.getInstance(viewModel.playlistId)
+                .show(childFragmentManager, DeletePlaylistDialogFragment.TAG)
+            popupWindow.dismiss()
+        }
+
+        return popupWindow
     }
 
     private fun setViewState(
