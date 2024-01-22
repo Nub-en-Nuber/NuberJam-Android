@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.example.nuberjam.data.model.Account
 import com.example.nuberjam.data.model.Album
+import com.example.nuberjam.data.model.CurrentMusic
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.data.model.Playlist
 import com.example.nuberjam.data.model.PlaylistDetail
@@ -191,11 +192,11 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun saveCurrentMusic(musicId: Int) {
-        appPreferences.saveCurrentMusic(musicId)
+    suspend fun saveCurrentMusic(currentMusic: CurrentMusic) {
+        appPreferences.saveCurrentMusic(currentMusic)
     }
 
-    fun getCurrentMusic(): LiveData<Int?> = appPreferences.getCurrentMusic().asLiveData()
+    fun getCurrentMusic(): Flow<CurrentMusic?> = appPreferences.getCurrentMusic()
 
     fun readAllPlaylist(query: String = ""): LiveData<Result<List<Playlist>>> =
         liveData {
@@ -220,9 +221,12 @@ class Repository @Inject constructor(
             val accountId = appPreferences.getAccountState().first().id
             val response =
                 apiService.readPlaylistDetail(accountId, playlistId)
-
-            val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
-            emit(Result.Success(playlistDetail))
+            if (response.status == Constant.API_SUCCESS_CODE) {
+                val playlistDetail = Mapping.dataResponseToPlaylistDetail(response)
+                emit(Result.Success(playlistDetail))
+            } else {
+                throw Exception()
+            }
         } catch (e: Exception) {
             Log.e(TAG, "readPlaylistDetail: ${e.message.toString()}")
             if (e is NoConnectivityException) emit(Result.Error(Constant.API_INTERNET_ERROR_CODE))

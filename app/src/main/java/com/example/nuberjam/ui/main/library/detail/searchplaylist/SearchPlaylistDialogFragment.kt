@@ -174,7 +174,7 @@ class SearchPlaylistDialogFragment : DialogFragment() {
                         if (result.data) {
                             AddMusicConfirmationDialogFragment.getInstance(
                                 viewModel.musicId ?: 0,
-                                viewModel.selectedPlaylistId ?: 0
+                                viewModel.selectedPlaylistId
                             )
                                 .show(childFragmentManager, AddMusicConfirmationDialogFragment.TAG)
                         } else {

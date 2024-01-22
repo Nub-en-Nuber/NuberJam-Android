@@ -135,4 +135,5 @@
     <string name="add_to_playlist">Add to playlist</string>
     <string name="search_playlist">Search playlist</string>
     <string name="no_playlist">No playlist, please create one in the library</string>
+    <string name="error">Error</string>
 </resources>

@@ -16,10 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/space_0dp"
             app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/nav_view"
+            app:layout_constraintBottom_toTopOf="@+id/current_playing_layout"
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/main_navigation"
             app:popUpToInclusive="true" />
+
+        <include
+            android:id="@+id/current_playing_layout"
+            layout="@layout/current_playing_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/nav_view" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"

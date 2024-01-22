@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.nuberjam.data.model.Account
+import com.example.nuberjam.data.model.CurrentMusic
 import com.example.nuberjam.utils.AesEncryption
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -44,6 +45,7 @@ class AppPreferences @Inject constructor(
             preferences.remove(ACCOUNT_PASSWORD_KEY)
             preferences.remove(ACCOUNT_IS_ARTIST_KEY)
         }
+        clearCurrentMusic()
     }
 
     fun getLoginState(): Flow<Boolean> {
@@ -65,15 +67,32 @@ class AppPreferences @Inject constructor(
         }
     }
 
-    suspend fun saveCurrentMusic(musicId: Int) {
+    suspend fun saveCurrentMusic(currentMusic: CurrentMusic) {
         dataStore.edit { preferences ->
-            preferences[MUSIC_ID_KEY] = musicId
+            preferences[MUSIC_ID_KEY] = currentMusic.id
+            preferences[MUSIC_DURATION_KEY] = currentMusic.duration
+            preferences[MUSIC_SEEK_KEY] = currentMusic.progress
         }
     }
 
-    fun getCurrentMusic(): Flow<Int?> {
+    fun getCurrentMusic(): Flow<CurrentMusic?> {
         return dataStore.data.map { preferences ->
-            preferences[MUSIC_ID_KEY]
+            val musicId = preferences[MUSIC_ID_KEY]
+            val musicDuration = preferences[MUSIC_DURATION_KEY]
+            val musicSeek = preferences[MUSIC_SEEK_KEY]
+            if (musicId == null || musicDuration == null || musicSeek == null) {
+                null
+            } else {
+                CurrentMusic(musicId, musicDuration, musicSeek)
+            }
+        }
+    }
+
+    private suspend fun clearCurrentMusic() {
+        dataStore.edit { preferences ->
+            preferences.remove(MUSIC_ID_KEY)
+            preferences.remove(MUSIC_DURATION_KEY)
+            preferences.remove(MUSIC_SEEK_KEY)
         }
     }
 
@@ -87,5 +106,7 @@ class AppPreferences @Inject constructor(
         private val ACCOUNT_PASSWORD_KEY = stringPreferencesKey("account_password")
         private val ACCOUNT_IS_ARTIST_KEY = booleanPreferencesKey("account_is_artist")
         private val MUSIC_ID_KEY = intPreferencesKey("music_id")
+        private val MUSIC_DURATION_KEY = intPreferencesKey("music_duration")
+        private val MUSIC_SEEK_KEY = intPreferencesKey("music_seek")
     }
 }

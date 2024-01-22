@@ -19,15 +19,25 @@ import androidx.media.session.MediaButtonReceiver
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.nuberjam.data.Repository
+import com.example.nuberjam.data.model.CurrentMusic
 import com.example.nuberjam.data.model.Music
 import com.example.nuberjam.service.MediaNotificationManager.Companion.NOTIFICATION_ID
 import com.example.nuberjam.utils.Helper
 import com.example.nuberjam.utils.parcelable
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
+import javax.inject.Inject
 
 
-class MediaService : Service(), MediaPlayer.OnPreparedListener,
+@AndroidEntryPoint
+class MediaService : Service(),
     MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+
+    @Inject
+    lateinit var repository: Repository
 
     companion object {
         const val EXTRA_MEDIA_FILE = "extra_media_file"
@@ -43,6 +53,7 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
     var mediaPlayer: MediaPlayer? = null
     val isReady: MutableLiveData<Boolean> = MutableLiveData()
     val isPlaying: MutableLiveData<Boolean> = MutableLiveData()
+    val musicLiveData: MutableLiveData<Music> = MutableLiveData()
 
     override fun onBind(intent: Intent): IBinder {
         return iBinder
@@ -57,6 +68,8 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
             MediaButtonReceiver.handleIntent(mediaSession, intent)
             if (intent.action == null) {
                 music = intent.parcelable(EXTRA_MEDIA_FILE)
+                musicLiveData.value = music
+
                 loadImageBitmap()
                 initMediaPlayer()
                 initMediaSession()
@@ -83,7 +96,7 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
     }
 
     private fun initMediaPlayer() {
-        isReady.postValue(false)
+        isReady.value = false
         isPlaying.postValue(false)
 
         mediaNotificationManager?.notificationManager?.cancelAll()
@@ -91,10 +104,9 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
         isForegroundServiceRunning = false
 
         mediaPlayer = MediaPlayer()
-        mediaPlayer?.setOnPreparedListener(this)
         mediaPlayer?.setOnCompletionListener(this)
         mediaPlayer?.setOnErrorListener(this)
-        mediaPlayer?.reset()
+        mediaPlayer?.setOnPreparedListener { onPrepared(true) }
 
         val attribute = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
@@ -232,11 +244,28 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
         }
     }
 
-    private fun restartMedia() {
-        mediaPlayer?.pause()
-        mediaPlayer?.seekTo(0)
+    fun changeMedia(music: Music) {
+        this.music = music
+        this.musicLiveData.value = music
+        isReady.value = false
         isPlaying.postValue(false)
-        setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
+
+        loadImageBitmap()
+
+        mediaPlayer?.reset()
+        mediaPlayer?.setOnPreparedListener { onPrepared() }
+
+        val attribute = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
+        mediaPlayer?.setAudioAttributes(attribute)
+
+        try {
+            mediaPlayer?.setDataSource(music.file)
+            mediaPlayer?.prepareAsync()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            stopSelf()
+        }
     }
 
     fun seekMedia(position: Int) {
@@ -248,6 +277,15 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
     override fun onDestroy() {
         super.onDestroy()
         if (mediaPlayer != null) {
+            runBlocking {
+                repository.saveCurrentMusic(
+                    CurrentMusic(
+                        music?.id!!,
+                        mediaPlayer!!.duration,
+                        mediaPlayer!!.currentPosition
+                    )
+                )
+            }
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             stopMedia()
@@ -255,15 +293,26 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener,
         }
     }
 
-    override fun onPrepared(p0: MediaPlayer?) {
+    private fun onPrepared(isFirstStart: Boolean = false) {
         isReady.postValue(true)
         isPlaying.postValue(false)
         mediaSession?.setMetadata(getMetadata())
         playOrPauseMedia()
+        if (isFirstStart) {
+            val currentMusic = runBlocking {
+                repository.getCurrentMusic().first()
+            }
+            if ((currentMusic != null) && (currentMusic.id == music?.id)) {
+                seekMedia(currentMusic.progress)
+            }
+        }
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
-        restartMedia()
+        mediaPlayer?.pause()
+        mediaPlayer?.seekTo(0)
+        isPlaying.postValue(false)
+        setMediaPlaybackState(PlaybackStateCompat.STATE_PAUSED)
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean = false
